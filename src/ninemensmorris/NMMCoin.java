@@ -5,6 +5,8 @@
  */
 package ninemensmorris;
 
+import ninemensmorris.enums.MCoinType;
+
 /**
  * The Coin Object for the NMM Board
  * Holds Valid Moves and Possible Mill Combinations
@@ -28,6 +30,17 @@ public class NMMCoin {
         this.coinSlot = null;
         this.vldMvs = null;
         this.millCombo = null;        
+    }
+    
+    /**
+     *constructor lets you initialize only coin slot with the arrays set to null
+     * @param coinSlot
+     */
+    public NMMCoin(String coinSlot) {
+        this.coinType = MCoinType.EMPTY;
+        this.coinSlot = coinSlot;
+        this.vldMvs = null;
+        this.millCombo = null;
     }
 
     /**
@@ -85,6 +98,29 @@ public class NMMCoin {
     public MCoinType getCoin()
     {
         return this.coinType;  //lol di I even have to explain this
+    }
+    
+    /**
+     * 
+     * @return empty:0, white:1, black:2
+     */
+    public int getCoinInt()
+    {
+        //checks enum and returns int
+        switch(this.coinType)
+        {
+            case EMPTY:
+                return 0;
+                
+            case WHITE:
+                return 1;
+            
+            case BLACK:
+                return 2;
+                    
+        }
+        //should never execute
+        return -1;
     }
     
     // </editor-fold>
