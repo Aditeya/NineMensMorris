@@ -17,9 +17,10 @@ public class NMMCoin {
     public NMMCoin[] vldMvs;        //Holds valid moves (Maybe make this protected String[]?)
     public NMMCoin[][] millCombo;   //Holds possible mill combinations (Maybe make this protected String[][]?)
     
+    // <editor-fold defaultstate="collapsed" desc="constructors">
     
     /**
-     * Basic constructor for b00bs lol, hahahahahaha, no srsly don't use this stuff will break.
+     * Basic constructor for n00bs lol, hahahahahaha, no srsly don't use this stuff will break.
      */
     NMMCoin()
     {
@@ -56,6 +57,37 @@ public class NMMCoin {
         this.vldMvs = vldMvs;
         this.millCombo = millCombo;
     }
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="getters-setters">
+    
+    /**
+     * Sets the coin type to the one specified
+     * @param coinType The coin type to be set
+     * @return false if same type. true otherwise
+     */
+    public boolean setCoin(MCoinType coinType)
+    {
+        //checks if old type same as new type, returns false
+        if(this.coinType == coinType)
+            return false;
+        
+        //since type not same, sets type and returns true
+        this.coinType = coinType;
+        return true;
+    }
+    
+    /**
+     * Gets the coin type of an object
+     * @return the coin type
+     */
+    public MCoinType getCoin()
+    {
+        return this.coinType;  //lol di I even have to explain this
+    }
+    
+    // </editor-fold>
     
     
 }
