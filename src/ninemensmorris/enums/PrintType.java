@@ -10,7 +10,7 @@ package ninemensmorris.enums;
  * Holds Value or location
  * @author eltojaro
  */
-public enum printType {
+public enum PrintType {
     VALUE,
     LOC
 }
