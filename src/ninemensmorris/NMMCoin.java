@@ -123,7 +123,16 @@ public class NMMCoin {
         return -1;
     }
     
+    /**
+     * Gets the coin slot
+     * @return the coin slot
+     */
+    public String getCoinSlot() {
+        return coinSlot;
+    }
+    
     // </editor-fold>
+
     
     
 }
