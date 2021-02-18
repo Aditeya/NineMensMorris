@@ -12,5 +12,7 @@ package ninemensmorris.enums;
  */
 public enum PrintType {
     VALUE,
-    LOC
+    LOC,
+    RAW_VALUE,
+    RAW_LOC
 }
