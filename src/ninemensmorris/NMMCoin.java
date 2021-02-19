@@ -101,26 +101,12 @@ public class NMMCoin {
     }
     
     /**
-     * 
+     * Returns the coin type
      * @return empty:0, white:1, black:2
      */
     public int getCoinInt()
     {
-        //checks enum and returns int
-        switch(this.coinType)
-        {
-            case EMPTY:
-                return 0;
-                
-            case WHITE:
-                return 1;
-            
-            case BLACK:
-                return 2;
-                    
-        }
-        //should never execute
-        return -1;
+        return coinType.ordinal();
     }
     
     /**
