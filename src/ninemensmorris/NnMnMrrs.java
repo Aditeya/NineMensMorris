@@ -82,7 +82,7 @@ public class NnMnMrrs {
             //somebody please fix this dang file location issue
             try(BufferedReader in =
                     new BufferedReader(
-                    new FileReader("/home/eltojaro/NetBeansProjects/NineMensMorris/src/ninemensmorris/resources/cmd_board.txt"))) 
+                    new FileReader("src/ninemensmorris/resources/cmd_board.txt"))) 
             {    
                 //Reads File and Buils String
                 StringBuilder sb = new StringBuilder();
