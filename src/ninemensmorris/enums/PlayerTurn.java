@@ -5,15 +5,12 @@
  */
 package ninemensmorris.enums;
 
+
 /**
- * An Enum for the coin type
- * Holds Empty, Black or White
+ * ENUM to hold player turn  - Possibly just use MCoinType instead
  * @author eltojaro
  */
-public enum MCoinType {
-    EMPTY,
+public enum PlayerTurn {
     WHITE,
-    BLACK,   //You have no idea how hard I had to fight the urge to call this ni-
-    
+    BLACK
 }
-
