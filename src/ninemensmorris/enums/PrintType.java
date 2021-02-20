@@ -6,8 +6,8 @@
 package ninemensmorris.enums;
 
 /**
- * An Enum for the print type
- * Holds Value or location
+ * An Enum for the print type Holds Value or location
+ *
  * @author eltojaro
  */
 public enum PrintType {

@@ -6,14 +6,13 @@
 package ninemensmorris.enums;
 
 /**
- * An Enum for the coin type
- * Holds Empty, Black or White
+ * An Enum for the coin type Holds Empty, Black or White
+ *
  * @author eltojaro
  */
 public enum MCoinType {
     EMPTY,
     WHITE,
     BLACK,   //You have no idea how hard I had to fight the urge to call this ni-
-    
-}
 
+}

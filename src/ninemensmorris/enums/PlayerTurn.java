@@ -5,9 +5,9 @@
  */
 package ninemensmorris.enums;
 
-
 /**
- * ENUM to hold player turn  - Possibly just use MCoinType instead
+ * ENUM to hold player turn - Possibly just use MCoinType instead
+ *
  * @author eltojaro
  */
 public enum PlayerTurn {

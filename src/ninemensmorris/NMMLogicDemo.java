@@ -30,14 +30,14 @@ public class NMMLogicDemo {
         nmm.cmdPrint(PrintType.RAW_LOC);
         nmm.cmdPrint(PrintType.RAW_VALUE);
         nmm.cmdPrint(PrintType.VALUE);
-        
+
         NMMCoin coin = new NMMCoin(MCoinType.WHITE, null, null, null);
         System.out.println(coin.getCoinInt());
-        
+
         System.out.println(NnMnMrrs.slotLkUp("E3")[0]);
         System.out.println(NnMnMrrs.slotLkUp("E3")[1]);
         System.out.println("\n\n\n");
-        
+
         //Use these to set coins
         //nmm.setNmmCnType(MCoinType.BLACK, slot) //will throw unsupportedException      
         int[] numslot = NnMnMrrs.slotLkUp("A1");
