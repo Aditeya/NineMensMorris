@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ninemensmorris.enums.MCoinType;
@@ -143,7 +144,8 @@ public class NnMnMrrs {
      * @return coin type at slot
      */
     public MCoinType getNmmCnType(String slot) {
-        throw new UnsupportedOperationException();
+        int[] index = slotLkUp(slot);
+        return nmmBoard[index[0]][index[1]].getCoin();
     }
 
     /**
@@ -152,8 +154,9 @@ public class NnMnMrrs {
      * @param slot location slot
      * @return coin type at slot
      */
-    public MCoinType getNmmCnTypInt(String slot) {
-        throw new UnsupportedOperationException();
+    public int getNmmCnTypInt(String slot) {
+        int[] index = slotLkUp(slot);   //looks up the index for slot
+        return nmmBoard[index[0]][index[1]].getCoinInt();
     }
 
     /**
@@ -186,7 +189,13 @@ public class NnMnMrrs {
      * @return false if new coin type is the same as old turn, false otherwise
      */
     public boolean setNmmCnType(MCoinType type, String slot) {
-        throw new UnsupportedOperationException();
+        int[] index = slotLkUp(slot);   //looks up the index for slot
+        //checks if coin is same as parameter, if so returns false
+        if (nmmBoard[index[0]][index[1]].getCoin() == type) {
+            return false;
+        }
+        nmmBoard[index[0]][index[1]].setCoin(type);
+        return true;
     }
 
     /**
@@ -199,6 +208,41 @@ public class NnMnMrrs {
      */
     public boolean setNmmCnType(MCoinType type, int row, int col) {
         //checks if coin is same as parameter, if so returns false
+        //checks if coin is filled, if so returns false
+        if (nmmBoard[row][col].getCoin() == MCoinType.EMPTY) {
+            nmmBoard[row][col].setCoin(type);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Sets the coin type at slot location
+     *
+     * @param type the coin type to be set
+     * @param slot the slot location
+     * @return false if old coin is filled, false otherwise
+     */
+    public boolean setNmmCnTypeIfEmpty(MCoinType type, String slot) {
+        int[] index = slotLkUp(slot);   //looks up the index for slot
+        //checks if coin is filled, if so returns false
+        if (nmmBoard[index[0]][index[1]].getCoin() == MCoinType.EMPTY) {
+            nmmBoard[index[0]][index[1]].setCoin(type);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Sets the coin type at index
+     *
+     * @param type the coin type to be set
+     * @param row the row index
+     * @param col the col index
+     * @return false if old coin is filled, false otherwise
+     */
+    public boolean setNmmCnTypeIfEmpty(MCoinType type, int row, int col) {
+        //checks if coin is same as parameter, if so returns false
         if (nmmBoard[row][col].getCoin() == type) {
             return false;
         }
@@ -208,18 +252,51 @@ public class NnMnMrrs {
 
     //</editor-fold>
     /**
-     * Handles setup completely, send in objects from an input stream
+     * Handles setup completely, uses a Linked Blocking Queue Put objects into
+     * the queue using a seperate thread Remember to check the NMM objects
+     * current player turn
      *
+     * @param coinIN
      * @return
      */
-    public boolean nmmSetup() {
-        int menLeft = 9; //The number of men you can place in phase 1
+    public boolean nmmSetup(LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose) throws InterruptedException {
 
-        for (int i = 0; i < menLeft; i++) {
-            //inputStream.transferTo(targetStream);
+        //create the array of messages
+        String[] notif = new String[6];
 
+        //populates array if verbose is true
+        if (verbose == true) {
+            notif[0] = "Waiting for coin...\n";
+            notif[1] = "Coin received.\n";
+            notif[2] = "Coin set.\n";
+            notif[3] = "Unable to set coin as slot is filled\nPlayer turns have"
+                    + "not been swapped\nRe-set the coin in another slot.\n";
+            notif[4] = nmmTurn.toString() + "'s Turn has been completed.\n";
         }
 
+        int menLeft = 9; //The number of men you can place in phase 1
+
+        //repeats the setting process 9x2 times, alternating b/w players
+        for (int i = 0; i < menLeft * 2; i++) {
+            System.out.print(notif[0]); //verbose message
+            //checks for coin, blocks till found
+            NMMCoin coinSet = coinIN.take();
+            System.out.println(notif[1]);
+
+            //sets the coin according to the slot
+            if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
+                //swaps the player turn
+                swapNMMTurn();
+                System.out.print(notif[2]);
+            } else {
+                //repeats coin setting till valid set
+                do {
+                    System.out.print(notif[3]);
+                } while (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
+                //swaps turns
+                swapNMMTurn();
+            }
+        }
         return true;
     }
 
