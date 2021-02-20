@@ -6,6 +6,7 @@
 package ninemensmorris;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -64,8 +65,8 @@ public class NnMnMrrs {
         if (slotIndxRef == null) {
             try {
                 slotIndxRef = (JSONObject) new JSONParser().parse(
-                        new FileReader(
-                                "src/ninemensmorris/resources/slot_index_ref.json"));
+                        new InputStreamReader(
+                                getClass().getResourceAsStream("/ninemensmorris/resources/slot_index_ref.json")));
             } catch (Exception ex) {
                 Logger.getLogger(NnMnMrrs.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -75,7 +76,6 @@ public class NnMnMrrs {
     /*
     public ObjectInputStream getStrmIn() {
         return coinIN;  }*/
-
     /**
      * Looks up the index assosciated with the given slot
      *
