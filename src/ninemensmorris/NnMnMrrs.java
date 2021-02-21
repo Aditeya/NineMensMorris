@@ -124,11 +124,13 @@ public class NnMnMrrs {
      */
     public PlayerTurn swapNMMTurn() {
         //swaps the turn
-        switch (this.nmmTurn) {
-            case WHITE:
+        if(this.getNmmTurn() == PlayerTurn.WHITE)
+        {
                 this.nmmTurn = PlayerTurn.BLACK;
                 return this.nmmTurn;
-            case BLACK:
+        }
+        else if(this.getNmmTurn() == PlayerTurn.BLACK)
+        {
                 this.nmmTurn = PlayerTurn.WHITE;
                 return this.nmmTurn;
         }

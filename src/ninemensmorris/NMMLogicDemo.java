@@ -25,12 +25,19 @@ public class NMMLogicDemo {
     public static void main(String[] args) throws InterruptedException {
 
         Scanner input = new Scanner(System.in);
+             
 
         int[] test = {5, 3, 2, 1};
         test2(test);
         System.out.println(test[1]);
 
         NnMnMrrs nmm = new NnMnMrrs();
+        
+        System.out.println("Player " + nmm.getNmmTurn());
+        nmm.swapNMMTurn();
+        System.out.println("Player " + nmm.getNmmTurn());
+        nmm.swapNMMTurn();
+        System.out.println("Player " + nmm.getNmmTurn());
 
         nmm.cmdPrint(PrintType.LOC);
         nmm.cmdPrint(PrintType.RAW_LOC);
