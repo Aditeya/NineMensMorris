@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author aditeya
  */
-public class NineMensMorris extends Application {
+public class NMMApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
