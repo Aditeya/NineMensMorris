@@ -263,21 +263,25 @@ public class NnMnMrrs {
 
         //create the array of messages
         String[] notif = new String[6];
-
+        
         //populates array if verbose is true
         if (verbose == true) {
             notif[0] = "Waiting for coin...\n";
             notif[1] = "Coin received.\n";
             notif[2] = "Coin set.\n";
             notif[3] = "Unable to set coin as slot is filled\nPlayer turns have"
-                    + "not been swapped\nRe-set the coin in another slot.\n";
-            notif[4] = nmmTurn.toString() + "'s Turn has been completed.\n";
+                    + " not been swapped\nRe-set the coin in another slot.\n";
+            notif[4] = "Turn has been completed";
         }
 
-        int menLeft = 9; //The number of men you can place in phase 1
+        int menLeft = 18; //The number of men you can place in phase 1
 
         //repeats the setting process 9x2 times, alternating b/w players
         for (int i = 0; i < menLeft * 2; i++) {
+            System.out.println("i = " + i);
+            if(verbose == true) 
+                System.out.println(nmmTurn + " Turn " + (int)i/2); //verbose message
+            
             System.out.print(notif[0]); //verbose message
             //checks for coin, blocks till found
             NMMCoin coinSet = coinIN.take();
@@ -292,10 +296,17 @@ public class NnMnMrrs {
                 //repeats coin setting till valid set
                 do {
                     System.out.print(notif[3]);
-                } while (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
+                    System.out.print(notif[0]); //verbose message
+                    //checks for coin, blocks till found
+                    coinSet = coinIN.take();
+                    System.out.println(notif[1]);
+                } while (!setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
                 //swaps turns
                 this.swapNMMTurn();
+                System.out.print(notif[2]);
             }
+            
+            System.out.println(notif[4]);
         }
         return true;
     }

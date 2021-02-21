@@ -31,6 +31,12 @@ public class NMMLogicDemo {
         System.out.println(test[1]);
 
         NnMnMrrs nmm = new NnMnMrrs();
+        
+        System.out.println("Player " + nmm.getNmmTurn());
+        nmm.swapNMMTurn();
+        System.out.println("Player " + nmm.getNmmTurn());
+        nmm.swapNMMTurn();
+        System.out.println("Player " + nmm.getNmmTurn());
 
         nmm.cmdPrint(PrintType.LOC);
         nmm.cmdPrint(PrintType.RAW_LOC);
@@ -62,20 +68,31 @@ public class NMMLogicDemo {
             @Override
             public void run() {
 
-                for (int i = 0; i < 18; i++) {
-                    /*System.out.println(nmm.getNmmTurn() + " Player, Place a "
+                for (int i = 0; i < 18; i++) {  //CHANGE TO WHILE MEN LEFT
+                    System.out.println(nmm.getNmmTurn() + " Player, Place a "
                             + "coin.");
-                    System.out.println("match regex [A-G]+[1-3]");*/
+                    System.out.println("match regex [A-H]+[1-3]");
                     String slot = input.nextLine();
+                    
+                    NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, null, null);
 
-                    //Sets the coin
-                    nmm.setNmmCnType(nmm.getNmmTurn().toMCntyp(), slot);
+                    try {
+                        //Sets the coin
+                        sendCoin.put(coin);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     //prints the board
                     nmm.cmdPrint(PrintType.VALUE);
 
                 }
-
+                System.out.println("this fin");
             }
 
         });
