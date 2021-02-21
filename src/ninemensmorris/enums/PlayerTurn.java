@@ -11,6 +11,14 @@ package ninemensmorris.enums;
  * @author eltojaro
  */
 public enum PlayerTurn {
-    WHITE,
-    BLACK
+    WHITE(MCoinType.WHITE),
+    BLACK(MCoinType.BLACK);
+    
+    private final MCoinType coinType;
+
+    //Constructor
+    private PlayerTurn(MCoinType coinType) {this.coinType = coinType;}
+      
+    //MCoinType Converter
+    public MCoinType toMCntyp() {return this.coinType;}
 }
