@@ -124,13 +124,13 @@ public class NnMnMrrs {
      */
     public PlayerTurn swapNMMTurn() {
         //swaps the turn
-        switch (nmmTurn) {
+        switch (this.nmmTurn) {
             case WHITE:
-                nmmTurn = PlayerTurn.BLACK;
-                return nmmTurn;
+                this.nmmTurn = PlayerTurn.BLACK;
+                return this.nmmTurn;
             case BLACK:
-                nmmTurn = PlayerTurn.WHITE;
-                return nmmTurn;
+                this.nmmTurn = PlayerTurn.WHITE;
+                return this.nmmTurn;
         }
         return null;
     }
@@ -286,7 +286,7 @@ public class NnMnMrrs {
             //sets the coin according to the slot
             if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
                 //swaps the player turn
-                swapNMMTurn();
+                this.swapNMMTurn();
                 System.out.print(notif[2]);
             } else {
                 //repeats coin setting till valid set
@@ -294,7 +294,7 @@ public class NnMnMrrs {
                     System.out.print(notif[3]);
                 } while (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
                 //swaps turns
-                swapNMMTurn();
+                this.swapNMMTurn();
             }
         }
         return true;

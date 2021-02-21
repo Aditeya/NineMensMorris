@@ -5,6 +5,10 @@
  */
 package ninemensmorris;
 
+import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ninemensmorris.enums.MCoinType;
 import ninemensmorris.enums.PrintType;
 
@@ -18,7 +22,9 @@ public class NMMLogicDemo {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        Scanner input = new Scanner(System.in);
 
         int[] test = {5, 3, 2, 1};
         test2(test);
@@ -37,7 +43,7 @@ public class NMMLogicDemo {
         System.out.println(NnMnMrrs.slotLkUp("E3")[0]);
         System.out.println(NnMnMrrs.slotLkUp("E3")[1]);
         System.out.println("\n\n\n");
-
+        /*
         //Use these to set coins
         //nmm.setNmmCnType(MCoinType.BLACK, slot) //will throw unsupportedException      
         int[] numslot = NnMnMrrs.slotLkUp("A1");
@@ -45,6 +51,38 @@ public class NMMLogicDemo {
         numslot = NnMnMrrs.slotLkUp("G3");
         nmm.setNmmCnType(MCoinType.BLACK, numslot[0], numslot[1]);
         nmm.cmdPrint(PrintType.VALUE);
+         */
+
+        //Required for setup
+        LinkedBlockingQueue sendCoin = new LinkedBlockingQueue(2);
+
+        //starts a new thread
+        Thread setupTh = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                for (int i = 0; i < 18; i++) {
+                    /*System.out.println(nmm.getNmmTurn() + " Player, Place a "
+                            + "coin.");
+                    System.out.println("match regex [A-G]+[1-3]");*/
+                    String slot = input.nextLine();
+
+                    //Sets the coin
+                    nmm.setNmmCnType(nmm.getNmmTurn().toMCntyp(), slot);
+
+                    //prints the board
+                    nmm.cmdPrint(PrintType.VALUE);
+
+                }
+
+            }
+
+        });
+
+        setupTh.start();
+
+        nmm.nmmSetup(sendCoin, true);
 
     }
 
