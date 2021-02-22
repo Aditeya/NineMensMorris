@@ -68,7 +68,7 @@ public class NMMLogicDemo {
             @Override
             public void run() {
 
-                for (int i = 0; i < 18; i++) {  //CHANGE TO WHILE MEN LEFT
+                while (nmm.getMenLeft() > 0) {  //CHANGE TO WHILE MEN LEFT
                     System.out.println(nmm.getNmmTurn() + " Player, Place a "
                             + "coin.");
                     System.out.println("match regex [A-H]+[1-3]");

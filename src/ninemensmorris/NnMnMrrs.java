@@ -34,6 +34,8 @@ public class NnMnMrrs {
     //static json Object that stors slot index pairs
     private static JSONObject slotIndxRef = null;
 
+    //The number of men you can place in phase 1        
+    private int menLeft;
     //variable to check the turn
     private PlayerTurn nmmTurn;
     //prepares the array space for gridboard
@@ -45,6 +47,9 @@ public class NnMnMrrs {
      * Default Constructor, intializes a RTU game
      */
     NnMnMrrs() {
+
+        //The number of men availible at the start of the game
+        menLeft = 9;
 
         //intializes turn to white as per game rules I swear I'm not racist
         nmmTurn = PlayerTurn.WHITE;
@@ -91,8 +96,21 @@ public class NnMnMrrs {
         index[1] = Math.toIntExact((long) arrIndx.get(1));
         return index;
     }
-
-    // <editor-fold defaultstate="collapsed" desc="trun handling">
+    
+    // <editor-fold defaultstate="collapsed" desc="getters-setters">
+    /**
+     * Gets the remaning men
+     * @return The men Left
+     */
+    public int getMenLeft() {
+        return menLeft;
+    }
+    
+    //no setterfor menLeft
+    
+    // </editor-fold>
+            
+    // <editor-fold defaultstate="collapsed" desc="turn handling">
     /**
      * Gets the current turn
      *
@@ -136,6 +154,7 @@ public class NnMnMrrs {
     }
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="coin handling">
     /**
      * Gets the coin type at slot location
@@ -251,6 +270,7 @@ public class NnMnMrrs {
     }
 
     //</editor-fold>
+    
     /**
      * Handles setup completely, uses a Linked Blocking Queue Put objects into
      * the queue using a seperate thread Remember to check the NMM objects
@@ -259,11 +279,11 @@ public class NnMnMrrs {
      * @param coinIN
      * @return
      */
-    public boolean nmmSetup(LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose) throws InterruptedException {
+    public boolean nmmSetup(LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose) {
 
         //create the array of messages
-        String[] notif = new String[6];
-        
+        String[] notif = new String[7];
+
         //populates array if verbose is true
         if (verbose == true) {
             notif[0] = "Waiting for coin...\n";
@@ -272,42 +292,63 @@ public class NnMnMrrs {
             notif[3] = "Unable to set coin as slot is filled\nPlayer turns have"
                     + " not been swapped\nRe-set the coin in another slot.\n";
             notif[4] = "Turn has been completed";
+            notif[5] = "An Interupted Exception has occured, "
+                    + "Setup terminated.\n";
+            notif[6] = "Setup Completed Successfully\n";
         }
-
-        int menLeft = 18; //The number of men you can place in phase 1
+        
+        final int menLeftF = menLeft;
 
         //repeats the setting process 9x2 times, alternating b/w players
-        for (int i = 0; i < menLeft * 2; i++) {
-            System.out.println("i = " + i);
-            if(verbose == true) 
-                System.out.println(nmmTurn + " Turn " + (int)i/2); //verbose message
-            
-            System.out.print(notif[0]); //verbose message
-            //checks for coin, blocks till found
-            NMMCoin coinSet = coinIN.take();
-            System.out.println(notif[1]);
+        for (int i = 0; i < menLeftF * 2; i++) {
 
-            //sets the coin according to the slot
-            if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
-                //swaps the player turn
-                this.swapNMMTurn();
-                System.out.print(notif[2]);
-            } else {
-                //repeats coin setting till valid set
-                do {
-                    System.out.print(notif[3]);
-                    System.out.print(notif[0]); //verbose message
-                    //checks for coin, blocks till found
-                    coinSet = coinIN.take();
-                    System.out.println(notif[1]);
-                } while (!setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
-                //swaps turns
-                this.swapNMMTurn();
-                System.out.print(notif[2]);
+            //try to catch interrupted exceptions
+            try {
+                //sends verbose message
+                if (verbose == true) {
+                    System.out.println("setup_i = " + i);
+                    System.out.println(nmmTurn + " Turn " + (10 - menLeft));
+                    System.out.println("Men Left = " + menLeft);
+                }
+
+                System.out.print(notif[0]); //verbose message
+                //checks for coin, blocks till found
+                NMMCoin coinSet = coinIN.take();
+                System.out.println(notif[1]);
+
+                //sets the coin according to the slot
+                if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
+                    //swaps the player turn
+                    this.swapNMMTurn();
+                    System.out.print(notif[2]);
+                } else {
+                    //repeats coin setting till valid set
+                    do {
+                        System.out.print(notif[3]);
+                        System.out.print(notif[0]); //verbose message
+                        //checks for coin, blocks till found
+                        coinSet = coinIN.take();
+                        System.out.println(notif[1]);
+                    } while (!setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
+                    
+                    //swaps turns
+                    this.swapNMMTurn();
+                    System.out.print(notif[2]);
+                }
+
+                System.out.println(notif[4]);//prints verbose message
+                //checks if i is even, decrements menLeft if true
+                menLeft = (i%2 != 0) ? menLeft-1 : menLeft;
+                
             }
-            
-            System.out.println(notif[4]);
+            //If Exceptions occurs, prints message and terminates setup
+            catch (InterruptedException ex) {
+                System.out.print(notif[5]);
+                return false;
+            }
         }
+        //prints message and returns treu
+        System.out.print(notif[6]);
         return true;
     }
 
