@@ -29,7 +29,7 @@ import org.json.simple.parser.JSONParser;
  *
  * @author eltojaro
  */
-public class NnMnMrrs {
+public class NMMLogic {
 
     //static json Object that stors slot index pairs
     private static JSONObject slotIndxRef = null;
@@ -46,7 +46,7 @@ public class NnMnMrrs {
     /**
      * Default Constructor, intializes a RTU game
      */
-    NnMnMrrs() {
+    NMMLogic() {
 
         //The number of men availible at the start of the game
         menLeft = 9;
@@ -74,7 +74,7 @@ public class NnMnMrrs {
                         new InputStreamReader(
                                 getClass().getResourceAsStream("/ninemensmorris/resources/slot_index_ref.json")));
             } catch (Exception ex) {
-                Logger.getLogger(NnMnMrrs.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NMMLogic.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

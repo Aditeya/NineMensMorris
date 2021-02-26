@@ -30,7 +30,7 @@ public class NMMLogicDemo {
         test2(test);
         System.out.println(test[1]);
 
-        NnMnMrrs nmm = new NnMnMrrs();
+        NMMLogic nmm = new NMMLogic();
         
         System.out.println("Player " + nmm.getNmmTurn());
         nmm.swapNMMTurn();
@@ -46,15 +46,15 @@ public class NMMLogicDemo {
         NMMCoin coin = new NMMCoin(MCoinType.WHITE, null, null, null);
         System.out.println(coin.getCoinInt());
 
-        System.out.println(NnMnMrrs.slotLkUp("E3")[0]);
-        System.out.println(NnMnMrrs.slotLkUp("E3")[1]);
+        System.out.println(NMMLogic.slotLkUp("E3")[0]);
+        System.out.println(NMMLogic.slotLkUp("E3")[1]);
         System.out.println("\n\n\n");
         /*
         //Use these to set coins
         //nmm.setNmmCnType(MCoinType.BLACK, slot) //will throw unsupportedException      
-        int[] numslot = NnMnMrrs.slotLkUp("A1");
+        int[] numslot = NMMLogic.slotLkUp("A1");
         nmm.setNmmCnType(MCoinType.WHITE, numslot[0], numslot[1]);
-        numslot = NnMnMrrs.slotLkUp("G3");
+        numslot = NMMLogic.slotLkUp("G3");
         nmm.setNmmCnType(MCoinType.BLACK, numslot[0], numslot[1]);
         nmm.cmdPrint(PrintType.VALUE);
          */
