@@ -46,7 +46,7 @@ public class NMMLogic {
     /**
      * Default Constructor, intializes a RTU game
      */
-    NMMLogic() {
+    public NMMLogic() {
 
         //The number of men availible at the start of the game
         menLeft = 9;
