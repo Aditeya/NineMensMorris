@@ -16,7 +16,6 @@ import ninemensmorris.NMMCoin;
 import ninemensmorris.NMMLogic;
 import ninemensmorris.NMMLogicDemo;
 import ninemensmorris.enums.PlayerTurn;
-import ninemensmorris.enums.PrintType;
 
 /**
  *
@@ -75,10 +74,14 @@ public class NMMServiceThread extends Thread {
                     Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                //prints the board
-                nmm.cmdPrint(PrintType.VALUE);
+                //Sends the board
+                NMMboard board = new NMMboard(nmm.nmmBoard);
+                p1oos.writeObject(board);
+                p2oos.writeObject(board);
             }
             
+            player1.close();
+            player2.close();
             System.out.println("Game Complete");
         } catch (IOException | ClassNotFoundException ex) {
         }
