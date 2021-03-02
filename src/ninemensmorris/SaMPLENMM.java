@@ -46,58 +46,24 @@ public class SaMPLENMM extends Application {
 
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * 100), POS_SIZE * WIDTH - (2 * i * 100));
-            System.out.println(" The " + (POS_SIZE * HEIGHT - (2 * i * 100)));
-            System.out.println(" The halfr " + (POS_SIZE * HEIGHT - (2 * i * 100)) / 2);
-
+           // System.out.println(" The " + (POS_SIZE * HEIGHT - (2 * i * 100)));
+          //  System.out.println(" The halfr " + (POS_SIZE * HEIGHT - (2 * i * 100)) / 2);
             r1.setStroke(Color.CADETBLUE);
-            r1.setX(i * 100);
-            r1.setY(i * 100);
-            r1.setStrokeWidth(10);
-            root.getChildren().add(r1);
+            r1.setX(i * 100);         r1.setY(i * 100);
+            r1.setStrokeWidth(10); root.getChildren().add(r1);
         }
 
-        int[] posX = {100, 200,300,350,400,500,600};
-        int[] posY = {100, 350, 600, 300,};
+        int[] posX = {100,600};      int[] posY = {100,350,600};
+        int[] posX1 = {200,500};        int[] posY1 = {200,350,500};
+        int[] posX2 = {300,400};        int[] posY2 = {300,350,400};
+        int[] posX3 = {350};       int[] posY3 = {100,200,300,400,500,600};
+        
+        CreateSlots(posX,posY,root);
+        CreateSlots(posX1,posY1,root);
+        CreateSlots(posX2,posY2,root);
+        CreateSlots(posX3,posY3,root);
 
-        ArrayList arr = new ArrayList();
-
-        for (int i = 0; i < posX.length; i++) {
-            for (int j = 0; j < posX.length; j++) {
-                Circle c1 = new Circle(POS_SIZE / 10);
-                // c1.setCenterX(posX[i]);
-                //c1.setCenterY(posY[j]);
-                c1.setCenterX(posX[i]);
-                c1.setCenterY(posX[j]);
-                c1.setFill(Color.CORAL);
-                System.out.println("X " + i * 100 + " Y " + i * 100);
-                c1.setFill(Color.CORAL);
-                root.getChildren().addAll(c1);
-            }
-        }
-
-//        System.out.println("r1 =" + POS_SIZE*HEIGHT + " x "+ POS_SIZE*WIDTH);
-//        System.out.println("r2 =" + (POS_SIZE*HEIGHT-200) + " x "+ (POS_SIZE*HEIGHT-200));
-        //    System.out.println("r3 =" + (POS_SIZE*HEIGHT-400) + " x "+ (POS_SIZE*HEIGHT-400));
-//        Rectangle r1 = new Rectangle(POS_SIZE*HEIGHT,POS_SIZE*WIDTH);// 700
-//        Rectangle r2 = new Rectangle((POS_SIZE*HEIGHT-200),(POS_SIZE*HEIGHT-200));
-//        Rectangle r3 = new Rectangle((POS_SIZE*HEIGHT-400),(POS_SIZE*HEIGHT-400));
-//
-//       
-//             
-//              
-//        r2.setX(100);
-//        r2.setY(100);
-//        
-//        r3.setX(200);
-//        r3.setY(200);       
-//        
-//          r1.setFill(Color.BLACK);
-//                r2.setFill(Color.PINK);
-//               r3.setFill(Color.ANTIQUEWHITE);
-//               r1.setStrokeWidth(20);
-//        
-//        
-//        root.getChildren().addAll(r1,r2,r3);
+  
         return root;
     }
 
@@ -120,4 +86,20 @@ public class SaMPLENMM extends Application {
         launch(args);
     }
 
+    public void CreateSlots(int[] posX,int[] posY,Pane root){
+      for (int i = 0; i < posX.length; i++) {
+            for (int j = 0; j < posY.length; j++) {
+                Circle c1 = new Circle(POS_SIZE / 10);
+                // c1.setCenterX(posX[i]);
+                //c1.setCenterY(posY[j]);
+                c1.setCenterX(posX[i]);
+                c1.setCenterY(posY[j]);
+                c1.setFill(Color.CORAL);
+                System.out.println("X " +posX[i] + " Y " +posY[j]);
+                c1.setFill(Color.CORAL);
+                root.getChildren().addAll(c1);
+            }
+        }
+    }
+    
 }
