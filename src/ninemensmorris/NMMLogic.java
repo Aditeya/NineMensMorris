@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -269,7 +270,7 @@ public class NMMLogic {
         }
         return false;
     }
-
+    
     /**
      * Sets the coin type at slot location
      *
@@ -304,6 +305,57 @@ public class NMMLogic {
         }
         nmmBoard[row][col].setCoin(type);
         return true;
+    }
+    
+     /**
+     * Returns all the coins from the slots in the given array
+     * @param slots The slots from which to get coins
+     * @return an array list with all the coins
+     */
+    public ArrayList<NMMCoin> getCoinsFromSlots(String... slots)
+    {
+        //Creating a coin array list to be returned
+        ArrayList<NMMCoin> coinList = new ArrayList<NMMCoin>();
+        //Creating an int to hold the co ords
+        int[] idx;
+        
+        //iterates thru every slot 
+        for (String slot : slots) 
+        {
+            //looks up the index and adds that coin to the list
+            idx = slotLkUp(slot);
+            coinList.add(this.nmmBoard[ idx[0] ][ idx[1] ]);
+        }
+        
+        //returns the list
+        return coinList;
+    }
+    
+     /**
+     * Returns all the coins from the slots in the given matrix
+     * @param slots The slots from which to get coins
+     * @return an array list with all the coins
+     */
+    public ArrayList<NMMCoin> getCoinsFromSlots(String[][] slots)
+    {
+        //Creating a coin array list to be returned
+        ArrayList<NMMCoin> coinList = new ArrayList<NMMCoin>();
+        //Creating an int to hold the co ords
+        int[] idx;
+        
+        //iterates thru every slot 
+        for (String[] slotss : slots) 
+        {
+            for (String slot : slotss)
+            {
+                //looks up the index and adds that coin to the list
+                idx = slotLkUp(slot);
+                coinList.add(this.nmmBoard[ idx[0] ][ idx[1] ]);
+            }
+        }
+        
+        //returns the list
+        return coinList;
     }
     
     /**
@@ -378,6 +430,17 @@ public class NMMLogic {
         //holds the oringal mill state of the coin to be checked
         boolean ogIsMill = coinCheck.isMilled();
         
+        //sets the return var newMill first position to the current slot
+        newMill[0] = coinCheck.getCoinSlot();
+        
+        ArrayList<NMMCoin> coinList =
+                this.getCoinsFromSlots(coinCheck.millCombo);
+        
+        //checks for the first possible mill
+        if(coinCheck.getCoin() == )
+        
+        
+        /*
         for(int i = 0; i < 2; i++)
         {
             //sets the return var newMill first position to the current slot
@@ -412,7 +475,7 @@ public class NMMLogic {
                     
                 }
             }
-        }
+        }*/
         
         
         
