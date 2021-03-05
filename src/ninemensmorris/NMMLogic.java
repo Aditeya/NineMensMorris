@@ -367,12 +367,14 @@ public class NMMLogic {
         //Creates a return string
         String[] newMill = new String[5];
         // iterator to track new mills
-        int iMill = 1;
+        int mill_I = 1;
         //Gets the index of the slot
         int[] idx = NMMLogic.slotLkUp(slot);
         //creates a reference to the coin
         NMMCoin coinCheck = nmmBoard [idx[0]] [idx[1]];
         
+        //holds the oringal mill state of the coin to be checked
+        boolean ogIsMill = coinCheck.isMilled();
         
         for(int i = 0; i < 2; i++)
         {
@@ -389,18 +391,22 @@ public class NMMLogic {
                 {
                     //if mill adds the value to the return String
                     //and changes that coin mill to true
-                    newMill[iMill++] = millCheck;
+                    newMill[mill_I++] = millCheck;
                     this.setNmmCnMill(true, millCheck);                  
                 }
                 else    //if a single coin doesn't match the rest in this line
                 {
-                    //overwrites newMill to null
-                    newMill = null;
-                    //reset iMill to 1
-                    iMill=1;
-                    //sets previously set coins isMill to false
-                    if(j == 0)
-                        this.setNmmCnMill(false, millCheck);
+                    if(i==0)
+                    {
+                        //overwrites newMill to null
+                        newMill = null;
+                        //reset mill_I to 1
+                        mill_I=1;
+                        //sets previously set coins isMill to false
+                        if(j == 0)
+                            this.setNmmCnMill(ogIsMill, millCheck);
+                    }
+                    break;
                     
                 }
             }
