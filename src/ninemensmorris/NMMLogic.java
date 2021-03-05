@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -304,6 +305,59 @@ public class NMMLogic {
         return true;
     }
     
+     /**
+     * Returns all the coins from the slots in the given array
+     * @param slots The slots from which to get coins
+     * @return an array list with all the coins
+     */
+    public ArrayList<NMMCoin> getCoinsFromSlots(String... slots)
+    {
+        //Creating a coin array list to be returned
+        ArrayList<NMMCoin> coinList = new ArrayList<NMMCoin>();
+        //Creating an int to hold the co ords
+        int[] idx;
+        
+        //iterates thru every slot 
+        for (String slot : slots) 
+        {
+            //looks up the index and adds that coin to the list
+            idx = slotLkUp(slot);
+            coinList.add(this.nmmBoard[ idx[0] ][ idx[1] ]);
+        }
+        
+        //returns the list
+        return coinList;
+    }
+    
+     /**
+     * Returns all the coins from the slots in the given matrix
+     * @param slots The slots from which to get coins
+     * @return an array list with all the coins
+     */
+    public ArrayList<NMMCoin> getCoinsFromSlots(String[][] slots)
+    {
+        //Creating a coin array list to be returned
+        ArrayList<NMMCoin> coinList = new ArrayList<NMMCoin>();
+        //Creating an int to hold the co ords
+        int[] idx;
+        
+        //iterates thru every slot 
+        for (String[] slotss : slots) 
+        {
+            for (String slot : slotss)
+            {
+                //looks up the index and adds that coin to the list
+                idx = slotLkUp(slot);
+                coinList.add(this.nmmBoard[ idx[0] ][ idx[1] ]);
+            }
+        }
+        
+        //returns the list
+        return coinList;
+    }
+    
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="mill handling">  
     /**
      * Gets is milled at index
      *
@@ -361,8 +415,6 @@ public class NMMLogic {
     }
 
 
-    //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="mill handling">
     public String[] checkMill(String slot) {
         //Creates a return string
         String[] newMill = new String[5];
