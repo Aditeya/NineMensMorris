@@ -29,11 +29,15 @@ import org.json.simple.parser.JSONParser;
  *
  * @author eltojaro
  */
-public class NnMnMrrs {
+public class NMMLogic {
 
     //static json Object that stors slot index pairs
     private static JSONObject slotIndxRef = null;
+    //static json Object that stors slot index pairs
+    private static JSONObject millRef = null;
 
+    //The number of men you can place in phase 1        
+    private int menLeft;
     //variable to check the turn
     private PlayerTurn nmmTurn;
     //prepares the array space for gridboard
@@ -44,34 +48,58 @@ public class NnMnMrrs {
     /**
      * Default Constructor, intializes a RTU game
      */
-    NnMnMrrs() {
+    NMMLogic() {
+
+        //checks if slotLkUp has no values, initilizes it once
+        if (slotIndxRef == null) {
+            try {
+                slotIndxRef = (JSONObject) new JSONParser().parse(
+                        new InputStreamReader(getClass().getResourceAsStream(
+                                "/ninemensmorris/resources/slot_index_ref.json")));
+
+            } catch (Exception ex) {
+                System.out.println("slot_index_ref.json could not be loaded.\n"
+                        + " The game can be played.\n"
+                        + "Some functionality may not work as intended");
+                Logger.getLogger(NMMLogic.class.getName()).log(Level.WARNING, null, ex);
+            }
+        }
+        //checks if slotLkUp has no values, initilizes it once
+        if (millRef == null) {
+            try {
+                millRef = (JSONObject) new JSONParser().parse(
+                        new InputStreamReader(getClass().getResourceAsStream(
+                                "/ninemensmorris/resources/mill_ref.json")));
+                 
+            } catch (Exception ex) {
+                System.out.println("mill_ref.json could not be loaded.\n"
+                        + " The game can be played.\n"
+                        + "Some functionality may not work as intended");
+                Logger.getLogger(NMMLogic.class.getName()).log(Level.WARNING, null, ex);
+            }
+        }
+
+        //The number of men availible at the start of the game
+        menLeft = 9;
 
         //intializes turn to white as per game rules I swear I'm not racist
         nmmTurn = PlayerTurn.WHITE;
 
         char ltr = 'A'; //char to set slot, might depreciate later
-        //itterates through every NMMCoin and intializes its
+        //itterates through every NMMCoin and intializes its slot, millCombos
+        //and valid moves
         for (int i = 0; i < nmmBoard.length; i++) {
             int num = 1; //num to set slot, might depreciate later
 
             for (int j = 0; j < nmmBoard[i].length; j++) {
                 String str = "" + ltr + num;  //str to set slot, might depreciate later
                 nmmBoard[i][j] = new NMMCoin(str);
+                nmmBoard[i][j].millCombo = millLkUp(str);
                 num++;      //increments num
             }
             ltr++;      //increments ltr
         }
 
-        //checks if slotLkUp has no values, initilizes it once
-        if (slotIndxRef == null) {
-            try {
-                slotIndxRef = (JSONObject) new JSONParser().parse(
-                        new InputStreamReader(
-                                getClass().getResourceAsStream("/ninemensmorris/resources/slot_index_ref.json")));
-            } catch (Exception ex) {
-                Logger.getLogger(NnMnMrrs.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     /*
@@ -92,7 +120,31 @@ public class NnMnMrrs {
         return index;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="trun handling">
+    public static String[][] millLkUp(String slot) {
+        String[][] millCombo = new String[2][2];
+        //gets the value from the array and returns
+        JSONArray arrIndx = (JSONArray) millRef.get(slot);
+        millCombo[0][0] = (String) ((JSONArray) arrIndx.get(0)).get(0);
+        millCombo[0][1] = (String) ((JSONArray) arrIndx.get(0)).get(1);
+        millCombo[1][0] = (String) ((JSONArray) arrIndx.get(1)).get(0);
+        millCombo[1][1] = (String) ((JSONArray) arrIndx.get(1)).get(1);
+
+        return millCombo;
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="getters-setters">
+    /**
+     * Gets the remaning men
+     *
+     * @return The men Left
+     */
+    public int getMenLeft() {
+        return menLeft;
+    }
+
+    //no setterfor menLeft
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="turn handling">
     /**
      * Gets the current turn
      *
@@ -234,6 +286,8 @@ public class NnMnMrrs {
         }
         return false;
     }
+    
+    
 
     /**
      * Sets the coin type at index
@@ -251,20 +305,133 @@ public class NnMnMrrs {
         nmmBoard[row][col].setCoin(type);
         return true;
     }
+    
+    /**
+     * Gets is milled at index
+     *
+     * @param row row index
+     * @param col col index
+     * @return isMilled at index
+     */
+    public boolean getNmmCnMill(int row, int col) {
+        return nmmBoard[row][col].isMilled();
+    }
+
+    /**
+     * Gets is milled at slot
+     *
+     * @param slot the coin slot
+     * @return isMilled at slot
+     */
+    public boolean getNmmCnMill(String slot) {
+        int[] index = slotLkUp(slot);
+        return nmmBoard[index[0]][index[1]].isMilled();
+    }
+    
+    /**
+     * Sets whether isMilled at index
+     *
+     * @param milled the mill to be set
+     * @param row the row index
+     * @param col the col index
+     * @return false if new coin type is the same as old turn, false otherwise
+     */
+    public boolean setNmmCnMill(boolean milled, int row, int col) {
+        //checks if mill is same as parameter, if so returns false
+        if (nmmBoard[row][col].isMilled() == milled) {
+            return false;
+        }
+        nmmBoard[row][col].setMilled(milled);
+        return true;
+    }
+
+    /**
+     * Sets whether isMilled at slot location
+     *
+     * @param milled the state of mill to be set
+     * @param slot the slot location
+     * @return false if new mill type is the same as old turn, false otherwise
+     */
+    public boolean setNmmCnMill(boolean milled, String slot) {
+        int[] index = slotLkUp(slot);   //looks up the index for slot
+        //checks if mill is same as parameter, if so returns false
+        if (nmmBoard[index[0]][index[1]].isMilled() == milled) {
+            return false;
+        }
+        nmmBoard[index[0]][index[1]].setMilled(milled);
+        return true;
+    }
+
+
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="mill handling">
+    public String[] checkMill(String slot) {
+        //Creates a return string
+        String[] newMill = new String[5];
+        // iterator to track new mills
+        int mill_I = 1;
+        //Gets the index of the slot
+        int[] idx = NMMLogic.slotLkUp(slot);
+        //creates a reference to the coin
+        NMMCoin coinCheck = nmmBoard [idx[0]] [idx[1]];
+        
+        //holds the oringal mill state of the coin to be checked
+        boolean ogIsMill = coinCheck.isMilled();
+        
+        for(int i = 0; i < 2; i++)
+        {
+            //sets the return var newMill first position to the current slot
+            newMill[0] = coinCheck.getCoinSlot();
+            /////////Needs Major Work/////////
+            for(int j = 0; j < 2; j++)
+            {
+                String millCheck = coinCheck.millCombo[i][j];
+                
+                //Compares the coin vs it's possible mills
+                if(coinCheck.getCoin() == 
+                        getNmmCnType(millCheck))
+                {
+                    //if mill adds the value to the return String
+                    //and changes that coin mill to true
+                    newMill[mill_I++] = millCheck;
+                    this.setNmmCnMill(true, millCheck);                  
+                }
+                else    //if a single coin doesn't match the rest in this line
+                {
+                    if(i==0)
+                    {
+                        //overwrites newMill to null
+                        newMill = null;
+                        //reset mill_I to 1
+                        mill_I=1;
+                        //sets previously set coins isMill to false
+                        if(j == 0)
+                            this.setNmmCnMill(ogIsMill, millCheck);
+                    }
+                    break;
+                    
+                }
+            }
+        }
+        
+        
+        
+        return null;
+    }
 
     //</editor-fold>
     /**
      * Handles setup completely, uses a Linked Blocking Queue Put objects into
-     * the queue using a seperate thread Remember to check the NMM objects
+     * the queue using a separate thread Remember to check the NMM objects
      * current player turn
      *
      * @param coinIN
      * @return
      */
-    public boolean nmmSetup(LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose) throws InterruptedException {
+    public boolean nmmSetup(LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose) {
 
         //create the array of messages
-        String[] notif = new String[6];
+        String[] notif = new String[7];
 
         //populates array if verbose is true
         if (verbose == true) {
@@ -272,33 +439,64 @@ public class NnMnMrrs {
             notif[1] = "Coin received.\n";
             notif[2] = "Coin set.\n";
             notif[3] = "Unable to set coin as slot is filled\nPlayer turns have"
-                    + "not been swapped\nRe-set the coin in another slot.\n";
-            notif[4] = nmmTurn.toString() + "'s Turn has been completed.\n";
+                    + " not been swapped\nRe-set the coin in another slot.\n";
+            notif[4] = "Turn has been completed";
+            notif[5] = "An Interupted Exception has occured, "
+                    + "Setup terminated.\n";
+            notif[6] = "Setup Completed Successfully\n";
         }
 
-        int menLeft = 9; //The number of men you can place in phase 1
+        final int menLeftF = menLeft;
 
         //repeats the setting process 9x2 times, alternating b/w players
-        for (int i = 0; i < menLeft * 2; i++) {
-            System.out.print(notif[0]); //verbose message
-            //checks for coin, blocks till found
-            NMMCoin coinSet = coinIN.take();
-            System.out.println(notif[1]);
+        for (int i = 0; i < menLeftF * 2; i++) {
 
-            //sets the coin according to the slot
-            if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
-                //swaps the player turn
-                this.swapNMMTurn();
-                System.out.print(notif[2]);
-            } else {
-                //repeats coin setting till valid set
-                do {
-                    System.out.print(notif[3]);
-                } while (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
-                //swaps turns
-                this.swapNMMTurn();
+            //try to catch interrupted exceptions
+            try {
+                //sends verbose message
+                if (verbose == true) {
+                    System.out.println("setup_i = " + i);
+                    System.out.println(nmmTurn + " Turn " + (10 - menLeft));
+                    System.out.println("Men Left = " + menLeft);
+                }
+
+                System.out.print(notif[0]); //verbose message
+                //checks for coin, blocks till found
+                NMMCoin coinSet = coinIN.take();
+                System.out.println(notif[1]);
+
+                //sets the coin according to the slot
+                if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
+                    //swaps the player turn
+                    this.swapNMMTurn();
+                    System.out.print(notif[2]);
+                } else {
+                    //repeats coin setting till valid set
+                    do {
+                        System.out.print(notif[3]);
+                        System.out.print(notif[0]); //verbose message
+                        //checks for coin, blocks till found
+                        coinSet = coinIN.take();
+                        System.out.println(notif[1]);
+                    } while (!setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
+
+                    //swaps turns
+                    this.swapNMMTurn();
+                    System.out.print(notif[2]);
+                }
+
+                System.out.println(notif[4]);//prints verbose message
+                //checks if i is even, decrements menLeft if true
+                menLeft = (i % 2 != 0) ? menLeft - 1 : menLeft;
+
+            } //If Exceptions occurs, prints message and terminates setup
+            catch (InterruptedException ex) {
+                System.out.print(notif[5]);
+                return false;
             }
         }
+        //prints message and returns treu
+        System.out.print(notif[6]);
         return true;
     }
 
