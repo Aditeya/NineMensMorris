@@ -62,11 +62,12 @@ public class SaMPLENMM extends Application {
         CreateSlots(posX2,posY2,root);
         CreateSlots(posX3,posY3,root);
 
-         
-         Coin c = new Coin(CoinType.WHITE, 350, 400);
-         root.getChildren().add(c);
-        
-        return root;
+         PlaceCoin(root, CoinType.BLACK, getSlot("A1"));
+         PlaceCoin(root, CoinType.WHITE, getSlot("A2"));
+         PlaceCoin(root, CoinType.BLACK, getSlot("B1"));
+         PlaceCoin(root, CoinType.WHITE, getSlot("C2"));
+
+         return root;
     }
 
     @Override
@@ -103,5 +104,118 @@ public class SaMPLENMM extends Application {
             }
         }
     }
+    
+    public void PlaceCoin(Pane root,CoinType ct,double [] xy){
+        double x= xy[0]*100;        double y= xy[1]*100;
+
+         Coin c = new Coin(ct, x,y);
+         root.getChildren().addAll(c);
+    }
+    
+    public double[] getSlot(String pos){
+        
+        double [] doubleArr = new double[2];
+        switch(pos) {
+  case "A1":
+    doubleArr[0]= 1;
+    doubleArr[1]= 1;
+    break;
+  case "A2":
+    doubleArr[0]= 3.5;
+    doubleArr[1]= 1;
+    break;
+  case "A3":
+    doubleArr[1]= 1;
+    doubleArr[0]= 6;
+    break;
+  case "B1":
+    doubleArr[1]= 2;
+    doubleArr[0]= 2;
+    break;
+  case "B2":
+    doubleArr[1]= 2;
+    doubleArr[0]= 3.5;
+    break;
+  case "B3":
+    doubleArr[1]= 2;
+    doubleArr[0]= 5;
+    break;
+  case "C1":
+    doubleArr[1]= 3;
+    doubleArr[0]= 3;
+    break;
+  case "C2":
+    doubleArr[1]= 3;
+    doubleArr[0]= 3.5;
+    break;
+  case "C3":
+    doubleArr[1]= 3;
+    doubleArr[0]= 4;
+    break;
+  case "D1":
+    doubleArr[1]= 3.5;
+    doubleArr[0]= 1;
+    break;
+  case "D2":
+    doubleArr[1]= 3.5;
+    doubleArr[0]= 2;
+    break;
+  case "D3":
+    doubleArr[1]= 3.5;
+    doubleArr[0]= 3;
+    break;
+  case "E1":
+    doubleArr[1]= 3.5;
+    doubleArr[0]= 4;
+    break;
+  case "E2":
+    doubleArr[1]= 3.5;
+    doubleArr[0]= 5;
+    break;
+  case "E3":
+    doubleArr[1]= 3.5;
+    doubleArr[0]= 6;
+    break;
+  case "F1":
+    doubleArr[1]= 4;
+    doubleArr[0]= 3;
+    break;
+  case "F2":
+    doubleArr[1]= 4;
+    doubleArr[0]= 3.5;
+    break;
+  case "F3":
+    doubleArr[1]= 4;
+    doubleArr[0]= 4;
+    break;
+  case "G1":
+    doubleArr[1]= 5;
+    doubleArr[0]= 2;
+    break;
+  case "G2":
+    doubleArr[1]= 5;
+    doubleArr[0]= 3.5;
+    break;
+  case "G3":
+    doubleArr[1]= 5;
+    doubleArr[0]= 5;
+    break;  
+  case "H1":
+    doubleArr[1]= 6;
+    doubleArr[0]= 1;
+    break;
+  case "H2":
+    doubleArr[1]= 6;
+    doubleArr[0]= 3.5;
+    break;
+  case "H3":
+    doubleArr[1]= 6;
+    doubleArr[0]= 6;
+    break;  
+  default:
+}
+        return doubleArr;
+    }
+    
     
 }
