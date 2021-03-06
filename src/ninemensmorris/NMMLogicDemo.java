@@ -24,22 +24,6 @@ public class NMMLogicDemo {
      */
     public static void main(String[] args) throws InterruptedException {
         
-        for(int i = 0; i<10; i++)
-        {
-            System.out.println("check");
-            
-            for(int j = 0; j<10; j++)
-            {
-                if(j > 5)
-                {
-                    System.out.println("breaking out breaking out");
-                    break;
-                }
-                System.out.println("j:"+j);
-            }
-            System.out.println("ioutput: "+ i);
-        }
-
         Scanner input = new Scanner(System.in);
 
         int[] test = {5, 3, 2, 1};
@@ -47,6 +31,9 @@ public class NMMLogicDemo {
         System.out.println(test[1]);
 
         NMMLogic nmm = new NMMLogic();
+        
+        //Function as requested
+        NMMLogic.cmdPrint(nmm.nmmBoard, PrintType.VALUE);
         
         System.out.println("Player " + nmm.getNmmTurn());
         nmm.swapNMMTurn();
