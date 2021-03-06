@@ -5,6 +5,7 @@
  */
 package ninemensmorris;
 
+import java.io.Serializable;
 import ninemensmorris.enums.MCoinType;
 
 /**
@@ -13,7 +14,7 @@ import ninemensmorris.enums.MCoinType;
  *
  * @author eltojaro
  */
-public class NMMCoin {
+public class NMMCoin implements Serializable{
 
     private MCoinType coinType;     //Holds Where coin is empty black or white
     private String coinSlot;        //Holds the coin location(slot) on board
