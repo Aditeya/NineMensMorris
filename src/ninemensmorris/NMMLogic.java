@@ -636,7 +636,7 @@ public class NMMLogic {
      *
      * @param type The type of print
      */
-    public static void cmdPrint(nmmBoard[][], PrintType type) {
+    public static void cmdPrint(NMMCoin[][] nmmBoard, PrintType type) {
 
         //checks if it's raw print, no need to read file then
         if (type == PrintType.RAW_VALUE || type == PrintType.RAW_LOC) {
@@ -664,7 +664,7 @@ public class NMMLogic {
             try (BufferedReader in
                     = new BufferedReader(
                             new InputStreamReader(
-                                    getClass().getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
+                                    NMMLogic.class.getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
                 //Reads File and Buils String
                 StringBuilder sb = new StringBuilder();
                 String line = in.readLine();
