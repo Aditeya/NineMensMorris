@@ -32,17 +32,16 @@ public class SaMPLENMM extends Application {
 
     private Group boardCoGroup = new Group();
     private Group CoinGroup = new Group();
+    private BoardComp[][] board = new BoardComp[WIDTH][HEIGHT];
 
     private Parent createContent() {
-        Pane root = new Pane();
+       Pane root = new Pane();
         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
-        //  root.getChildren().addAll(boardCoGroup,CoinGroup);
-//       for (int y = 0; y < HEIGHT; y++) {
-//            for (int x = 0; x < WIDTH; x++) {
-//              BoardComp bc = new BoardComp((x + y) % 2 == 0, x, y);
-//           boardCoGroup.getChildren().add(bc);
-//           }
-//       }
+
+       
+        
+        
+        
 
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * 100), POS_SIZE * WIDTH - (2 * i * 100));
@@ -63,7 +62,10 @@ public class SaMPLENMM extends Application {
         CreateSlots(posX2,posY2,root);
         CreateSlots(posX3,posY3,root);
 
-  
+         
+         Coin c = new Coin(CoinType.WHITE, 350, 400);
+         root.getChildren().add(c);
+        
         return root;
     }
 
@@ -89,7 +91,7 @@ public class SaMPLENMM extends Application {
     public void CreateSlots(int[] posX,int[] posY,Pane root){
       for (int i = 0; i < posX.length; i++) {
             for (int j = 0; j < posY.length; j++) {
-                Circle c1 = new Circle(POS_SIZE / 10);
+                Circle c1 = new Circle(10);
                 // c1.setCenterX(posX[i]);
                 //c1.setCenterY(posY[j]);
                 c1.setCenterX(posX[i]);
