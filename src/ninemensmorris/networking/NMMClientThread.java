@@ -17,12 +17,12 @@ import java.util.logging.Logger;
  *
  * @author aditeya
  */
-public class NMMClient extends Thread {
+public class NMMClientThread extends Thread {
 
     private Socket socket;
     private final LinkedBlockingQueue sendCoin;
 
-    public NMMClient(String host, int port) {
+    public NMMClientThread(String host, int port) {
         try {
             this.socket = new Socket(host, port);
         } catch (IOException ex) {
@@ -40,11 +40,14 @@ public class NMMClient extends Thread {
             
             while(true) {
                 NMMmove move = null;
+                NMMboard board = null;
                 try {
+                    board = (NMMboard) pois.readObject();
                     move = new NMMmove( (String) sendCoin.take() );
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(NMMClient.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException | ClassNotFoundException ex) {
+                    Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 poos.writeObject(move);
                 
                 break;
