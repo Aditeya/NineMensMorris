@@ -49,6 +49,10 @@ public class NMMServiceThread extends Thread {
                 System.out.println(turn + " Player, Place a coin.");
                 System.out.println("match regex [A-H]+[1-3]");
                 
+                //Sends the board
+                NMMboard board = new NMMboard(nmm.nmmBoard);
+                p1oos.writeObject(board);
+                p2oos.writeObject(board);
                 
                 NMMmove move;
                 switch (turn) {
@@ -73,11 +77,6 @@ public class NMMServiceThread extends Thread {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                //Sends the board
-                NMMboard board = new NMMboard(nmm.nmmBoard);
-                p1oos.writeObject(board);
-                p2oos.writeObject(board);
             }
             
             player1.close();
