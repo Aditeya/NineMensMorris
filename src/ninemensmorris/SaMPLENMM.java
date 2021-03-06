@@ -37,12 +37,6 @@ public class SaMPLENMM extends Application {
     private Parent createContent() {
        Pane root = new Pane();
         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
-
-       
-        
-        
-        
-
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * 100), POS_SIZE * WIDTH - (2 * i * 100));
            // System.out.println(" The " + (POS_SIZE * HEIGHT - (2 * i * 100)));
@@ -66,6 +60,10 @@ public class SaMPLENMM extends Application {
          PlaceCoin(root, CoinType.WHITE, getSlot("A2"));
          PlaceCoin(root, CoinType.BLACK, getSlot("B1"));
          PlaceCoin(root, CoinType.WHITE, getSlot("C2"));
+         PlaceCoin(root, CoinType.WHITE, getSlot("C3"));
+         PlaceCoin(root, CoinType.BLACK, getSlot("C1"));
+
+         PlaceCoin(root, CoinType.WHITE, getSlot("H2"));
 
          return root;
     }
