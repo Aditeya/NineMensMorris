@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ninemensmorris.enums.PrintType;
 
 /**
  *
@@ -22,23 +23,18 @@ public class NMMClientThread extends Thread {
     private Socket socket;
     private final LinkedBlockingQueue sendCoin;
 
-    public NMMClientThread(String host, int port) {
-        try {
-            this.socket = new Socket(host, port);
-        } catch (IOException ex) {
-            System.out.println("Connection Failed: " + ex.getStackTrace());
-        }
-
+    public NMMClientThread(Socket socket) {
+        this.socket = socket;
         this.sendCoin = new LinkedBlockingQueue(2);
     }
 
     @Override
     public void run() {
         try {
-            ObjectInputStream pois = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream poos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream pois = new ObjectInputStream(socket.getInputStream());
             
-            while(true) {
+            while(socket.isConnected()) {
                 NMMmove move = null;
                 NMMboard board = null;
                 try {
@@ -50,7 +46,6 @@ public class NMMClientThread extends Thread {
                 
                 poos.writeObject(move);
                 
-                break;
             }
             
             socket.close();
