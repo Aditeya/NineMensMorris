@@ -199,9 +199,27 @@ public class NMMCoin {
         //if not sets and returns true
         this.millV = millV;
         return true;
-    }
-    
+    }   
 
     // </editor-fold>
+    /**
+     * Checks millH and millV and determines if the coin is milled, sets that value
+     * @return the new nill state of the coin
+     */
+    public boolean updateMill()
+    {
+        //a boolean variable to keep millState
+        boolean millState;
+        
+        //checks H and V mill, if either true, then the coin is milled
+        if(this.isMillH() || this.isMillV())
+            millState = true;
+        else
+            millState = false;
+        
+        //Assigns and Returns mill state.
+        this.setMilled(millState);
+        return millState;
+    }
 
 }
