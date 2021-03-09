@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
 import ninemensmorris.enums.PlayerTurn;
 import ninemensmorris.enums.PrintType;
@@ -42,6 +43,8 @@ public class NMMLogic {
     private int menLeft;
     //variable to check the turn
     private PlayerTurn nmmTurn;
+    //varibale to check what kind of input is required
+    private InputType nmmInput;
     //prepares the array space for gridboard
     public NMMCoin[][] nmmBoard = new NMMCoin[8][3];
 
@@ -86,6 +89,9 @@ public class NMMLogic {
 
         //intializes turn to white as per game rules I swear I'm not racist
         nmmTurn = PlayerTurn.WHITE;
+        
+        //intializes awaiting input type to NONE
+        nmmInput = InputType.NONE;
 
         char ltr = 'A'; //char to set slot, might depreciate later
         //itterates through every NMMCoin and intializes its slot, millCombos
@@ -652,12 +658,7 @@ public class NMMLogic {
     }
 
     //</editor-fold>
-    
-    public 
-    
-    
-    
-    
+            
     /**
      * Handles setup completely, uses a Linked Blocking Queue Put objects into
      * the queue using a separate thread Remember to check the NMM objects
@@ -699,8 +700,13 @@ public class NMMLogic {
                 }
 
                 System.out.print(notif[0]); //verbose message
+                //Sets awaiting input type to PLACE
+                this.nmmInput = InputType.PLACE;
                 //checks for coin, blocks till found
                 NMMCoin coinSet = coinIN.take();
+                //Sets waiting input to NONE
+                this.nmmInput = InputType.NONE;
+                //verboses coin received
                 System.out.println(notif[1]);
 
                 //sets the coin according to the slot
@@ -713,8 +719,13 @@ public class NMMLogic {
                     do {
                         System.out.print(notif[3]);
                         System.out.print(notif[0]); //verbose message
+                        //Sets awaiting input type to PLACE
+                        this.nmmInput = InputType.PLACE;
                         //checks for coin, blocks till found
                         coinSet = coinIN.take();
+                        //Sets waiting input to NONE
+                        this.nmmInput = InputType.NONE;
+                        //verboses coin received
                         System.out.println(notif[1]);
                     } while (!setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
 
