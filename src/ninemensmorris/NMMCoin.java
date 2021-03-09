@@ -18,6 +18,8 @@ public class NMMCoin {
     private MCoinType coinType;     //Holds Where coin is empty black or white
     private String coinSlot;        //Holds the coin location(slot) on board
     private boolean milled;         //Holds whether the coin is milled or not
+    private boolean millH;          //Holds whether the coin is horizontally milled or not
+    private boolean millV;          //Holds whether the coin is vertically milled or not
     public String[] vldMvs;        //Holds valid moves (Maybe make this protected String[]?)
     public String[][] millCombo;   //Holds possible mill combinations (Maybe make this protected String[][]?)
 
@@ -50,7 +52,7 @@ public class NMMCoin {
 
     /**
      * constructor lets you initialize everything sans CoinType which is set to
-     * emoty
+     * empty, horizonal and vertical mill, which are set to false
      *
      * @param coinSlot
      * @param milled
@@ -61,6 +63,8 @@ public class NMMCoin {
         this.coinType = MCoinType.EMPTY;
         this.coinSlot = coinSlot;
         this.milled = milled;
+        this.millH = false;
+        this.millV = false;
         this.vldMvs = vldMvs;
         this.millCombo = millCombo;
     }
@@ -129,15 +133,15 @@ public class NMMCoin {
     }
     
     /**
-     * 
-     * @return whether the coin is milled
+     * Returns whether the coin is milled
+     * @return mill state of coin
      */
     public boolean isMilled() {
         return milled;
     }
 
     /**
-     * 
+     * Sets the mill state of the coin
      * @param milled The status of mill to be set
      * @return false if new mill is same as old mill, true otherwise
      */
@@ -150,6 +154,54 @@ public class NMMCoin {
         this.milled = milled;
         return true;
     }
+    
+    /**
+     * Returns whether the coin is milled horizontally 
+     * @return whether the coin is milled horizontally 
+     */
+    public boolean isMillH() {
+    return millH;
+    }
+
+    /**
+     * Sets the horizontal mill state of the coin
+     * @param millH The status of horizontal mill to be set
+     * @return false if new mill is same as old mill, true otherwise
+     */
+    public boolean setMillH(boolean millH) {
+        //checks if old type same as new type, returns false
+        if (this.millH == millH) {
+            return false;
+        }
+        //if not sets and returns true
+        this.millH = millH;
+        return true;
+    }
+
+    /**
+     * Returns whether the coin is milled horizontally 
+     * @return whether the coin is milled horizontally 
+     */
+    public boolean isMillV() {
+    return millV;
+    }
+
+    /**
+     * Sets the horizontal mill state of the coin
+     * @param millV The status of horizontal mill to be set
+     * @return false if new mill is same as old mill, true otherwise
+     */
+    public boolean setMillV(boolean millV) {
+        //checks if old type same as new type, returns false
+        if (this.millV == millV) {
+            return false;
+        }
+        //if not sets and returns true
+        this.millV = millV;
+        return true;
+    }
+    
 
     // </editor-fold>
+
 }
