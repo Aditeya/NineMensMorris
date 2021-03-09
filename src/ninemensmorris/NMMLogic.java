@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -358,6 +359,9 @@ public class NMMLogic {
         return coinList;
     }
     
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="mill handling">
+    
     /**
      * Gets is milled at index
      *
@@ -414,37 +418,133 @@ public class NMMLogic {
         return true;
     }
 
-
-    //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="mill handling">
-    public String[] checkMill(String slot) {
-        //Creates a return string
-        String[] newMill = new String[5];
+    
+    public HashMap<String, Boolean> checkMill(String slot) {
+        //Creates a return map
+        HashMap<String, Boolean> newMillStats = new HashMap<>();
         // iterator to track new mills
         int mill_I = 1;
+        //a flag to determine if a new mill was added
+        boolean isNewMill = false;
         //Gets the index of the slot
         int[] idx = NMMLogic.slotLkUp(slot);
-        //creates a reference to the coin
+        //creates a reference to the coin from the slot param
         NMMCoin coinCheck = nmmBoard [idx[0]] [idx[1]];
         
         //holds the oringal mill state of the coin to be checked
         boolean ogIsMill = coinCheck.isMilled();
         
-        //sets the return var newMill first position to the current slot
-        newMill[0] = coinCheck.getCoinSlot();
+        //sets the return var newMills first position to the current slot
+        //newMills[0] = coinCheck.getCoinSlot();
         
         ArrayList<NMMCoin> coinList =
                 this.getCoinsFromSlots(coinCheck.millCombo);
         
-        //checks for the first possible mill
-        if(coinCheck.getCoin() == )
+        //checks for the first possible mill (horizontal)
+        if(coinCheck.getCoin() == coinList.get(0).getCoin() &&
+                coinCheck.getCoin() == coinList.get(1).getCoin() )
+        {
+            //sets param coin hmill to true
+            coinCheck.setMillH(true);
+            
+            //sets new mill to true
+            isNewMill = true;
+            
+            //if true, sets hMill for the neightbour coins to true
+            for(int i = 0; i < 2; i++)
+            {
+                //adds them to the return string//might need to do that later
+                //newMills[mill_I++] = coinList.get(i).getCoinSlot();
+                //hmills them
+                coinList.get(i).setMillH(true);
+                //since these coins are not changed anymore, we can update mill
+                //for them here
+                //also updates the mill, and adds it to the return map
+                newMillStats.put(coinList.get(i).getCoinSlot(),
+                        coinList.get(i).updateMill());
+            }
+        }
+        else //if the coins aren't milled
+        {
+            //sets param coin hmill to false
+            coinCheck.setMillH(false);
+                       
+            //if false, sets hMill for the neightbour coins to false
+            for(int i = 0; i < 2; i++)
+            {
+                //adds them to the return string//might need to do that later
+                //newMills[mill_I++] = coinList.get(i).getCoinSlot();
+                //un hmills them
+                coinList.get(i).setMillH(false);
+                //since these coins are not changed anymore, we can update mill
+                //for them here
+                //also updates the mill, and adds it to the return map
+                newMillStats.put(coinList.get(i).getCoinSlot(),
+                        coinList.get(i).updateMill());
+            }
+            
+        }
+        //checks for the second possible mill (vertical)
+        if(coinCheck.getCoin() == coinList.get(2).getCoin() &&
+                coinCheck.getCoin() == coinList.get(3).getCoin() )
+        {
+            //sets param coin hmill to true
+            coinCheck.setMillV(true);
+            
+            //sets new mill to true
+            isNewMill = true;
+            
+            //if true, sets hMill for the neightbour coins to true
+            for(int i = 2; i < 4; i++)
+            {
+                //adds them to the return string//might need to do that later
+                //newMills[mill_I++] = coinList.get(i).getCoinSlot();
+                //vmills them
+                coinList.get(i).setMillV(true);
+                //since these coins are not changed anymore, we can update mill
+                //for them here
+                //also updates the mill, and adds it to the return map
+                newMillStats.put(coinList.get(i).getCoinSlot(),
+                        coinList.get(i).updateMill());
+            }
+        }
+        else //if the coins aren't milled
+        {
+            //sets param coin hmill to false
+            coinCheck.setMillV(false);
+            
+            //if false, sets hMill for the neightbour coins to false
+            for(int i = 2; i < 4; i++)
+            {
+                //adds them to the return string//might need to do that later
+                //newMills[mill_I++] = coinList.get(i).getCoinSlot();
+                //un vmills them
+                coinList.get(i).setMillV(false);
+                //since these coins are not changed anymore, we can update mill
+                //for them here
+                //also updates the mill, and adds it to the return map
+                newMillStats.put(coinList.get(i).getCoinSlot(),
+                        coinList.get(i).updateMill());
+            }
+            
+        }
         
+        //adds a flag to the return list to allow checking if a mill was 
+        //formed with a better time complexity
+        newMillStats.put("mill", isNewMill);
+        
+        //also updates the mill, and adds it to the return map
+        newMillStats.put(coinCheck.getCoinSlot(),
+                coinCheck.updateMill());
+        
+        //returns the new mill String
+        return newMillStats;
         
         /*
         for(int i = 0; i < 2; i++)
         {
-            //sets the return var newMill first position to the current slot
-            newMill[0] = coinCheck.getCoinSlot();
+            //sets the return var newMills first position to the current slot
+            newMills[0] = coinCheck.getCoinSlot();
             /////////Needs Major Work/////////
             for(int j = 0; j < 2; j++)
             {
@@ -456,15 +556,15 @@ public class NMMLogic {
                 {
                     //if mill adds the value to the return String
                     //and changes that coin mill to true
-                    newMill[mill_I++] = millCheck;
+                    newMills[mill_I++] = millCheck;
                     this.setNmmCnMill(true, millCheck);                  
                 }
                 else    //if a single coin doesn't match the rest in this line
                 {
                     if(i==0)
                     {
-                        //overwrites newMill to null
-                        newMill = null;
+                        //overwrites newMills to null
+                        newMills = null;
                         //reset mill_I to 1
                         mill_I=1;
                         //sets previously set coins isMill to false
@@ -479,7 +579,7 @@ public class NMMLogic {
         
         
         
-        return null;
+        //return null;
     }
 
     //</editor-fold>
