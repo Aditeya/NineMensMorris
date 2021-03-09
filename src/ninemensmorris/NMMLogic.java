@@ -265,11 +265,11 @@ public class NMMLogic {
     public boolean setNmmCnType(MCoinType type, int row, int col) {
         //checks if coin is same as parameter, if so returns false
         //checks if coin is filled, if so returns false
-        if (nmmBoard[row][col].getCoin() == MCoinType.EMPTY) {
-            nmmBoard[row][col].setCoin(type);
-            return true;
+        if (nmmBoard[row][col].getCoin() == type) {
+            return false;
         }
-        return false;
+        nmmBoard[row][col].setCoin(type);
+        return true;
     }
     
     /**
@@ -305,6 +305,75 @@ public class NMMLogic {
             return false;
         }
         nmmBoard[row][col].setCoin(type);
+        return true;
+    }
+    
+    /**
+     * Resets the coin type at slot location to empty
+     *
+     * @param slot the slot location
+     * @return false if new coin type is the same as old turn, true otherwise
+     */
+    public boolean resetNmmCnType(String slot) {
+        int[] index = slotLkUp(slot);   //looks up the index for slot
+        //checks if coin is empty, if so returns false
+        if (nmmBoard[index[0]][index[1]].getCoin() == MCoinType.EMPTY) {
+            return false;
+        }
+        nmmBoard[index[0]][index[1]].setCoin(MCoinType.EMPTY);
+        return true;
+    }
+
+    /**
+     * Resets the coin type at index
+     *
+     * @param row the row index
+     * @param col the col index
+     * @return false if new coin type is the same as old turn, true otherwise
+     */
+    public boolean resetNmmCnType(int row, int col) {
+        //checks if coin is empty, if so returns false
+        //checks if coin is filled, if so returns false
+        if (nmmBoard[row][col].getCoin() == MCoinType.EMPTY) {
+            return false;
+        }
+        nmmBoard[row][col].setCoin(MCoinType.EMPTY);
+        return true;
+    }
+    
+    /**
+     * Removes the coin from the board, by setting coin type to empty.
+     * Fails if the coin is milled
+     * 
+     * @param slot the slot of the coin to be removed
+     * @return true if the coin is not milled, false otherwise
+     */
+    public boolean removeCoin(String slot) {
+        
+        int[] index = slotLkUp(slot);   //looks up the index for slot
+        //checks if coin is milled, if so returns false
+        if (nmmBoard[index[0]][index[1]].isMilled()) {
+            return false;
+        }
+        nmmBoard[index[0]][index[1]].setCoin(MCoinType.EMPTY);
+        return true;
+    }
+
+    /**
+     * Removes the coin from the board, by setting coin type to empty.
+     * Fails if the coin is milled
+     * 
+     * @param row the row index
+     * @param col the col index
+     * @return true if the coin is not milled, false otherwise
+     */
+    public boolean removeCoin(int row, int col) {
+        
+        //checks if coin is milled, if so returns false
+        if (nmmBoard[row][col].isMilled()) {
+            return false;
+        }
+        nmmBoard[row][col].setCoin(MCoinType.EMPTY);
         return true;
     }
     
@@ -583,6 +652,12 @@ public class NMMLogic {
     }
 
     //</editor-fold>
+    
+    public 
+    
+    
+    
+    
     /**
      * Handles setup completely, uses a Linked Blocking Queue Put objects into
      * the queue using a separate thread Remember to check the NMM objects
