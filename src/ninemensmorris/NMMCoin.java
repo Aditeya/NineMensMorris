@@ -202,6 +202,7 @@ public class NMMCoin {
     }   
 
     // </editor-fold>
+    
     /**
      * Checks millH and millV and determines if the coin is milled, sets that value
      * @return the new nill state of the coin
