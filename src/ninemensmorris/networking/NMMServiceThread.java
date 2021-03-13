@@ -49,32 +49,31 @@ public class NMMServiceThread extends Thread {
                 public void run() {
                     while (nmm.getMenLeft() > 0) {  //CHANGE TO WHILE MEN LEFT
                         try {
-                        PlayerTurn turn = nmm.getNmmTurn();
-                        System.out.println(turn + " Player, Place a coin.");
+                            PlayerTurn turn = nmm.getNmmTurn();
+                            System.out.println(turn + " Player, Place a coin.");
 
-                        //Sends the board
-                        NMMboard board = new NMMboard(nmm.nmmBoard);
-                        p1oos.writeObject(board);
-                        p2oos.writeObject(board);
-                        nmm.cmdPrint(PrintType.VALUE);
+                            //Sends the board
+                            NMMboard board = new NMMboard(nmm.nmmBoard);
+                            p1oos.writeObject(board);
+                            p2oos.writeObject(board);
+                            nmm.cmdPrint(PrintType.VALUE);
 
-                        NMMmove move;
-                        switch (turn) {
-                            case WHITE: //Play white turn
-                                move = (NMMmove) p1ois.readObject();
-                                break;
-                            case BLACK: //Play black turn
-                                move = (NMMmove) p2ois.readObject();
-                                break;
-                            default:    //Error
-                                move = new NMMmove("A1");
-                                break;
-                        }
+                            NMMmove move;
+                            switch (turn) {
+                                case WHITE: //Play white turn
+                                    move = (NMMmove) p1ois.readObject();
+                                    break;
+                                case BLACK: //Play black turn
+                                    move = (NMMmove) p2ois.readObject();
+                                    break;
+                                default:    //Error
+                                    move = new NMMmove("A1");
+                                    break;
+                            }
 
-                        String slot = move.getMove();
-                        NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, null, null);
+                            String slot = move.getMove();
+                            NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
 
-                        
                             //Sets the coin
                             sendCoin.put(coin);
                             Thread.sleep(50);
@@ -86,10 +85,10 @@ public class NMMServiceThread extends Thread {
                     }
                 }
             });
-            
+
             setupTh.start();
             this.nmm.nmmSetup(sendCoin, true);
-            
+
             player1.close();
             player2.close();
             System.out.println("Game Complete");

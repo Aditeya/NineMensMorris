@@ -40,6 +40,7 @@ public class NMMClientDemo {
             String move;
             
             while(true) {
+                Thread.sleep(1000);
                 System.out.print("Enter Move: ");
                 move = input.nextLine();
                 sendCoin.put(move);

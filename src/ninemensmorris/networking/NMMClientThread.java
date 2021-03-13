@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ninemensmorris.NMMLogic;
 import ninemensmorris.enums.PrintType;
 
 /**
@@ -39,6 +40,7 @@ public class NMMClientThread extends Thread {
                 NMMboard board = null;
                 try {
                     board = (NMMboard) pois.readObject();
+                    NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
                     move = new NMMmove( (String) sendCoin.take() );
                 } catch (InterruptedException | ClassNotFoundException ex) {
                     Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
