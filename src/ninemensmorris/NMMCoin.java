@@ -18,8 +18,9 @@ public class NMMCoin implements Serializable{
 
     private MCoinType coinType;     //Holds Where coin is empty black or white
     private String coinSlot;        //Holds the coin location(slot) on board
-    public NMMCoin[] vldMvs;        //Holds valid moves (Maybe make this protected String[]?)
-    public NMMCoin[][] millCombo;   //Holds possible mill combinations (Maybe make this protected String[][]?)
+    private boolean milled;         //Holds whether the coin is milled or not
+    public String[] vldMvs;        //Holds valid moves (Maybe make this protected String[]?)
+    public String[][] millCombo;   //Holds possible mill combinations (Maybe make this protected String[][]?)
 
     // <editor-fold defaultstate="collapsed" desc="constructors">
     /**
@@ -29,6 +30,7 @@ public class NMMCoin implements Serializable{
     NMMCoin() {
         this.coinType = MCoinType.EMPTY;
         this.coinSlot = null;
+        this.milled = false;
         this.vldMvs = null;
         this.millCombo = null;
     }
@@ -42,6 +44,7 @@ public class NMMCoin implements Serializable{
     public NMMCoin(String coinSlot) {
         this.coinType = MCoinType.EMPTY;
         this.coinSlot = coinSlot;
+        this.milled = false;
         this.vldMvs = null;
         this.millCombo = null;
     }
@@ -51,12 +54,14 @@ public class NMMCoin implements Serializable{
      * emoty
      *
      * @param coinSlot
+     * @param milled
      * @param vldMvs
      * @param millCombo
      */
-    public NMMCoin(String coinSlot, NMMCoin[] vldMvs, NMMCoin[][] millCombo) {
+    public NMMCoin(String coinSlot, boolean milled, String[] vldMvs, String[][] millCombo) {
         this.coinType = MCoinType.EMPTY;
         this.coinSlot = coinSlot;
+        this.milled = milled;
         this.vldMvs = vldMvs;
         this.millCombo = millCombo;
     }
@@ -66,12 +71,14 @@ public class NMMCoin implements Serializable{
      *
      * @param coinType
      * @param coinSlot
+     * @param milled
      * @param vldMvs
      * @param millCombo
      */
-    public NMMCoin(MCoinType coinType, String coinSlot, NMMCoin[] vldMvs, NMMCoin[][] millCombo) {
+    public NMMCoin(MCoinType coinType, String coinSlot, boolean milled, String[] vldMvs, String[][] millCombo) {
         this.coinType = coinType;
         this.coinSlot = coinSlot;
+        this.milled = milled;
         this.vldMvs = vldMvs;
         this.millCombo = millCombo;
     }
@@ -120,6 +127,29 @@ public class NMMCoin implements Serializable{
      */
     public String getCoinSlot() {
         return coinSlot;
+    }
+    
+    /**
+     * 
+     * @return whether the coin is milled
+     */
+    public boolean isMilled() {
+        return milled;
+    }
+
+    /**
+     * 
+     * @param milled The status of mill to be set
+     * @return false if new mill is same as old mill, true otherwise
+     */
+    public boolean setMilled(boolean milled) {
+        //checks if old type same as new type, returns false
+        if (this.milled == milled) {
+            return false;
+        }
+        //if not sets and returns true
+        this.milled = milled;
+        return true;
     }
 
     // </editor-fold>

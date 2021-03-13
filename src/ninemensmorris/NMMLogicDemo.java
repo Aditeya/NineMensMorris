@@ -23,7 +23,7 @@ public class NMMLogicDemo {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-
+        
         Scanner input = new Scanner(System.in);
 
         int[] test = {5, 3, 2, 1};
@@ -31,6 +31,9 @@ public class NMMLogicDemo {
         System.out.println(test[1]);
 
         NMMLogic nmm = new NMMLogic();
+        
+        //Function as requested
+        NMMLogic.cmdPrint(nmm.nmmBoard, PrintType.VALUE);
         
         System.out.println("Player " + nmm.getNmmTurn());
         nmm.swapNMMTurn();
@@ -43,7 +46,7 @@ public class NMMLogicDemo {
         nmm.cmdPrint(PrintType.RAW_VALUE);
         nmm.cmdPrint(PrintType.VALUE);
 
-        NMMCoin coin = new NMMCoin(MCoinType.WHITE, null, null, null);
+        NMMCoin coin = new NMMCoin(MCoinType.WHITE, null, false, null, null);
         System.out.println(coin.getCoinInt());
 
         System.out.println(NMMLogic.slotLkUp("E3")[0]);
@@ -58,7 +61,7 @@ public class NMMLogicDemo {
         nmm.setNmmCnType(MCoinType.BLACK, numslot[0], numslot[1]);
         nmm.cmdPrint(PrintType.VALUE);
          */
-
+        /*
         //Required for setup
         LinkedBlockingQueue sendCoin = new LinkedBlockingQueue(2);
 
@@ -100,7 +103,9 @@ public class NMMLogicDemo {
         setupTh.start();
 
         nmm.nmmSetup(sendCoin, true);
-
+        */
+        
+        NMMLogic.millLkUp("D3");
     }
 
     public static void test2(int[] test) {
