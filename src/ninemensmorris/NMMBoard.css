@@ -1,0 +1,27 @@
+#slots{
+    -fx-fill: salmon;
+    }
+#boardlines{
+    -fx-stroke: cadetblue;
+    -fx-stroke-width: 10;    
+    }
+#coinbg{
+        -fx-fill: cornflowerblue;
+         -fx-stroke: whitesmoke;
+
+    }
+#coin-black {
+        -fx-fill: violet;
+        -fx-stroke: whitesmoke;
+
+    }
+    #coin-white{
+        -fx-fill: white;
+        -fx-stroke: whitesmoke;
+    }    
+    
+#coinobj{
+        -fx-stroke: yellow;
+    -fx-stroke-width: 5;    
+
+    }      
