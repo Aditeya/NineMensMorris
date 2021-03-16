@@ -29,13 +29,46 @@ public class SaMPLENMM extends Application {
           BoardComp bc = new BoardComp();
           bc.GenerateBoard(root);
         
-        
-        
         Coin c = new Coin(CoinType.WHITE, POS_SIZE, POS_SIZE, true);
       
+        String [] vldMvs= {"A1","A3"};
+        String [][] milled ={{"C1","C2"},{}};
         
-         bc.PlaceCoin(root, CoinType.BLACK,bc.getSlot("A1"));
-         bc.PlaceCoin(root, CoinType.WHITE, bc.getSlot("B2"));
+        
+          String [] str ={"A1","A2","A3","F1","C2","C1","H2","F3"};
+       
+
+        for(int i =0;i<str.length;i++){
+        NMMCoin nc = new NMMCoin("H3", true, vldMvs);
+        nc.setCoinSlot(str[i]);
+        nc.toString();
+            System.out.println("str =>"+str[i]);
+         if(i%2==0){
+                nc.setCoin(CoinType.WHITE);
+            }else{
+             nc.setCoin(CoinType.BLACK);
+         }
+            System.out.println("nc."+nc.getCoinSlot());
+        
+         bc.PlaceCoin(root, nc.getCoinType(),bc.getSlot(nc.getCoinSlot()));
+        
+        }
+        
+        NMMCoin nc2 = new NMMCoin(CoinType.WHITE,"Coin Slot", true, vldMvs); 
+      
+        
+        
+        
+        
+        
+        
+        
+        //Coin Placed
+     
+        
+        
+        
+    //     bc.PlaceCoin(root, CoinType.WHITE, bc.getSlot("B2"));
 //      bc.   PlaceCoin(root, CoinType.BLACK, getSlot("B1"));
 //         bc.PlaceCoin(root, CoinType.WHITE, getSlot("C2"));
 //       bc.  PlaceCoin(root, CoinType.WHITE, getSlot("C3"));
