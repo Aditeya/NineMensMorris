@@ -493,7 +493,12 @@ public class NMMLogic {
         return true;
     }
 
-    
+    /**
+     * Checks whether the coin in the given slot can form a mill. 
+     * Checks horizontally and vertically
+     * @param slot The slot to be mill checked
+     * @return A HashMap of all the *new* mills formed 
+     */
     public HashMap<String, Boolean> checkMill(String slot) {
         //Creates a return map
         HashMap<String, Boolean> newMillStats = new HashMap<>();
@@ -642,7 +647,7 @@ public class NMMLogic {
                         newMills = null;
                         //reset mill_I to 1
                         mill_I=1;
-                        //sets previously set coins isMill to false
+                        //sets previously set coins isCoinMilled to false
                         if(j == 0)
                             this.setNmmCnMill(ogIsMill, millCheck);
                     }
@@ -658,6 +663,93 @@ public class NMMLogic {
     }
 
     //</editor-fold>
+    
+    /**
+     * Handles all required mill actions that would need be done whenever a coin
+     * is placed. Includes checking for new mills and removing a coin if mill 
+     * is formed
+     * @param slot the slot to be checked
+     * @param coinIN A Blocking Queue to allow input providing
+     * @param verbose flag as to whether the verbose
+     * @return a HashMap of newly formed mills
+     */
+    public HashMap<String, Boolean> nmmMillHandle(String slot, LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose)
+    {
+        //create the array of messages
+        String[] notif = new String[7];
+        
+        //populates array if verbose is true
+        if (verbose == true) {
+            notif[0] = "Handling Mills..";
+            notif[1] = "A new Mill has been detected.";
+            notif[2] = "Awaiting Coin..";
+            notif[3] = "Coin Received.";
+            notif[4] = "An interuption has occured, could not remove the coin.";
+            notif[5] = "The given coin is milled and can not be removed, submit "
+                    + "a new coin.";
+        }
+        
+        //sends verbose
+        System.out.println(notif[0]);
+        
+        //flag to see if a mill was formed
+        HashMap<String, Boolean> newMills = new HashMap<>();
+        
+        //checks the mills, gives us a hashmap with the stuff
+        newMills = this.checkMill(slot);
+        
+        //checks wheter a new mill is made 
+        if(newMills.get("mill"))
+        {
+            //this means a mill was formed, so you need to take input to remove an opponents coin
+            System.out.println(notif[1]);
+            
+            //creates a variable
+            NMMCoin coinRemove;
+            
+            //index reference 
+            int[] idx = new int[2];
+            //mill check flag
+            boolean isCoinMilled;
+            
+            do
+            {
+                //Tries to get a coin, handles interruption
+                //sets game input to awaiting input
+                this.nmmInput = InputType.REMOVE;
+                //sends verbose for coin awaiting
+                System.out.println(notif[2]);
+                try {
+                    //gets coin and sends message if verbose
+                    coinRemove = coinIN.take();
+                    System.out.println(notif[3]);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();  // set interrupt flag
+                    System.out.println(notif[4]);
+                    return null;
+                }
+                //coin received, no longer awaiting input, updates as such
+                this.nmmInput = InputType.NONE;
+
+                //gets the index of the slot from the received coin
+                idx = slotLkUp(coinRemove.getCoinSlot());
+
+                //sets wheter the coin is milled into a variable
+                isCoinMilled = this.nmmBoard[ idx[0] ][ idx[1] ].isMilled();
+
+                if(isCoinMilled)
+                        System.out.println(notif[5]);
+
+                //repeats if submitted coin is not milled
+            }while(!isCoinMilled);
+            
+            //sets the coin on the board correpsonding to the slot as zero
+            this.nmmBoard[ idx[0] ][ idx[1] ].setCoin(MCoinType.EMPTY);
+            
+        }
+        
+        return newMills;
+    }
             
     /**
      * Handles setup completely, uses a Linked Blocking Queue Put objects into
