@@ -25,6 +25,7 @@ public class NMMLogicDemo {
     public static void main(String[] args) throws InterruptedException {
         
         Scanner input = new Scanner(System.in);
+             
 
         int[] test = {5, 3, 2, 1};
         test2(test);
