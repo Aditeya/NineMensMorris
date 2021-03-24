@@ -855,6 +855,40 @@ public class NMMLogic {
     }
     
     /**
+     * Moves a coin from one location to another, handles all mills that may 
+     * form/break because of the movement 
+     * @param coinFrom
+     * @param coinTo
+     * @param coinIN
+     * @param verbose 
+     */
+    public void nmmTurnHandle(NMMCoin coinFrom, NMMCoin coinTo, 
+            LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose)
+    {
+        //var for coinFrom slot
+        String cFSlot = coinFrom.getCoinSlot();
+        
+        //var for coinFrom slot
+        String cTSlot = coinTo.getCoinSlot();
+ 
+        
+        //removes the coin from og location
+        resetNmmCnType(cFSlot);
+        
+        //checks mills for coin From Slot
+        nmmMillHandle(cFSlot, coinIN, verbose);
+        
+        //sets the coin in new location
+        setNmmCnTypeIfEmpty(coinTo.getCoin(), cTSlot);
+        
+        //checks mills for coin To Slot
+        nmmMillHandle(cTSlot, coinIN, verbose);
+        
+        //swaps turns
+        this.swapNMMTurn();
+    }
+    
+    /**
      * Prints the NMM Board to the cmd line based on the type RAW_LOC : Prints
      * Location in a simple grid RAW_VALUE : Prints Values in a simple grid LOC
      * : Prints Location in a NMM board VALUE : Prints Values in a NMM board
