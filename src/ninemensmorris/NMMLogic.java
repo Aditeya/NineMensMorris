@@ -805,8 +805,14 @@ public class NMMLogic {
 
                 //sets the coin according to the slot
                 if (setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot())) {
+                    
+                    //checks the the coin formed a mill
+                    //unable to get new mills from here, do something about it?
+                    nmmMillHandle(coinSet.getCoinSlot(), coinIN, verbose);
+                    
                     //swaps the player turn
                     this.swapNMMTurn();
+                    
                     System.out.print(notif[2]);
                 } else {
                     //repeats coin setting till valid set
@@ -823,6 +829,10 @@ public class NMMLogic {
                         System.out.println(notif[1]);
                     } while (!setNmmCnTypeIfEmpty(coinSet.getCoin(), coinSet.getCoinSlot()));
 
+                    //checks the the coin formed a mill
+                    //unable to get new mills from here, do something about it?
+                    nmmMillHandle(coinSet.getCoinSlot(), coinIN, verbose);
+                    
                     //swaps turns
                     this.swapNMMTurn();
                     System.out.print(notif[2]);
