@@ -754,9 +754,9 @@ public class NMMLogic {
     }
             
     /**
-     * Handles setup completely, uses a Linked Blocking Queue Put objects into
-     * the queue using a separate thread Remember to check the NMM objects
-     * current player turn
+     * Handles setup completely including mill checking, uses a Linked Blocking 
+     * Queue for input, Put objects in to the queue using a separate thread. 
+     * Remember: Check NMM object's current player turn when sending objects in.
      *
      * @param coinIN
      * @return
@@ -852,7 +852,7 @@ public class NMMLogic {
         System.out.print(notif[6]);
         return true;
     }
-
+    
     /**
      * Prints the NMM Board to the cmd line based on the type RAW_LOC : Prints
      * Location in a simple grid RAW_VALUE : Prints Values in a simple grid LOC
