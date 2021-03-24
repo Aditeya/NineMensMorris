@@ -758,8 +758,9 @@ public class NMMLogic {
      * Queue for input, Put objects in to the queue using a separate thread. 
      * Remember: Check NMM object's current player turn when sending objects in.
      *
-     * @param coinIN
-     * @return
+     * @param coinIN The blocking queue which takes input
+     * @param verbose whether to show verbose messages or not
+     * @return true if everything went ok, false if some exception was thrown
      */
     public boolean nmmSetup(LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose) {
 
