@@ -61,7 +61,7 @@ public class NMMServiceThread extends Thread {
                                 nmm.nmmBoard[0][0].setCoin(MCoinType.WHITE);
                             else
                                 nmm.nmmBoard[0][1].setCoin(MCoinType.BLACK);
-                            
+                            //Justa comment to close issue #3
                             p1oos.reset();
                             p2oos.reset();
                             p1oos.writeUnshared(board); //sends board to p1
