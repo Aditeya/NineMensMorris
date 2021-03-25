@@ -34,27 +34,40 @@ public class NMMClientThread extends Thread {
             ObjectOutputStream poos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream pois = new ObjectInputStream(socket.getInputStream());
             Scanner input = new Scanner(System.in);
-
-            while (socket.isConnected()) {
+            int itr = 1;
+            while (true) {
                 NMMmove move = null;
+                //ObjectInputStream pois = new ObjectInputStream(socket.getInputStream());
                 
-                try {
-                    NMMboard board = (NMMboard) pois.readObject();
+                //try {
+                NMMboard board = null;
+                    for(int i=0; i<itr; i++)
+                    {
+                        System.out.println("Bytes: =" + pois.available());
+                        board = (NMMboard) pois.readObject();   
+                    }
                     NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
                     System.out.println(board.getNmmBoard());
                     
                     System.out.print("Enter Move: ");
                     move = new NMMmove(input.nextLine());
-                } catch (ClassNotFoundException ex) {
+                /*} catch (ClassNotFoundException ex) {
                     Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
 
                 poos.writeObject(move);
+                //pois.close();
+                itr++;
+                itr = itr>2?2:2;
             }
 
-            socket.close();
+            //socket.close();
         } catch (IOException ex) {
-        }
+            Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("dang, excepted");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
 }
