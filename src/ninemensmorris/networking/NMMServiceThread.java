@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import ninemensmorris.NMMCoin;
 import ninemensmorris.NMMLogic;
 import ninemensmorris.NMMLogicDemo;
+import ninemensmorris.enums.MCoinType;
 import ninemensmorris.enums.PlayerTurn;
 import ninemensmorris.enums.PrintType;
 
@@ -56,8 +57,15 @@ public class NMMServiceThread extends Thread {
                             NMMboard board = new NMMboard(nmm.nmmBoard);
                             //debug statement, remove later
                             System.out.println("NmmBoard: "+ nmm.nmmBoard[0][0].getCoinInt());
-                            p1oos.writeObject(board); //sends board to p1
-                            p2oos.writeObject(board); //sends board to p2
+                            if(nmm.getMenLeft() == 9)
+                                nmm.nmmBoard[0][0].setCoin(MCoinType.WHITE);
+                            else
+                                nmm.nmmBoard[0][1].setCoin(MCoinType.BLACK);
+                            
+                            p1oos.reset();
+                            p2oos.reset();
+                            p1oos.writeUnshared(board); //sends board to p1
+                            p2oos.writeUnshared(board); //sends board to p2
                             //flushes outputstream
                             p1oos.flush();
                             p2oos.flush();
