@@ -54,11 +54,14 @@ public class NMMServiceThread extends Thread {
 
                             //Sends the board
                             NMMboard board = new NMMboard(nmm.nmmBoard);
+                            //debug statement, remove later
                             System.out.println("NmmBoard: "+ nmm.nmmBoard[0][0].getCoinInt());
-                            p1oos.writeObject(board);
-                            p2oos.writeObject(board);
+                            p1oos.writeObject(board); //sends board to p1
+                            p2oos.writeObject(board); //sends board to p2
+                            //flushes outputstream
                             p1oos.flush();
                             p2oos.flush();
+                            //prints the baord
                             nmm.cmdPrint(PrintType.VALUE);
 
                             NMMmove move;
@@ -70,7 +73,8 @@ public class NMMServiceThread extends Thread {
                                     move = (NMMmove) p2ois.readObject();
                                     break;
                                 default:    //Error
-                                    move = new NMMmove("A1");
+                                    move = new NMMmove("A1"); 
+                                    //Consider throwing exception here
                                     break;
                             }
 
