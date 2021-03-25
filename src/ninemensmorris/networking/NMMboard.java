@@ -12,11 +12,19 @@ import ninemensmorris.NMMCoin;
  *
  * @author aditeya
  */
-public class NMMboard implements Serializable{
+public class NMMboard implements Serializable {
+
     private final NMMCoin[][] nmmBoard;
 
     public NMMboard(NMMCoin[][] nmmBoard) {
         this.nmmBoard = nmmBoard;
+        
+        for(NMMCoin[] c: this.nmmBoard) {
+            for(NMMCoin cc: c) {
+                System.out.print(cc.getCoinInt() + " ");
+            }
+            System.out.println("");
+        }
     }
 
     public NMMCoin[][] getNmmBoard() {

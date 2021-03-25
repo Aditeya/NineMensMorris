@@ -41,6 +41,7 @@ public class NMMClientThread extends Thread {
                 try {
                     NMMboard board = (NMMboard) pois.readObject();
                     NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
+                    System.out.println(board.getNmmBoard());
                     
                     System.out.print("Enter Move: ");
                     move = new NMMmove(input.nextLine());

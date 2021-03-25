@@ -54,8 +54,11 @@ public class NMMServiceThread extends Thread {
 
                             //Sends the board
                             NMMboard board = new NMMboard(nmm.nmmBoard);
+                            System.out.println("NmmBoard: "+ nmm.nmmBoard[0][0].getCoinInt());
                             p1oos.writeObject(board);
                             p2oos.writeObject(board);
+                            p1oos.flush();
+                            p2oos.flush();
                             nmm.cmdPrint(PrintType.VALUE);
 
                             NMMmove move;
