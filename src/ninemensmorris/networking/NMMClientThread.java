@@ -23,11 +23,9 @@ import ninemensmorris.enums.PrintType;
 public class NMMClientThread extends Thread {
 
     private Socket socket;
-    private final LinkedBlockingQueue sendCoin;
 
     public NMMClientThread(Socket socket) {
         this.socket = socket;
-        this.sendCoin = new LinkedBlockingQueue(2);
     }
 
     @Override
@@ -39,9 +37,9 @@ public class NMMClientThread extends Thread {
 
             while (socket.isConnected()) {
                 NMMmove move = null;
-                NMMboard board = null;
+                
                 try {
-                    board = (NMMboard) pois.readObject();
+                    NMMboard board = (NMMboard) pois.readObject();
                     NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
                     
                     System.out.print("Enter Move: ");
@@ -51,7 +49,6 @@ public class NMMClientThread extends Thread {
                 }
 
                 poos.writeObject(move);
-
             }
 
             socket.close();
@@ -59,7 +56,4 @@ public class NMMClientThread extends Thread {
         }
     }
 
-    public LinkedBlockingQueue getSendCoin() {
-        return sendCoin;
-    }
 }
