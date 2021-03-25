@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ninemensmorris.networking.NMMClientThread;
-import ninemensmorris.networking.NMMmove;
 
 /**
  *
@@ -22,8 +19,6 @@ import ninemensmorris.networking.NMMmove;
  */
 public class NMMClientDemo {
 
-    
-    
     /**
      * @param args the command line arguments
      */
@@ -34,23 +29,9 @@ public class NMMClientDemo {
             
             Thread thread = new Thread(game);
             thread.start();
-            
-            LinkedBlockingQueue sendCoin = game.getSendCoin();
-            Scanner input = new Scanner(System.in);
-            String move;
-            
-            while(true) {
-                Thread.sleep(1000);
-                System.out.print("Enter Move: ");
-                move = input.nextLine();
-                sendCoin.put(move);
-            }
-            
         } catch (UnknownHostException ex) {
             Logger.getLogger(NMMClientDemo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(NMMClientDemo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
             Logger.getLogger(NMMClientDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

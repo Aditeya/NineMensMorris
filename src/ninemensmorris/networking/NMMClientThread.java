@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,22 +35,25 @@ public class NMMClientThread extends Thread {
         try {
             ObjectOutputStream poos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream pois = new ObjectInputStream(socket.getInputStream());
-            
-            while(socket.isConnected()) {
+            Scanner input = new Scanner(System.in);
+
+            while (socket.isConnected()) {
                 NMMmove move = null;
                 NMMboard board = null;
                 try {
                     board = (NMMboard) pois.readObject();
                     NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
-                    move = new NMMmove( (String) sendCoin.take() );
-                } catch (InterruptedException | ClassNotFoundException ex) {
+                    
+                    System.out.print("Enter Move: ");
+                    move = new NMMmove(input.nextLine());
+                } catch (ClassNotFoundException ex) {
                     Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 poos.writeObject(move);
-                
+
             }
-            
+
             socket.close();
         } catch (IOException ex) {
         }
