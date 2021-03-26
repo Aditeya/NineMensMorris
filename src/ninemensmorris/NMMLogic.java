@@ -959,30 +959,150 @@ public class NMMLogic {
      * @param coinIN
      * @param verbose 
      */
-    public void nmmTurnHandle(NMMCoin coinFrom, NMMCoin coinTo, 
+    public void nmmTurnHandle(/*NMMCoin coinFrom, NMMCoin coinTo,*/
             LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose)
     {
-        //var for coinFrom slot
-        String cFSlot = coinFrom.getCoinSlot();
         
-        //var for coinFrom slot
-        String cTSlot = coinTo.getCoinSlot();
- 
+        //create the array of messages
+        String[] notif = new String[13];
+
+        //populates array if verbose is true        
+        if(verbose == true)
+        {
+            notif[0] = "Waiting for Coin 1 (From)...";
+            notif[1] = "Coin 1 received.";
+            notif[2] = "Waiting for Coin 2 (To)...";
+            notif[3] = "Coin 2 received.";
+            notif[4] = "An Interupt has occured, stopping TurnHandle.";
+            notif[5] = "The Input Queue has been cleared";
+            notif[6] = "The Coin could not be moved as it is not the Current Players Coin. Please Try Again";
+            notif[7] = "The Coin could not be moved as the location to which it is to be moved is full. Please Try Again";
+            notif[8] = "The Coin could not be moved as the location to which it is to be moved is out of reach (not a valid move). Please Try Again";
+            notif[9] = "Coin 1 (From) has been removed.";
+            notif[10] = "Checking mills...";
+            notif[11] = "Coin 2 (To) has been placed.";
+            notif[12] = "Turns have been swapped";
+        }
         
-        //removes the coin from og location
-        resetNmmCnType(cFSlot);
         
-        //checks mills for coin From Slot
-        nmmMillHandle(cFSlot, coinIN, verbose);
+        //stores current turn for later
+        PlayerTurn currTurn = this.getNmmTurn();
         
-        //sets the coin in new location
-        setNmmCnTypeIfEmpty(coinTo.getCoin(), cTSlot);
-        
-        //checks mills for coin To Slot
-        nmmMillHandle(cTSlot, coinIN, verbose);
-        
-        //swaps turns
-        this.swapNMMTurn();
+        //repeats the loop till everthing goes off without interptuion
+        //interruption as in, no incorrect coins, invalid moves   
+        while(this.getNmmTurn() == currTurn)
+        {
+            //var to store the coin
+            NMMCoin coinFrom = null;
+            NMMCoin coinTo = null;
+            try {
+                //sets input type
+                this.nmmInput = InputType.MOVE;
+                
+                System.out.println(notif[0]); //verbose
+                //gets the first coin (coinFrom) from the list
+                coinFrom = coinIN.take();
+                System.out.println(notif[1]); //verbose
+                
+                System.out.println(notif[2]); //verbose
+                //gets the second coin (coinTo) from the list
+                coinTo = coinIN.take();
+                System.out.println(notif[3]); //verbose
+                
+                //clears input type
+                this.nmmInput = InputType.NONE;
+            } catch (InterruptedException ex) {
+                //clears input type
+                this.nmmInput = InputType.NONE;
+                //clears the input queue
+                coinIN.clear();
+                //gives message
+                System.out.println(notif[4]);
+                System.out.println(notif[5]);
+                Thread.currentThread().interrupt();  // set interrupt flag
+                //Logger.getLogger(NMMLogic.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
+            //var for coinFrom slot
+            String cFSlot = coinFrom.getCoinSlot();
+            
+            //var for coinFrom slot
+            String cTSlot = coinTo.getCoinSlot();
+            
+            //performs checking on coins
+            //gets the coin to an arraylist
+            ArrayList<NMMCoin> coinsRcv = this.getCoinsFromSlots(cFSlot, cTSlot);
+            
+            //Checks if first coin is not corresponding to current player turn
+            if(coinsRcv.get(0).getCoin() != this.getNmmTurn().toMCntyp())
+            {
+                //This means the user submited a coin to be moved that's not the
+                //current player turn
+                //man, what a cring user
+                
+                //send verbose
+                System.out.println(notif[6]);
+                //clear the input queue
+                coinIN.clear();     
+                System.out.println(notif[5]); //verbose
+                //continue the loop (jump to next iteration)
+                continue;      
+            }
+            
+            //Checks if the second coin is not empty
+            if(coinsRcv.get(1).getCoin() != MCoinType.WHITE)
+            {
+                //This means the user tried to move a coin to place that's full
+                //bruh, this user is major cring
+                
+                //sends verbose
+                System.out.println(notif[7]);
+                //clear the input queue
+                coinIN.clear();     
+                System.out.println(notif[5]); //verbose
+                //continue the loop (jump to next iteration)
+                continue; 
+            }
+            
+            //Checks if the second coin is a valid move from the first coin
+            if(! (this.checkVldMv(coinsRcv.get(0).getCoinSlot(),
+                    coinsRcv.get(1).getCoinSlot())))
+            {
+                //This means the user tried to move a coin to place that it 
+                //can't even reach, 
+                //oh mah gah, this user is soooooo fricking cring
+                
+                //sends verbose
+                System.out.println(notif[8]);
+                //clear the input queue
+                coinIN.clear();     
+                System.out.println(notif[5]); //verbose
+                //continue the loop (jump to next iteration)
+                continue;                
+            }
+            
+            //removes the coin from og location
+            resetNmmCnType(cFSlot);
+            //sends verbose
+            System.out.println(notif[9]);
+            //checks mills for coin From Slot
+            nmmMillHandle(cFSlot, coinIN, verbose);
+            //sends verbose
+            System.out.println(notif[10]);
+            //sets the coin in new location
+            setNmmCnTypeIfEmpty(coinTo.getCoin(), cTSlot);
+            //sends verbose
+            System.out.println(notif[11]);
+            //checks mills for coin To Slot
+            nmmMillHandle(cTSlot, coinIN, verbose);
+            //sends verbose
+            System.out.println(notif[10]);
+            //swaps turns
+            this.swapNMMTurn();
+            //sends verbose
+            System.out.println(notif[12]);
+        }
     }
     
     /**
