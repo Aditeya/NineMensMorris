@@ -38,7 +38,9 @@ public class NMMLogic {
     private static JSONObject slotIndxRef = null;
     //static json Object that stors slot index pairs
     private static JSONObject millRef = null;
-
+    //static json Object that stors vldmvs
+    private static JSONObject vldMvsRef = null;
+    
     //The number of men you can place in phase 1        
     private int menLeft;
     //variable to check the turn
@@ -83,6 +85,21 @@ public class NMMLogic {
                 Logger.getLogger(NMMLogic.class.getName()).log(Level.WARNING, null, ex);
             }
         }
+        //checks if slotLkUp has no values, initilizes it once
+        if (vldMvsRef == null) {
+            try {
+                vldMvsRef = (JSONObject) new JSONParser().parse(
+                        new InputStreamReader(getClass().getResourceAsStream(
+                                "/ninemensmorris/resources/vld_mvs_ref.json")));
+                 
+            } catch (Exception ex) {
+                System.out.println("vld_mvs_ref_ref.json could not be loaded.\n"
+                        + " The game can be played.\n"
+                        + "Some functionality may not work as intended");
+                Logger.getLogger(NMMLogic.class.getName()).log(Level.WARNING, null, ex);
+            }    
+            
+        }
 
         //The number of men availible at the start of the game
         menLeft = 9;
@@ -103,6 +120,7 @@ public class NMMLogic {
                 String str = "" + ltr + num;  //str to set slot, might depreciate later
                 nmmBoard[i][j] = new NMMCoin(str);
                 nmmBoard[i][j].millCombo = millLkUp(str);
+                nmmBoard[i][j].vldMvs = vldMvsLkUp(str);
                 num++;      //increments num
             }
             ltr++;      //increments ltr
@@ -136,6 +154,22 @@ public class NMMLogic {
         millCombo[1][1] = (String) ((JSONArray) arrIndx.get(1)).get(1);
 
         return millCombo;
+    }
+    
+    public static String[] vldMvsLkUp(String slot) {
+        String[] vldMvs; //var to store vldMvs
+        //gets the valur from the array and returns
+        JSONArray arrIndx = (JSONArray) vldMvsRef.get(slot);
+        //gets the size of array
+        int sz = arrIndx.size();
+        //initializes vldMvs to String of fetched Array
+        vldMvs = new String[sz];
+        //transfers to String[]
+        for(int i=0; i<sz; i++) 
+            vldMvs[i] = (String) arrIndx.get(i);
+   
+        //retuns the String
+        return vldMvs;
     }
 
     // <editor-fold defaultstate="collapsed" desc="getters-setters">
@@ -195,6 +229,33 @@ public class NMMLogic {
         return null;
     }
 
+    //</editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="move handling">
+    
+    public String[] getVldMvs(String slot)
+    {
+        //var to store index of slot
+        int idx[] = slotLkUp(slot);
+        //returns moves for that coin
+        return nmmBoard[ idx[0] ][ idx[1] ].vldMvs;    
+    }
+    
+    public String getVldMvsAsString(String slot)
+    {
+        //var to store index of slot
+        int idx[] = slotLkUp(slot);
+        //var to store return value
+        String vMStr = "";
+        //gets moves for that coin
+        String[] vldMvsArr = nmmBoard[ idx[0] ][ idx[1] ].vldMvs;
+        //coverts
+        for(String vm : vldMvsArr)
+            vMStr = vMStr.concat(vm + ", ");
+        
+        //returns 
+        return vMStr;
+    }
+    
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="coin handling">
     /**
