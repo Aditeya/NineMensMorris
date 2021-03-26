@@ -110,9 +110,7 @@ public class NMMLogic {
 
     }
 
-    /*
-    public ObjectInputStream getStrmIn() {
-        return coinIN;  }*/
+    
     /**
      * Looks up the index assosciated with the given slot
      *
@@ -666,6 +664,7 @@ public class NMMLogic {
 
     //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="game handling">
     /**
      * Handles all required mill actions that would need be done whenever a coin
      * is placed. Includes checking for new mills and removing a coin if mill 
@@ -1045,5 +1044,6 @@ public class NMMLogic {
             }
         }
     }
+    //</editor-fold>
 
 }
