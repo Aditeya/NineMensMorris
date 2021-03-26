@@ -23,7 +23,7 @@ public enum InputType {
      * If the coin's given coinSlot corresponds to a coinSlot on the board that
      * is not empty, the queue will be cleared and new
      * input will be needed, Please check the coins before submitting them to 
-     * the queue
+     * the queue.
      */
     PLACE,
     
@@ -34,7 +34,7 @@ public enum InputType {
      * If the coin given is not the opposite of the coinType in accordance with
      * the current player turn, the queue will be cleared and new
      * input will be needed, Please check the coins before submitting them to 
-     * the queue
+     * the queue.
      */
     REMOVE,
     
@@ -44,12 +44,11 @@ public enum InputType {
      * board, and the second coin given will be placed on the nmm board as coin
      * type corresponding to current player turn,
      * The coin only needs to have the coinSlot initialized.
-     * If the first coin given does
-     * not correspond to current player turn, the queue will be cleared and new
-     * input will be needed, if the second coin given is not a valid move in 
-     * accordance with the first coin, the queue will be cleared and new
-     * input will be needed, Please check the coins before submitting them to the
-     * queue
+     * If the first coin given does not correspond to current player turn, the 
+     * queue will be cleared and new input will be needed, if the second coin 
+     * given is not a valid move in accordance with the first coin, the queue 
+     * will be cleared and new input will be needed, 
+     * Please check the coins before submitting them to the queue
      * The coin given only needs to have coinSlot initialized.
      */
     MOVE
