@@ -277,6 +277,22 @@ public class NMMLogic {
         return vMStr;
     }
     
+    public boolean checkVldMv(String slot, String move)
+    {
+        //index lookup for slot
+        int[] idx = slotLkUp(slot);
+        //flag for true or flase
+        boolean isValid = false;
+        //gets valid moves
+        String[] VldMvs = this.nmmBoard[ idx[0] ][ idx[1] ].vldMvs;
+        //checks if it is valid
+        for(String vm : VldMvs)
+            if(move.equals(vm))
+                isValid = true;
+        //returns
+        return isValid;
+    }
+    
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="coin handling">
     /**

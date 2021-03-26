@@ -37,6 +37,8 @@ public class NMMLogicDemo {
         String slot = "H2";
         System.out.println("Valid Moves for "+slot +" : " + nmm.getVldMvsAsString(slot));
         
+        System.out.println(nmm.checkVldMv("H2", "H1"));
+        
         //Function as requested
         NMMLogic.cmdPrint(nmm.nmmBoard, PrintType.VALUE);
         
