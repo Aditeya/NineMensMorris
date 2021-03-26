@@ -34,11 +34,11 @@ import org.json.simple.parser.JSONParser;
  */
 public class NMMLogic {
 
-    //static json Object that stors slot index pairs
+    //static json Object that storse slot index pairs
     private static JSONObject slotIndxRef = null;
-    //static json Object that stors slot index pairs
+    //static json Object that stores mill references
     private static JSONObject millRef = null;
-    //static json Object that stors vldmvs
+    //static json Object that stores valid moves
     private static JSONObject vldMvsRef = null;
     
     //The number of men you can place in phase 1        
@@ -57,7 +57,7 @@ public class NMMLogic {
      */
     NMMLogic() {
 
-        //checks if slotLkUp has no values, initilizes it once
+        //checks if slotIndexRef has no values, initilizes it once
         if (slotIndxRef == null) {
             try {
                 slotIndxRef = (JSONObject) new JSONParser().parse(
@@ -71,7 +71,7 @@ public class NMMLogic {
                 Logger.getLogger(NMMLogic.class.getName()).log(Level.WARNING, null, ex);
             }
         }
-        //checks if slotLkUp has no values, initilizes it once
+        //checks if millRef has no values, initilizes it once
         if (millRef == null) {
             try {
                 millRef = (JSONObject) new JSONParser().parse(
@@ -85,7 +85,7 @@ public class NMMLogic {
                 Logger.getLogger(NMMLogic.class.getName()).log(Level.WARNING, null, ex);
             }
         }
-        //checks if slotLkUp has no values, initilizes it once
+        //checks if vldMvsref has no values, initilizes it once
         if (vldMvsRef == null) {
             try {
                 vldMvsRef = (JSONObject) new JSONParser().parse(
@@ -128,26 +128,32 @@ public class NMMLogic {
 
     }
 
-    
+// <editor-fold defaultstate="collapsed" desc="LookUps">    
     /**
-     * Looks up the index assosciated with the given slot
-     *
+     * Looks up the index associated with the given slot.
      * @param slot the slot to be looked up
      * @return the associated index
      */
     public static int[] slotLkUp(String slot) {
         int[] index = new int[2];  //variable to store the index
-        //gets the value from the array and returns
+        //gets the array from the JSON object
         JSONArray arrIndx = (JSONArray) slotIndxRef.get(slot);
+        //assigns values from array to var and returns
         index[0] = Math.toIntExact((long) arrIndx.get(0));
         index[1] = Math.toIntExact((long) arrIndx.get(1));
         return index;
     }
 
+    /**
+     * Looks up mills associated with the given slot.
+     * @param slot the slot to be looked up
+     * @return the associated mills
+     */
     public static String[][] millLkUp(String slot) {
-        String[][] millCombo = new String[2][2];
-        //gets the value from the array and returns
+        String[][] millCombo = new String[2][2];  //var to store the mill combo
+        //gets the array from the JSON object
         JSONArray arrIndx = (JSONArray) millRef.get(slot);
+        //assigns values from array to var and returns
         millCombo[0][0] = (String) ((JSONArray) arrIndx.get(0)).get(0);
         millCombo[0][1] = (String) ((JSONArray) arrIndx.get(0)).get(1);
         millCombo[1][0] = (String) ((JSONArray) arrIndx.get(1)).get(0);
@@ -156,9 +162,14 @@ public class NMMLogic {
         return millCombo;
     }
     
+    /**
+     * Looks up valid moves associated with the given slot.
+     * @param slot the slot to be looked up
+     * @return the associated valid moves
+     */
     public static String[] vldMvsLkUp(String slot) {
         String[] vldMvs; //var to store vldMvs
-        //gets the valur from the array and returns
+        //gets the array from the JSON object
         JSONArray arrIndx = (JSONArray) vldMvsRef.get(slot);
         //gets the size of array
         int sz = arrIndx.size();
@@ -171,10 +182,10 @@ public class NMMLogic {
         //retuns the String
         return vldMvs;
     }
-
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="getters-setters">
     /**
-     * Gets the remaning men
+     * Gets the remaining men
      *
      * @return The men Left
      */
@@ -232,6 +243,11 @@ public class NMMLogic {
     //</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="move handling">
     
+    /**
+     * Gets the valid moves for the selected slot as a String Array
+     * @param slot The slot to get valid moves for
+     * @return The valid moves of the given slot
+     */
     public String[] getVldMvs(String slot)
     {
         //var to store index of slot
@@ -239,7 +255,12 @@ public class NMMLogic {
         //returns moves for that coin
         return nmmBoard[ idx[0] ][ idx[1] ].vldMvs;    
     }
-    
+
+    /**
+     * Gets the valid moves for the selected slot as CSV in a single string 
+     * @param slot The slot to get valid moves for
+     * @return The valid moves of the given slot
+     */    
     public String getVldMvsAsString(String slot)
     {
         //var to store index of slot
