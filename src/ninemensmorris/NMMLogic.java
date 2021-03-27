@@ -192,6 +192,15 @@ public class NMMLogic {
     public int getMenLeft() {
         return menLeft;
     }
+    
+    /**
+     * Gets the input required by the game
+     * 
+     * @return The men Left
+     */
+    public InputType getInput() {
+        return nmmInput;
+    } 
 
     //no setterfor menLeft
     // </editor-fold>
