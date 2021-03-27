@@ -788,15 +788,17 @@ public class NMMLogic {
         
         //populates array if verbose is true
         if (verbose == true) {
-            notif[0] = "[MILL] Handling Mills..";
-            notif[1] = "[MILL] A new Mill has been detected.";
-            notif[2] = "[MILL] Awaiting Coin to be removed...";
-            notif[3] = "[MILL] Coin Received.";
-            notif[4] = "[MILL] An interuption has occured, could not remove "
-                    + "the coin.";
-            notif[5] = "[MILL] The given coin is milled and can not be removed,"
+            notif[0] = "Handling Mills..";
+            notif[1] = "A new Mill has been detected.";
+            notif[2] = "Awaiting Coin to be removed...";
+            notif[3] = "Coin Received.";
+            notif[4] = "An interuption has occured, could not remove the coin.";
+            notif[5] = "The given coin is milled and can not be removed,"
                     + " submit a new coin.";
-            notif[6] = "[MILL] The given coin has been removed";
+            notif[6] = "The given coin has been removed";
+            
+            for(int i=0; i<notif.length; i++)
+                notif[i] = "[MILL] ".concat(notif[i]);
         }
         
         //sends verbose
@@ -886,6 +888,9 @@ public class NMMLogic {
             notif[5] = "An Interupted Exception has occured, "
                     + "Setup terminated.\n";
             notif[6] = "Setup Completed Successfully\n";
+            
+            for(int i=0; i<notif.length; i++)
+                notif[i] = "[SETUP] ".concat(notif[i]);
         }
 
         final int menLeftF = menLeft;
@@ -997,6 +1002,9 @@ public class NMMLogic {
             notif[10] = "Checking mills...";
             notif[11] = "Coin 2 (To) has been placed.";
             notif[12] = "Turns have been swapped";
+            
+            for(int i=0; i<notif.length; i++)
+                notif[i] = "[TURN] ".concat(notif[i]);
         }
         
         
