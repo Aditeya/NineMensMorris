@@ -984,9 +984,13 @@ public class NMMLogic {
             notif[3] = "Coin 2 received.";
             notif[4] = "An Interupt has occured, stopping TurnHandle.";
             notif[5] = "The Input Queue has been cleared";
-            notif[6] = "The Coin could not be moved as it is not the Current Players Coin. Please Try Again";
-            notif[7] = "The Coin could not be moved as the location to which it is to be moved is full. Please Try Again";
-            notif[8] = "The Coin could not be moved as the location to which it is to be moved is out of reach (not a valid move). Please Try Again";
+            notif[6] = "The Coin could not be moved as it is not the Current "
+                    + "Players Coin. Please Try Again";
+            notif[7] = "The Coin could not be moved as the location to which "
+                    + "it is to be moved is full. Please Try Again";
+            notif[8] = "The Coin could not be moved as the location to which "
+                    + "it is to be moved is out of reach (not a valid move). "
+                    + "Please Try Again";
             notif[9] = "Coin 1 (From) has been removed.";
             notif[10] = "Checking mills...";
             notif[11] = "Coin 2 (To) has been placed.";
