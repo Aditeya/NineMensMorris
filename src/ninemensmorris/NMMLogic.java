@@ -788,13 +788,14 @@ public class NMMLogic {
         
         //populates array if verbose is true
         if (verbose == true) {
-            notif[0] = "Handling Mills..";
-            notif[1] = "A new Mill has been detected.";
-            notif[2] = "Awaiting Coin..";
-            notif[3] = "Coin Received.";
-            notif[4] = "An interuption has occured, could not remove the coin.";
-            notif[5] = "The given coin is milled and can not be removed, submit "
-                    + "a new coin.";
+            notif[0] = "[MILL] Handling Mills..";
+            notif[1] = "[MILL] A new Mill has been detected.";
+            notif[2] = "[MILL] Awaiting Coin to be removed...";
+            notif[3] = "[MILL] Coin Received.";
+            notif[4] = "[MILL] An interuption has occured, could not remove "
+                    + "the coin.";
+            notif[5] = "[MILL] The given coin is milled and can not be removed,"
+                    + " submit a new coin.";
         }
         
         //sends verbose
