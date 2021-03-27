@@ -55,8 +55,7 @@ public class NMMServiceThread extends Thread {
 
                             //Sends the board
                             NMMboard board = new NMMboard(nmm.nmmBoard);
-                            //debug statement, remove later
-                            System.out.println("NmmBoard: "+ nmm.nmmBoard[0][0].getCoinInt());
+                            
                             if(nmm.getMenLeft() == 9)
                                 nmm.nmmBoard[0][0].setCoin(MCoinType.WHITE);
                             else
