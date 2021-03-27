@@ -796,6 +796,7 @@ public class NMMLogic {
                     + "the coin.";
             notif[5] = "[MILL] The given coin is milled and can not be removed,"
                     + " submit a new coin.";
+            notif[6] = "[MILL] The given coin has been removed";
         }
         
         //sends verbose
@@ -849,12 +850,12 @@ public class NMMLogic {
                 if(isCoinMilled)
                         System.out.println(notif[5]);
 
-                //repeats if submitted coin is not milled
-            }while(!isCoinMilled);
+                //repeats if submitted coin is milled
+            }while(isCoinMilled);
             
             //sets the coin on the board correpsonding to the slot as zero
             this.nmmBoard[ idx[0] ][ idx[1] ].setCoin(MCoinType.EMPTY);
-            
+            System.out.println(notif[6]); //verbose
         }
         
         return newMills;
