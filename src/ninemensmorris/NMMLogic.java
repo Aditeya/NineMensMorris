@@ -1074,7 +1074,7 @@ public class NMMLogic {
             }
             
             //Checks if the second coin is not empty
-            if(coinsRcv.get(1).getCoin() != MCoinType.WHITE)
+            if(coinsRcv.get(1).getCoin() != MCoinType.EMPTY)
             {
                 //This means the user tried to move a coin to place that's full
                 //bruh, this user is major cring
