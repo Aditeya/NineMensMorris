@@ -788,7 +788,7 @@ public class NMMLogic {
     public HashMap<String, Boolean> nmmMillHandle(String slot, LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose)
     {
         //create the array of messages
-        String[] notif = new String[7];
+        String[] notif = new String[8];
         
         //populates array if verbose is true
         if (verbose == true) {
@@ -799,7 +799,9 @@ public class NMMLogic {
             notif[4] = "An interuption has occured, could not remove the coin.";
             notif[5] = "The given coin is milled and can not be removed,"
                     + " submit a new coin.";
-            notif[6] = "The given coin has been removed";
+            notif[6] = "The given coin is not the opposing players coin and can"
+                    + "not be removed, submit a new coin";
+            notif[7] = "The given coin has been removed";
             
             for(int i=0; i<notif.length; i++)
                 notif[i] = "[MILL] ".concat(notif[i]);
@@ -827,6 +829,8 @@ public class NMMLogic {
             int[] idx = new int[2];
             //mill check flag
             boolean isCoinMilled;
+            //player check flag
+            boolean isOpposeCoin;
             
             do
             {
@@ -853,15 +857,23 @@ public class NMMLogic {
                 //sets wheter the coin is milled into a variable
                 isCoinMilled = this.nmmBoard[ idx[0] ][ idx[1] ].isMilled();
 
+                //sends verbose
                 if(isCoinMilled)
-                        System.out.println(notif[5]);
+                    System.out.println(notif[5]);
+                
+                //sets wheter the coin is oppposing into a varibale
+                isOpposeCoin = this.nmmBoard[ idx[0] ][ idx[1] ].getCoin()
+                        == this.getNmmTurn().getOpposeTurn().toMCntyp();
+                
+                if(!isOpposeCoin)
+                    System.out.println(notif[6]);                    
 
                 //repeats if submitted coin is milled
-            }while(isCoinMilled);
+            }while(isCoinMilled || !(isOpposeCoin) );
             
             //sets the coin on the board correpsonding to the slot as zero
             this.nmmBoard[ idx[0] ][ idx[1] ].setCoin(MCoinType.EMPTY);
-            System.out.println(notif[6]); //verbose
+            System.out.println(notif[7]); //verbose
         }
         
         return newMills;
