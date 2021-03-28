@@ -139,7 +139,8 @@ public class NMMLogicDemo {
                         switch(nmm.getInput())
                         {
                             case NONE:
-                                Thread.sleep(150); //optional
+                                while(nmm.getInput() == InputType.NONE)  //optional
+                                    Thread.sleep(150); //optional
                                 //InputType woah = InputType.
                                 break;
                                 
