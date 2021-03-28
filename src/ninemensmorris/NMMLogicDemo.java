@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
+import ninemensmorris.enums.PlayerTurn;
 import ninemensmorris.enums.PrintType;
 
 /**
@@ -33,6 +34,13 @@ public class NMMLogicDemo {
         System.out.println(test[1]);
 
         NMMLogic nmm = new NMMLogic();
+        
+        //Negator Demo
+        System.out.println("opposing time");
+        PlayerTurn p = PlayerTurn.WHITE;
+        System.out.println(p.getOpposeTurn());
+        PlayerTurn p1 = PlayerTurn.BLACK;
+        System.out.println(p1.getOpposeTurn());
         
         //VldMvsDemo
         String slot = "H2";

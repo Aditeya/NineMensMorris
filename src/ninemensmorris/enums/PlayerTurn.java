@@ -21,4 +21,20 @@ public enum PlayerTurn {
       
     //MCoinType Converter
     public MCoinType toMCntyp() {return this.coinType;}
+    
+    //Negator
+    public PlayerTurn getOpposeTurn()
+    {
+        switch(this)
+        {
+            case WHITE:
+                return BLACK;
+                
+            case BLACK:
+                return WHITE;
+                
+            default:
+                return null; //error
+        }
+    }
 }
