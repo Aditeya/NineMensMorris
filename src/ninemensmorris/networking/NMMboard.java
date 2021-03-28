@@ -7,6 +7,7 @@ package ninemensmorris.networking;
 
 import java.io.Serializable;
 import ninemensmorris.NMMCoin;
+import ninemensmorris.enums.MCoinType;
 
 /**
  *
@@ -15,12 +16,18 @@ import ninemensmorris.NMMCoin;
 public class NMMboard implements Serializable {
 
     private final NMMCoin[][] nmmBoard;
+    private final MCoinType turn;
 
-    public NMMboard(NMMCoin[][] nmmBoard) {
+    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn) {
         this.nmmBoard = nmmBoard;
+        this.turn = turn;
     }
 
     public NMMCoin[][] getNmmBoard() {
         return nmmBoard;
+    }
+
+    public MCoinType getTurn() {
+        return turn;
     }
 }

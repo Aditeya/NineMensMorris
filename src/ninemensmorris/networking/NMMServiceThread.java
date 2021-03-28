@@ -48,23 +48,27 @@ public class NMMServiceThread extends Thread {
             Thread setupTh = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    try {
+                        NMMboard turn = new NMMboard(null, MCoinType.WHITE);
+                        p1oos.writeObject(turn);
+                        turn = new NMMboard(null, MCoinType.BLACK);
+                        p2oos.writeObject(turn);
+                    } catch (IOException ex) {
+                    }
+
                     while (nmm.getMenLeft() > 0) {  //CHANGE TO WHILE MEN LEFT
                         try {
                             PlayerTurn turn = nmm.getNmmTurn();
                             System.out.println(turn + " Player, Place a coin.");
 
                             //Sends the board
-                            NMMboard board = new NMMboard(nmm.nmmBoard);
-                            
-                            if(nmm.getMenLeft() == 9)
-                                nmm.nmmBoard[0][0].setCoin(MCoinType.WHITE);
-                            else
-                                nmm.nmmBoard[0][1].setCoin(MCoinType.BLACK);
-                            //Justa comment to close issue #3
+                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp());
+
                             p1oos.reset();
                             p2oos.reset();
-                            p1oos.writeUnshared(board); //sends board to p1
-                            p2oos.writeUnshared(board); //sends board to p2
+                            //sends board to players
+                            p1oos.writeUnshared(board);
+                            p2oos.writeUnshared(board);
                             //flushes outputstream
                             p1oos.flush();
                             p2oos.flush();
@@ -80,7 +84,7 @@ public class NMMServiceThread extends Thread {
                                     move = (NMMmove) p2ois.readObject();
                                     break;
                                 default:    //Error
-                                    move = new NMMmove("A1"); 
+                                    move = new NMMmove("A1");
                                     //Consider throwing exception here
                                     break;
                             }
