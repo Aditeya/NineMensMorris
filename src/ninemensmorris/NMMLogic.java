@@ -627,8 +627,10 @@ public class NMMLogic {
         ArrayList<NMMCoin> coinList =
                 this.getCoinsFromSlots(coinCheck.millCombo);
         
+        //checks if the coin belongs to the player who moved and
         //checks for the first possible mill (horizontal)
-        if(coinCheck.getCoin() == coinList.get(0).getCoin() &&
+        if(coinCheck.getCoin() == this.getNmmTurn().toMCntyp() && 
+                coinCheck.getCoin() == coinList.get(0).getCoin() &&
                 coinCheck.getCoin() == coinList.get(1).getCoin() )
         {
             //sets param coin hmill to true
@@ -671,8 +673,10 @@ public class NMMLogic {
             }
             
         }
+        //checks if the coin belongs to the player who moved and
         //checks for the second possible mill (vertical)
-        if(coinCheck.getCoin() == coinList.get(2).getCoin() &&
+        if(coinCheck.getCoin() == this.getNmmTurn().toMCntyp() && 
+                coinCheck.getCoin() == coinList.get(2).getCoin() &&
                 coinCheck.getCoin() == coinList.get(3).getCoin() )
         {
             //sets param coin hmill to true
