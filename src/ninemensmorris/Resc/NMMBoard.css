@@ -1,0 +1,88 @@
+#slots{
+    -fx-fill: #9999ff;
+    }
+#boardlines{
+    -fx-stroke: cadetblue;
+    -fx-stroke-width: 10;    
+    }
+#coinbg{
+        -fx-fill: cornflowerblue;
+         -fx-stroke: whitesmoke;
+
+    }
+#coinblack {
+        -fx-fill: violet;
+        -fx-stroke: whitesmoke;
+
+    }
+#coinwhite{
+        -fx-fill: white;
+        -fx-stroke: whitesmoke;
+    }    
+    
+#coinobj{
+        -fx-stroke: yellow;
+    -fx-stroke-width: 5;    
+    }  
+#intropage{
+        -fx-fill: violet;
+        -fx-stroke: whitesmoke;
+
+    }
+#Roomview{
+        -fx-fill: brown;
+        -fx-stroke: appworkspace;
+    }   
+#RoomScene{
+        -fx-fill: blanchedalmond;
+        -fx-stroke: appworkspace;
+    }
+.hbox {
+    -fx-fill: #2f4f4f;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-stroke: appworkspace;
+  -fx-stroke-width: 10;  
+}  
+.root{
+    -fx-font-size: 30pt;
+    -fx-font-family: "Courier New";
+    -fx-background: rgb(219,112,147);
+    -fx-vgap: 10;
+    -fx-hgap: 10;
+}
+
+.vbox {
+    -fx-fill: #9999ff;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+      -fx-stroke-width: 10;  
+}
+.button{
+    -fx-text-fill: #003366;
+    -fx-fill: #9999f;
+    -fx-border-color: #003366;
+    -fx-border-radius: 90;
+    -fx-background-radius: 90;
+    -fx-stroke-width: 1;  
+    -fx-border-width:5;
+    -fx-border-color: #003366;
+    -fx-opacity:0.5;
+
+}.button:hover {
+    opacity: 1;
+    -fx-border-color: #ccccff;
+}
+#btn{
+        -fx-font-size: 15pt;
+        -fx-border-color: aliceblue;
+}
+.cirlce{
+ -fx-opacity:0.5;
+}
+#Introanim{
+            -fx-border-color: aliceblue;
+    -fx-opacity:0.5;
+    -fx-stroke-width: 10;  
+
+}
