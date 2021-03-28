@@ -64,14 +64,13 @@ public class NMMServiceThread extends Thread {
                             //Sends the board
                             NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp());
 
+                            //resets output streams to fix empty board being received by client
                             p1oos.reset();
                             p2oos.reset();
                             //sends board to players
-                            p1oos.writeUnshared(board);
-                            p2oos.writeUnshared(board);
-                            //flushes outputstream
-                            p1oos.flush();
-                            p2oos.flush();
+                            p1oos.writeObject(board);
+                            p2oos.writeObject(board);
+
                             //prints the baord
                             nmm.cmdPrint(PrintType.VALUE);
 
