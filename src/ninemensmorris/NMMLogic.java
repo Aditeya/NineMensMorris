@@ -50,6 +50,11 @@ public class NMMLogic {
     /** prepares the array space for gridboard */
     public NMMCoin[][] nmmBoard = new NMMCoin[8][3];
          
+    /** The number of white coins on board */
+    protected int coinOBW; 
+    /** The number of white coins on board */
+    protected int coinOBB; 
+    
     //Input stream for reading
     //ObjectInputStream coinIN;
     /**
@@ -100,6 +105,10 @@ public class NMMLogic {
             }    
             
         }
+        
+        //The number of Coins On Board(White/Black)
+        coinOBW = 0;
+        coinOBB = 0;
 
         //The number of men availible at the start of the game 
         menLeft = 9;
@@ -871,6 +880,24 @@ public class NMMLogic {
                 //repeats if submitted coin is milled
             }while(isCoinMilled || !(isOpposeCoin) );
             
+            //decrements the coinOB(B|W) based on turn
+            //The opposing coin needs to be decremented as the current player
+            //will remove an opposing players coin
+            switch(this.getNmmTurn())
+            {
+                case WHITE:
+                    coinOBB--;  //The opposing coin count is decremented
+                    break;
+
+                case BLACK:
+                    coinOBW--;  //The opposing coin count is decremented
+                    break;
+
+                default:
+                    //error
+                    return null;
+            }
+            
             //sets the coin on the board correpsonding to the slot as zero
             this.nmmBoard[ idx[0] ][ idx[1] ].setCoin(MCoinType.EMPTY);
             System.out.println(notif[7]); //verbose
@@ -962,6 +989,22 @@ public class NMMLogic {
                     //checks the the coin formed a mill
                     //unable to get new mills from here, do something about it?
                     nmmMillHandle(coinSet.getCoinSlot(), coinIN, verbose);
+                    
+                    //increments the coinOB(B|W) based on turn
+                    switch(this.getNmmTurn())
+                    {
+                        case WHITE:
+                            coinOBW++;
+                            break;
+                            
+                        case BLACK:
+                            coinOBB++;
+                            break;
+                            
+                        default:
+                            //error
+                            return false;
+                    }
                     
                     //swaps turns
                     this.swapNMMTurn();
