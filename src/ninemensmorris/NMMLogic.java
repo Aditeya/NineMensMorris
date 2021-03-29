@@ -34,29 +34,29 @@ import org.json.simple.parser.JSONParser;
  */
 public class NMMLogic {
 
-    //static json Object that storse slot index pairs
+    /** static json Object that storse slot index pairs */
     private static JSONObject slotIndxRef = null;
-    //static json Object that stores mill references
+    /** static json Object that stores mill references */
     private static JSONObject millRef = null;
-    //static json Object that stores valid moves
+    /** static json Object that stores valid moves */
     private static JSONObject vldMvsRef = null;
     
-    //The number of men you can place in phase 1        
+    /** The number of men you can place in phase 1 */        
     private int menLeft;
-    //variable to check the turn
+    /** variable to check the turn */
     private PlayerTurn nmmTurn;
-    //varibale to check what kind of input is required
+    /** variable to check what kind of input is required */
     private InputType nmmInput;
-    //prepares the array space for gridboard
+    /** prepares the array space for gridboard */
     public NMMCoin[][] nmmBoard = new NMMCoin[8][3];
-
+         
     //Input stream for reading
     //ObjectInputStream coinIN;
     /**
      * Default Constructor, intializes a RTU game
      */
     NMMLogic() {
-
+      
         //checks if slotIndexRef has no values, initilizes it once
         if (slotIndxRef == null) {
             try {
@@ -101,7 +101,7 @@ public class NMMLogic {
             
         }
 
-        //The number of men availible at the start of the game
+        //The number of men availible at the start of the game 
         menLeft = 9;
 
         //intializes turn to white as per game rules I swear I'm not racist
@@ -128,7 +128,7 @@ public class NMMLogic {
 
     }
 
-// <editor-fold defaultstate="collapsed" desc="LookUps">    
+    // <editor-fold defaultstate="collapsed" desc="LookUps">    
     /**
      * Looks up the index associated with the given slot.
      * @param slot the slot to be looked up

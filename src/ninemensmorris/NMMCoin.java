@@ -15,13 +15,20 @@ import ninemensmorris.enums.MCoinType;
  */
 public class NMMCoin {
 
-    private MCoinType coinType;     //Holds Where coin is empty black or white
-    private String coinSlot;        //Holds the coin location(slot) on board
-    private boolean milled;         //Holds whether the coin is milled or not
-    private boolean millH;          //Holds whether the coin is horizontally milled or not
-    private boolean millV;          //Holds whether the coin is vertically milled or not
-    public String[] vldMvs;        //Holds valid moves (Maybe make this protected String[]?)
-    public String[][] millCombo;   //Holds possible mill combinations (Maybe make this protected String[][]?)
+    /** Holds Where coin is empty black or white */
+    private MCoinType coinType;
+    /** Holds the coin location(slot) on board */
+    private String coinSlot;   
+    /** Holds whether the coin is milled or not */
+    private boolean milled;  
+    /** Holds whether the coin is horizontally milled or not */
+    private boolean millH;   
+    /** Holds whether the coin is vertically milled or not */
+    private boolean millV;          
+    /** Holds valid moves (Maybe make this protected String[]?) */ 
+    public String[] vldMvs;        
+    /** Holds possible mill combinations (Maybe make this protected String[][]?) */
+    public String[][] millCombo;   
 
     // <editor-fold defaultstate="collapsed" desc="constructors">
     /**
@@ -208,7 +215,7 @@ public class NMMCoin {
      * @return the new nill state of the coin
      */
     public boolean updateMill()
-    {
+    { 
         //a boolean variable to keep millState
         boolean millState;
         

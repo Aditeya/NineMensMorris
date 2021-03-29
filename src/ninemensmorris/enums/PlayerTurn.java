@@ -11,18 +11,30 @@ package ninemensmorris.enums;
  * @author eltojaro
  */
 public enum PlayerTurn {
+    /** Indicates White Player's Turn */
     WHITE(MCoinType.WHITE),
+    /** Indicates White Player's Turn */
     BLACK(MCoinType.BLACK);
     
+    /** Holds the coinType corresponding to player turn */
     private final MCoinType coinType;
 
-    //Constructor
+    /**
+     * Basic and Only Constructor
+     * @param coinType Coin type to be intialised with.
+     */
     private PlayerTurn(MCoinType coinType) {this.coinType = coinType;}
       
-    //MCoinType Converter
+    /**
+     * Converts the Player Turn to corresponding coinType.
+     * @return corresponding coinType.
+     */
     public MCoinType toMCntyp() {return this.coinType;}
     
-    //Negator
+    /**
+     * Negates the current player turn
+     * @return the opposite player turn
+     */
     public PlayerTurn getOpposeTurn()
     {
         switch(this)

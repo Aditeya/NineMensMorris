@@ -11,8 +11,12 @@ package ninemensmorris.enums;
  * @author eltojaro
  */
 public enum PrintType {
+    /** Prints the values of the board w/ the board grid */
     VALUE,
+    /** Prints the slot locations of the board w/ the board grid */
     LOC,
+    /** Prints the values of the board w/o the board grid */
     RAW_VALUE,
+    /** Prints the slot locations of the board w/o the board grid */
     RAW_LOC
 }

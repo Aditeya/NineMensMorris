@@ -11,8 +11,11 @@ package ninemensmorris.enums;
  * @author eltojaro
  */
 public enum MCoinType {
+    /** Indicates No Coin. The slot is empty */
     EMPTY,
+    /** Indicates White Coin. The slot holds a White Coin */
     WHITE,
-    BLACK,   //You have no idea how hard I had to fight the urge to call this ni-
+    /** Indicates Black Coin. The slot holds a Black Coin */
+    BLACK,
 
 }
