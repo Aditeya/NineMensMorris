@@ -55,6 +55,9 @@ public class NMMLogic {
     /** The number of white coins on board */
     protected int coinOBB; 
     
+    /** The winner of the game, null till a winner is decided */
+    private MCoinType nmmWinner;    //Using MCoinType so that we can use EMPTY
+    
     //Input stream for reading
     //ObjectInputStream coinIN;
     /**
@@ -109,6 +112,9 @@ public class NMMLogic {
         //The number of Coins On Board(White/Black)
         coinOBW = 0;
         coinOBB = 0;
+        
+        //sets winner to null
+        nmmWinner = MCoinType.EMPTY;
 
         //The number of men availible at the start of the game 
         menLeft = 9;
@@ -209,8 +215,16 @@ public class NMMLogic {
      */
     public InputType getInput() {
         return nmmInput;
-    } 
-
+    }
+    
+    /**
+     * Gets the nmm Winner. EMPTY till a winner is decided
+     * @return the winner of this game instance 
+     */
+    public MCoinType getWinner() {
+        return nmmWinner;
+    }
+    
     //no setterfor menLeft
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="turn handling">
@@ -967,6 +981,22 @@ public class NMMLogic {
                     //unable to get new mills from here, do something about it?
                     nmmMillHandle(coinSet.getCoinSlot(), coinIN, verbose);
                     
+                    //increments the coinOB(B|W) based on turn
+                    switch(this.getNmmTurn())
+                    {
+                        case WHITE:
+                            coinOBW++;
+                            break;
+                            
+                        case BLACK:
+                            coinOBB++;
+                            break;
+                            
+                        default:
+                            //error
+                            return false;
+                    }
+                    
                     //swaps the player turn
                     this.swapNMMTurn();
                     
@@ -1039,7 +1069,7 @@ public class NMMLogic {
     {
         
         //create the array of messages
-        String[] notif = new String[13];
+        String[] notif = new String[14];
 
         //populates array if verbose is true        
         if(verbose == true)
@@ -1060,7 +1090,8 @@ public class NMMLogic {
             notif[9] = "Coin 1 (From) has been removed.";
             notif[10] = "Checking mills...";
             notif[11] = "Coin 2 (To) has been placed.";
-            notif[12] = "Turns have been swapped";
+            notif[12] = "Handling Win Checks...";
+            notif[13] = "Turns have been swapped";
             
             for(int i=0; i<notif.length; i++)
                 notif[i] = "[TURN] ".concat(notif[i]);
@@ -1180,11 +1211,50 @@ public class NMMLogic {
             nmmMillHandle(cTSlot, coinIN, verbose);
             //sends verbose
             System.out.println(notif[10]);
+            //sends verbose
+            System.out.println(notif[12]);
+            //checks for a winner
+            nmmWinHandle(verbose);
             //swaps turns
             this.swapNMMTurn();
             //sends verbose
-            System.out.println(notif[12]);
+            System.out.println(notif[13]);
         }
+    }
+    
+    public void nmmWinHandle(boolean verbose)
+    {
+        //var for verbose
+        String[] notif = new String[4];
+        //files the notif is verbose is true
+        if(verbose == true)
+        {
+            notif[0] = "Checking for a winner...";
+            notif[1] = "!!!The BLACK Player Wins!!!";
+            notif[2] = "!!!The WHITE Player Wins!!!";
+            notif[3] = "This game has concluded.";
+            
+            for(int i=0; i<notif.length; i++)
+                notif[i] = "[WIN] ".concat(notif[i]);
+        }
+        
+        System.out.println(notif[0]);
+        //checks if white coins < 3 , makes black winner
+        if(coinOBW < 3)
+        {
+            this.nmmWinner = MCoinType.BLACK;   //sets winner
+            System.out.println(notif[1]);      //verbose
+            System.out.println(notif[3]);      //verbose
+        }
+        //checks if black coins < 3 , makes white winner
+        else if(coinOBB < 3)
+        {
+            this.nmmWinner = MCoinType.WHITE;   //sets winner
+            System.out.println(notif[2]);      //verbose
+            System.out.println(notif[3]);      //verbose
+        }
+        
+        
     }
     
     /**

@@ -129,7 +129,7 @@ public class NMMLogicDemo {
                 NMMCoin coin = null;
                 NMMCoin coin2 = null;
 
-                while(true)
+                while(nmm.getWinner() == MCoinType.EMPTY)
                 {
                     try
                     {
@@ -251,7 +251,7 @@ public class NMMLogicDemo {
         ////////////////////////
         
         
-        while(true)
+        while(nmm.getWinner() == MCoinType.EMPTY)
         {
             nmm.nmmTurnHandle(sendCoin, true);
         }
