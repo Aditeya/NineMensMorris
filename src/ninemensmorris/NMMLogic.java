@@ -873,6 +873,19 @@ public class NMMLogic {
                 }
                 //coin received, no longer awaiting input, updates as such
                 this.nmmInput = InputType.NONE;
+                
+                /////////////////////////////////////////////////
+                ///////TEMP CODE   - ONLY HOT FIX PURPOSES///////
+                //if the user submitted X, abandon coin removal, 
+                //return function
+                if(coinRemove.getCoinSlot().equals("X")) {
+                    if(verbose == true)
+                        System.out.println("[MILL] " 
+                                + this.getNmmTurn() + 
+                                " Player has chosen to NOT "
+                                        + "remove a coin.");
+                    return newMills; }
+                /////////////////////////////////////////////////
 
                 //gets the index of the slot from the received coin
                 idx = slotLkUp(coinRemove.getCoinSlot());

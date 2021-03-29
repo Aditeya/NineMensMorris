@@ -168,8 +168,12 @@ public class NMMLogicDemo {
                                         + "Select an opposing coin to be removed");
                                 
                                 System.out.println("match regex [A-H]+[1-3]");
+                                System.out.println("Enter 'X' to conceed coin removal");
                                 slot = input.nextLine();
-                                if(!slot.matches("[A-H]+[1-3]")) //check for regex
+                                if(!slot.matches("[A-H]+[1-3]")//check for regex
+                                        //This checker is hot fix only, remove
+                                        //it later
+                                        && !slot.equals("X")) 
                                 {
                                     System.out.println("Does not match regex, "
                                             + "please try again");
