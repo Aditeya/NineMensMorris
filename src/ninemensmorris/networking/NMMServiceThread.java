@@ -20,6 +20,8 @@ import ninemensmorris.enums.PlayerTurn;
 import ninemensmorris.enums.PrintType;
 
 /**
+ * Service Thread which takes 2 sockets and provides them with a game. Receiving
+ * (players) end should use NMMClientThread.
  *
  * @author aditeya
  */
@@ -30,6 +32,12 @@ public class NMMServiceThread extends Thread {
     private final NMMLogic nmm;
     private final LinkedBlockingQueue sendCoin;
 
+    /**
+     * Give two sockets where players intend to play.
+     *
+     * @param player1 Socket of player1
+     * @param player2 Socket of player2
+     */
     public NMMServiceThread(Socket player1, Socket player2) {
         this.player1 = player1;
         this.player2 = player2;
@@ -40,14 +48,17 @@ public class NMMServiceThread extends Thread {
     @Override
     public void run() {
         try {
+            // Create Object IO Streams for both players
             ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
             ObjectOutputStream p1oos = new ObjectOutputStream(player1.getOutputStream());
             ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());
             ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
 
+            // Thread Setup for the game
             Thread setupTh = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    // Sends an empty board with the player information, i.e. p1 is WHITE and p2 is BLACK
                     try {
                         NMMboard turn = new NMMboard(null, MCoinType.WHITE, false);
                         p1oos.writeObject(turn);
@@ -55,17 +66,17 @@ public class NMMServiceThread extends Thread {
                         p2oos.writeObject(turn);
                     } catch (IOException ex) {
                     }
-                    
-                    PlayerTurn prevTurn = PlayerTurn.BLACK;
+
+                    PlayerTurn prevTurn = PlayerTurn.BLACK;     // used to check if a wrong move was submitted.
                     while (nmm.getMenLeft() > 0) {  //CHANGE TO WHILE MEN LEFT
                         try {
                             PlayerTurn turn = nmm.getNmmTurn();
-                            System.out.println(turn + " Player, Place a coin.");
+                            System.out.println(turn + " Player, Place a coin.");    // verbose
 
                             // Wrong move indicator
                             boolean wrongMove = prevTurn.equals(turn);
-                            
-                            //Sends the board
+
+                            //Sends the board with turn and wrong move information
                             NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), wrongMove);
 
                             //resets output streams to fix empty board being received by client
@@ -75,9 +86,10 @@ public class NMMServiceThread extends Thread {
                             p1oos.writeObject(board);
                             p2oos.writeObject(board);
 
-                            //prints the baord
+                            //prints the board
                             nmm.cmdPrint(PrintType.VALUE);
 
+                            // Reading the correct move from the correct socket
                             NMMmove move;
                             switch (turn) {
                                 case WHITE: //Play white turn
@@ -92,11 +104,11 @@ public class NMMServiceThread extends Thread {
                                     break;
                             }
 
+                            // Creating and setting the coin
                             String slot = move.getMove();
                             NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
-
-                            //Sets the coin
                             sendCoin.put(coin);
+                            
                             prevTurn = turn;
                             Thread.sleep(50);
                         } catch (InterruptedException ex) {

@@ -10,6 +10,7 @@ import ninemensmorris.NMMCoin;
 import ninemensmorris.enums.MCoinType;
 
 /**
+ * NMMboard is used to send board and other game related data over the network.
  *
  * @author aditeya
  */
@@ -19,6 +20,13 @@ public class NMMboard implements Serializable {
     private final MCoinType turn;
     private final boolean wrongMove;
 
+    /**
+     * Set these parameters before sending the board.
+     * 
+     * @param nmmBoard  Double array of NMMCoin for board state
+     * @param turn      Current turn of player of the game
+     * @param wrongMove To be set if a move is invalid
+     */
     public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn, boolean wrongMove) {
         this.nmmBoard = nmmBoard;
         this.turn = turn;
