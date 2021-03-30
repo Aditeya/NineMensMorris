@@ -35,15 +35,19 @@ public class NMMClientThread extends Thread {
             ObjectOutputStream poos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream pois = new ObjectInputStream(socket.getInputStream());
             Scanner input = new Scanner(System.in);
-            
+
             NMMboard p = (NMMboard) pois.readObject();
             player = p.getTurn();
 
             while (true) {
                 NMMboard board = (NMMboard) pois.readObject();
-                NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE); 
+                NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
 
-                if(board.getTurn() == player) {
+                if (board.getTurn() == player) {
+                    if (board.isWrongMove()) {
+                        System.out.println("Invalid move, Try again");
+                    }
+                    
                     System.out.print("Enter Move: ");
                     poos.writeObject(new NMMmove(input.nextLine()));
                 }

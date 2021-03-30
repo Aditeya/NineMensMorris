@@ -49,20 +49,24 @@ public class NMMServiceThread extends Thread {
                 @Override
                 public void run() {
                     try {
-                        NMMboard turn = new NMMboard(null, MCoinType.WHITE);
+                        NMMboard turn = new NMMboard(null, MCoinType.WHITE, false);
                         p1oos.writeObject(turn);
-                        turn = new NMMboard(null, MCoinType.BLACK);
+                        turn = new NMMboard(null, MCoinType.BLACK, false);
                         p2oos.writeObject(turn);
                     } catch (IOException ex) {
                     }
-
+                    
+                    PlayerTurn prevTurn = PlayerTurn.BLACK;
                     while (nmm.getMenLeft() > 0) {  //CHANGE TO WHILE MEN LEFT
                         try {
                             PlayerTurn turn = nmm.getNmmTurn();
                             System.out.println(turn + " Player, Place a coin.");
 
+                            // Wrong move indicator
+                            boolean wrongMove = prevTurn.equals(turn);
+                            
                             //Sends the board
-                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp());
+                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), wrongMove);
 
                             //resets output streams to fix empty board being received by client
                             p1oos.reset();
@@ -93,6 +97,7 @@ public class NMMServiceThread extends Thread {
 
                             //Sets the coin
                             sendCoin.put(coin);
+                            prevTurn = turn;
                             Thread.sleep(50);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);

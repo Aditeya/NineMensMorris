@@ -15,7 +15,7 @@ public class NMMmove implements Serializable{
     private final String move;
 
     public NMMmove(String move) {
-        this.move = move;
+        this.move = move.toUpperCase();
     }
 
     public String getMove() {

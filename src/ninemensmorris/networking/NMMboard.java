@@ -17,10 +17,12 @@ public class NMMboard implements Serializable {
 
     private final NMMCoin[][] nmmBoard;
     private final MCoinType turn;
+    private final boolean wrongMove;
 
-    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn) {
+    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn, boolean wrongMove) {
         this.nmmBoard = nmmBoard;
         this.turn = turn;
+        this.wrongMove = wrongMove;
     }
 
     public NMMCoin[][] getNmmBoard() {
@@ -29,5 +31,9 @@ public class NMMboard implements Serializable {
 
     public MCoinType getTurn() {
         return turn;
+    }
+
+    public boolean isWrongMove() {
+        return wrongMove;
     }
 }
