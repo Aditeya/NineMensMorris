@@ -164,6 +164,7 @@ public class Server extends Thread {
                     for (int j = 0; j < currentRooms[i].length; j++) {
                         if (currentRooms[i][j] == 0) {
                             roomFull = false;
+                            break;
                         }
                     }
 
