@@ -5,12 +5,8 @@
  */
 package ninemensmorris.networking.demo;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import ninemensmorris.networking.NMMServiceThread;
+import java.util.Scanner;
+import ninemensmorris.networking.Server;
 
 /**
  *
@@ -18,26 +14,44 @@ import ninemensmorris.networking.NMMServiceThread;
  */
 public class NMMServerDemo {
 
+    private final static Scanner INPUT = new Scanner(System.in);
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            ServerSocket ssocket = new ServerSocket(9999);
-            System.out.println("Server Listening");
-            
-            // TODO: Implement Thread Pool
-            while (true) {
-                Socket p1 = ssocket.accept();
-                System.out.println("Player 1 Connected");
-                Socket p2 = ssocket.accept();
-                System.out.println("Player 2 Connected");
-                
-                new Thread(new NMMServiceThread(p1, p2)).start();
+        Server server = new Server();
+        Thread serverThread = new Thread(server);
+
+        serverThread.start();
+
+        boolean run = true;
+        while (run) {
+            System.out.print("Server> ");
+            String command = INPUT.nextLine();
+
+            switch (command) {
+                case "kill-server":
+                    if (!confirmKill()) {
+                        break;
+                    }
+                    serverThread.interrupt();
+                    run = false;
+                    break;
+                default:
+                    printHelp();
             }
-        } catch (IOException ex) {
-            Logger.getLogger(NMMServerDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private static void printHelp() {
+        System.out.println("1. kill-server\n2.");
+    }
+
+    private static boolean confirmKill() {
+        System.out.print("Are you sure you want to shutdown the server? [y/N]: ");
+        String ans = INPUT.nextLine();
+        return ans.toLowerCase().equals("y");
     }
 
 }
