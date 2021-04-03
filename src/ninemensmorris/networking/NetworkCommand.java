@@ -15,4 +15,5 @@ public enum NetworkCommand implements Serializable{
     LIST_ROOMS,
     CHOOSE_ROOM,
     ROOM_FULL,
+    ROOM_ACQ
 }

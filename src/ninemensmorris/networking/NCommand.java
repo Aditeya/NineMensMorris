@@ -40,6 +40,4 @@ public class NCommand implements Serializable{
     public void setRooms(int[][] rooms) {
         this.rooms = rooms;
     }
-    
-    
 }

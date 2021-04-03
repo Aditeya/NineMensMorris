@@ -10,6 +10,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +22,10 @@ import java.util.logging.Logger;
  */
 public class Server extends Thread {
 
-    final public static int MAX_CLIENTS = 24;   // 12 rooms
-    final public static int MAX_ROOMS = 12;   // 12 rooms
-    final public static int PORT_NUMBER = 9999;
+    final public static int MAX_ROOMS = 12;         // 12 rooms
+    final public static int MAX_CLIENTS = 24;       // 2 clients per room
+    final public static int ROOMWATCH_PERIOD = 10;  // Time taken to run RoomWatch Thread
+    final public static int PORT_NUMBER = 9999;     // Port number for the server
 
     private ServerSocket serverSocket;
     private SubServer[] clients;
@@ -41,9 +45,13 @@ public class Server extends Thread {
 
     @Override
     public void run() {
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate( new RoomWatch(), 5, ROOMWATCH_PERIOD, TimeUnit.SECONDS);
+        
         while (!this.isInterrupted()) {
             try {
                 Socket client = this.serverSocket.accept();
+                assignClientToThread(client);
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -84,7 +92,7 @@ public class Server extends Thread {
         public void run() {
             while (!this.isInterrupted()) {
                 try {
-                    NetworkCommand command = (NetworkCommand) pois.readObject();
+                    NCommand command = (NCommand) pois.readObject();
                     processCommand(command);
                 } catch (ClassNotFoundException | IOException ex) {
                 }
@@ -92,36 +100,83 @@ public class Server extends Thread {
 
         }
 
-        public void processCommand(NetworkCommand command) {
-            switch (command) {
-                case LIST_ROOMS:
-                    break;
-                case CHOOSE_ROOM:
-                    break;
-                default:
-                    System.out.println("Error");
+        public void processCommand(NCommand command) {
+            try {
+                switch (command.getCommand()) {
+                    case LIST_ROOMS:
+                        listRooms();
+                        break;
+                    case CHOOSE_ROOM:
+                        chooseRoom(command.getRoom());
+                        break;
+                    default:
+                        System.out.println("Error");
+                }
+            } catch (IOException ex) {
             }
         }
-        
+
         public void listRooms() throws IOException {
             NCommand reply = new NCommand();
             reply.setRooms(rooms.getRooms());
-            
+
             poos.writeObject(reply);
         }
-        
-        public void chooseRoom(int room) {
-            if(rooms.chooseRoom(ID, room)) {
+
+        public void chooseRoom(int room) throws IOException {
+            NCommand reply = new NCommand();
+
+            if (rooms.chooseRoom(ID, room)) {
                 // room chosen tell client
+                reply.setCommand(NetworkCommand.ROOM_ACQ);
             } else {
                 // room taken tell client
+                reply.setCommand(NetworkCommand.ROOM_FULL);
+                reply.setRooms(rooms.getRooms());
             }
+
+            poos.writeObject(reply);
         }
 
         public void closeConnection() {
             try {
                 this.client.close();
             } catch (IOException ex) {
+            }
+        }
+
+        public Socket getClient() {
+            return client;
+        }
+    }
+
+    //RoomWatch Section
+    protected class RoomWatch extends Thread {
+
+        @Override
+        public void run() {
+            while (!this.isInterrupted()) {
+                int[][] currentRooms = rooms.getRooms();
+
+                for (int i = 0; i < currentRooms.length; i++) {
+                    boolean roomFull = true;
+
+                    for (int j = 0; j < currentRooms[i].length; j++) {
+                        if (currentRooms[i][j] == 0) {
+                            roomFull = false;
+                        }
+                    }
+
+                    if (roomFull) {
+                        int ID1 = currentRooms[i][0];
+                        int ID2 = currentRooms[i][1];
+                        rooms.clearRoom(i);
+                        Socket p1 = clients[ID1].getClient();
+                        Socket p2 = clients[ID2].getClient();
+
+                        new Thread(new NMMServiceThread(p1, p2)).start();
+                    }
+                }
             }
         }
     }

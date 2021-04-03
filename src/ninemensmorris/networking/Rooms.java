@@ -53,6 +53,18 @@ public class Rooms {
         return success;
     }
 
+    public void clearRoom(int room) {
+        try {
+            writeLock.lock();
+
+            for (int i = 0; i < rooms[room].length; i++) {
+                rooms[room][i] = 0;
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
     public int[][] getRooms() {
         try {
             readLock.lock();
