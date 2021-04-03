@@ -170,9 +170,16 @@ public class Server extends Thread {
                     if (roomFull) {
                         int ID1 = currentRooms[i][0];
                         int ID2 = currentRooms[i][1];
+                        
                         rooms.clearRoom(i);
+                        
                         Socket p1 = clients[ID1].getClient();
                         Socket p2 = clients[ID2].getClient();
+                        
+                        clients[ID1].interrupt();
+                        clients[ID2].interrupt();
+                        clients[ID1] = null;
+                        clients[ID2] = null;
 
                         new Thread(new NMMServiceThread(p1, p2)).start();
                     }
