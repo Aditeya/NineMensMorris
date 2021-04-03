@@ -24,7 +24,7 @@ public class Server extends Thread {
 
     final public static int MAX_ROOMS = 12;         // 12 rooms
     final public static int MAX_CLIENTS = 24;       // 2 clients per room
-    final public static int ROOMWATCH_PERIOD = 10;  // Time taken to run RoomWatch Thread
+    final public static int ROOMWATCH_PERIOD = 3;  // Time taken to run RoomWatch Thread
     final public static int PORT_NUMBER = 9999;     // Port number for the server
 
     private ServerSocket serverSocket;
@@ -46,7 +46,7 @@ public class Server extends Thread {
     @Override
     public void run() {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate( new RoomWatch(), 5, ROOMWATCH_PERIOD, TimeUnit.SECONDS);
+        exec.scheduleAtFixedRate( new RoomWatch(), 0, ROOMWATCH_PERIOD, TimeUnit.SECONDS);
         
         while (!this.isInterrupted()) {
             try {
@@ -109,6 +109,9 @@ public class Server extends Thread {
                     case CHOOSE_ROOM:
                         chooseRoom(command.getRoom());
                         break;
+                    case CONFIRM:
+                        this.interrupt();
+                        break;
                     default:
                         System.out.println("Error");
                 }
@@ -120,6 +123,7 @@ public class Server extends Thread {
             NCommand reply = new NCommand();
             reply.setRooms(rooms.getRooms());
 
+            poos.reset();
             poos.writeObject(reply);
         }
 
@@ -135,6 +139,7 @@ public class Server extends Thread {
                 reply.setRooms(rooms.getRooms());
             }
 
+            poos.reset();
             poos.writeObject(reply);
         }
 
