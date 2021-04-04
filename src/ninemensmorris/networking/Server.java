@@ -17,6 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The Server thread accepts new incoming connections and passes them to the
+ * SubServer thread. The RoomWatch thread watches for full rooms and sends the
+ * sockets to a new NMMServiceThread.
  *
  * @author aditeya
  */
@@ -24,7 +27,7 @@ public class Server extends Thread {
 
     final public static int MAX_ROOMS = 12;         // 12 rooms
     final public static int MAX_CLIENTS = 24;       // 2 clients per room
-    final public static int ROOMWATCH_PERIOD = 3;  // Time taken to run RoomWatch Thread
+    final public static int ROOMWATCH_PERIOD = 3;   // Time taken to run RoomWatch Thread
     final public static int PORT_NUMBER = 9999;     // Port number for the server
 
     private ServerSocket serverSocket;
@@ -32,6 +35,7 @@ public class Server extends Thread {
     private Rooms rooms;
 
     /**
+     * Creates an instance of the server
      */
     public Server() {
         try {
@@ -45,9 +49,11 @@ public class Server extends Thread {
 
     @Override
     public void run() {
+        // Creates and runs the RoomWatch Thread every second defined in ROOMWATCH_PERIOD
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate( new RoomWatch(), 0, ROOMWATCH_PERIOD, TimeUnit.SECONDS);
-        
+        exec.scheduleAtFixedRate(new RoomWatch(), 0, ROOMWATCH_PERIOD, TimeUnit.SECONDS);
+
+        // Starts listening for sockets and assigns them to a SubServer thread
         while (!this.isInterrupted()) {
             try {
                 Socket client = this.serverSocket.accept();
@@ -58,6 +64,12 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * Takes a Client socket, assigns an ID and and starts a SubServer thread
+     * which is added to the clients array
+     *
+     * @param client Client socket to be assigned
+     */
     public void assignClientToThread(Socket client) {
         for (int i = 0; i < MAX_CLIENTS; i++) {
             if (this.clients[i] == null) {
@@ -68,7 +80,10 @@ public class Server extends Thread {
         }
     }
 
-    // SubServer Section
+    // SubServer Thread Class Section
+    /**
+     * The SubServer Class is used to deal with the client and room selection.
+     */
     protected class SubServer extends Thread {
 
         private final int ID;
@@ -77,6 +92,12 @@ public class Server extends Thread {
         private ObjectOutputStream poos;
         private ObjectInputStream pois;
 
+        /**
+         * SubServer Constructor which takes in client ID and Socket
+         *
+         * @param ID client ID
+         * @param client client Socket
+         */
         public SubServer(int ID, Socket client) {
             this.ID = ID;
             this.client = client;
@@ -90,6 +111,7 @@ public class Server extends Thread {
 
         @Override
         public void run() {
+            // Accepts a NCommand Object, from the client, and processes that command.
             while (!this.isInterrupted()) {
                 try {
                     NCommand command = (NCommand) pois.readObject();
@@ -100,6 +122,12 @@ public class Server extends Thread {
 
         }
 
+        /**
+         * Reads the command parameter of the NCommand instance and calls the
+         * correct method.
+         *
+         * @param command NCommand Object to be processed
+         */
         public void processCommand(NCommand command) {
             try {
                 switch (command.getCommand()) {
@@ -119,6 +147,12 @@ public class Server extends Thread {
             }
         }
 
+        /**
+         * Gets the room list array from the Rooms Object and sets it in a new
+         * NCommand instance which is sent to Client.
+         *
+         * @throws java.io.IOException Object failed to send
+         */
         public void listRooms() throws IOException {
             NCommand reply = new NCommand();
             reply.setRooms(rooms.getRooms());
@@ -127,6 +161,14 @@ public class Server extends Thread {
             poos.writeObject(reply);
         }
 
+        /**
+         * Selects the room specified in the room parameter If the room is
+         * chosen, a ROOM_ACQ command is sent If not, a ROOM_FULL command w/
+         * room list is sent
+         *
+         * @param room Room number to be selected.
+         * @throws java.io.IOException Object failed to send
+         */
         public void chooseRoom(int room) throws IOException {
             NCommand reply = new NCommand();
 
@@ -143,6 +185,9 @@ public class Server extends Thread {
             poos.writeObject(reply);
         }
 
+        /**
+         * Closes the client socket connection.
+         */
         public void closeConnection() {
             try {
                 this.client.close();
@@ -155,7 +200,11 @@ public class Server extends Thread {
         }
     }
 
-    //RoomWatch Section
+    //RoomWatch Thread Class Section
+    /**
+     * The RoomWatch Class used to watch for rooms that are full and start a new
+     * game for them.
+     */
     protected class RoomWatch extends Thread {
 
         @Override
@@ -163,9 +212,11 @@ public class Server extends Thread {
             while (!this.isInterrupted()) {
                 int[][] currentRooms = rooms.getRooms();
 
+                // iterate through current rooms
                 for (int i = 0; i < currentRooms.length; i++) {
                     boolean roomFull = true;
 
+                    // check if any rooms are 0 which means its not full
                     for (int j = 0; j < currentRooms[i].length; j++) {
                         if (currentRooms[i][j] == 0) {
                             roomFull = false;
@@ -173,15 +224,20 @@ public class Server extends Thread {
                         }
                     }
 
+                    /**
+                     * If the room is full take the sockets and start a new
+                     * thread and clear the client and room list.
+                     * It also interrupts the SubServer thread for those clients.
+                     */
                     if (roomFull) {
                         int ID1 = currentRooms[i][0];
                         int ID2 = currentRooms[i][1];
-                        
+
                         rooms.clearRoom(i);
-                        
+
                         Socket p1 = clients[ID1].getClient();
                         Socket p2 = clients[ID2].getClient();
-                        
+
                         clients[ID1].interrupt();
                         clients[ID2].interrupt();
                         clients[ID1] = null;
