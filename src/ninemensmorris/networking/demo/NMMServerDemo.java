@@ -9,6 +9,8 @@ import java.util.Scanner;
 import ninemensmorris.networking.Server;
 
 /**
+ * An Example of how the server would function.
+ * The actual server would look similar but with more functionality.
  *
  * @author aditeya
  */
@@ -17,14 +19,17 @@ public class NMMServerDemo {
     private final static Scanner INPUT = new Scanner(System.in);
 
     /**
+     * Main method to start the server.
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // Create and start the server thread.
         Server server = new Server();
         Thread serverThread = new Thread(server);
-
         serverThread.start();
 
+        // Server Cli Interface
         boolean run = true;
         while (run) {
             System.out.print("Server> ");
@@ -44,10 +49,19 @@ public class NMMServerDemo {
         }
     }
 
+    /**
+     * Prints out the help menu.
+     */
     private static void printHelp() {
         System.out.println("1. kill-server\n2.");
     }
 
+    /**
+     * Ask if the user is sure to kill the server.
+     * default response is N and y if yes.
+     * 
+     * @return user answer
+     */
     private static boolean confirmKill() {
         System.out.print("Are you sure you want to shutdown the server? [y/N]: ");
         String ans = INPUT.nextLine();
