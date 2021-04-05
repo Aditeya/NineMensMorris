@@ -1290,74 +1290,8 @@ public class NMMLogic {
      */
     public void cmdPrint(PrintType type) {
 
-        //checks if it's raw print, no need to read file then
-        if (type == PrintType.RAW_VALUE || type == PrintType.RAW_LOC) {
-            //Checks raw type, iterates an outputs accordingly 
-            switch (type) {
-                case RAW_LOC:
-                    for (int i = 0; i < nmmBoard.length; i++) {
-                        for (int j = 0; j < nmmBoard[i].length; j++) {
-                            System.out.print(nmmBoard[i][j].getCoinSlot());
-                        }
-                        System.out.println("");
-                    }
-                    break;
-                case RAW_VALUE:
-                    for (int i = 0; i < nmmBoard.length; i++) {
-                        for (int j = 0; j < nmmBoard[i].length; j++) {
-                            System.out.print(nmmBoard[i][j].getCoin());
-                        }
-                        System.out.println("");
-                    }
-                    break;
-            }
-            //if the type is not raw, reads the board and inserts values, then prints
-        } else {
-            try (BufferedReader in
-                    = new BufferedReader(
-                            new InputStreamReader(
-                                    getClass().getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
-                //Reads File and Buils String
-                StringBuilder sb = new StringBuilder();
-                String line = in.readLine();
-
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    line = in.readLine();
-                }
-
-                String cmdBoard = sb.toString();
-                //Reads File and Buils String Done
-
-                //replaces 'o' with loc
-                if (type == PrintType.LOC) {
-                    for (int i = 0; i < nmmBoard.length; i++) {
-                        for (int j = 0; j < nmmBoard[i].length; j++) {
-                            cmdBoard = cmdBoard.replaceFirst("o", nmmBoard[i][j].getCoinSlot());
-                        }
-                    }
-                } //replaces 'o' with value
-                else if (type == PrintType.VALUE) {
-                    for (int i = 0; i < nmmBoard.length; i++) {
-                        for (int j = 0; j < nmmBoard[i].length; j++) {
-                            cmdBoard = cmdBoard.replaceFirst("o", "" + nmmBoard[i][j].getCoinInt());
-                        }
-                    }
-                }
-
-                //finally prints the board
-                System.out.println(cmdBoard);
-
-            } //politely handles errors
-            catch (FileNotFoundException ex) {
-                System.out.println("The required file could not be found\n"
-                        + "Please use RAW_LOC or RAW_VALUE instead");
-            } catch (IOException ex) {
-                System.out.println("An error occured while reading from the file\n"
-                        + "Please use RAW_LOC or RAW_VALUE instead");
-            }
-        }
+        //Uses the static function instead of rewriting code
+        NMMLogic.cmdPrint(this.nmmBoard, type);
     }
     
      /**
