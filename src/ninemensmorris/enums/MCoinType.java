@@ -16,12 +16,14 @@
  */
 package ninemensmorris.enums;
 
+import java.io.Serializable;
+
 /**
  * An Enum for the coin type Holds Empty, Black or White
  *
  * @author eltojaro
  */
-public enum MCoinType {
+public enum MCoinType implements Serializable{
     /** Indicates No Coin. The slot is empty */
     EMPTY,
     /** Indicates White Coin. The slot holds a White Coin */

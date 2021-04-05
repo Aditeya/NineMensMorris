@@ -16,6 +16,7 @@
  */
 package ninemensmorris;
 
+import java.io.Serializable;
 import ninemensmorris.enums.MCoinType;
 
 /**
@@ -24,7 +25,7 @@ import ninemensmorris.enums.MCoinType;
  *
  * @author eltojaro
  */
-public class NMMCoin {
+public class NMMCoin implements Serializable{
 
     /** Holds Where coin is empty black or white */
     private MCoinType coinType;

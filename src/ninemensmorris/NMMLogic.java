@@ -74,9 +74,12 @@ public class NMMLogic {
     /**
      * Default Constructor, intializes a RTU game
      */
-    NMMLogic() {
+
       
-        //checks if slotIndexRef has no values, initilizes it once
+    //checks if slotIndexRef has no values, initilizes it once
+    public NMMLogic() {
+
+        //checks if slotLkUp has no values, initilizes it once
         if (slotIndxRef == null) {
             try {
                 slotIndxRef = (JSONObject) new JSONParser().parse(
