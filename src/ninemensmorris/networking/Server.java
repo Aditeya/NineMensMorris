@@ -236,13 +236,13 @@ public class Server extends Thread {
 
                         rooms.clearRoom(i);
 
-                        Socket p1 = clients[ID1].getClient();
-                        Socket p2 = clients[ID2].getClient();
+                        Socket p1 = clients[ID1-1].getClient();
+                        Socket p2 = clients[ID2-1].getClient();
 
-                        clients[ID1].interrupt();
-                        clients[ID2].interrupt();
-                        clients[ID1] = null;
-                        clients[ID2] = null;
+                        clients[ID1-1].interrupt();
+                        clients[ID2-1].interrupt();
+                        clients[ID1-1] = null;
+                        clients[ID2-1] = null;
 
                         new Thread(new NMMServiceThread(p1, p2)).start();
                     }
