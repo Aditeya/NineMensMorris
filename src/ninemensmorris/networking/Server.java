@@ -33,6 +33,7 @@ public class Server extends Thread {
     private ServerSocket serverSocket;
     private SubServer[] clients;
     private Rooms rooms;
+    private int clientUID;
 
     /**
      * Creates an instance of the server
@@ -42,6 +43,7 @@ public class Server extends Thread {
             this.serverSocket = new ServerSocket(PORT_NUMBER);
             this.clients = new SubServer[MAX_CLIENTS];
             this.rooms = new Rooms(MAX_ROOMS);
+            this.clientUID = 1;
         } catch (IOException ex) {
 
         }
@@ -71,13 +73,12 @@ public class Server extends Thread {
      * @param client Client socket to be assigned
      */
     public void assignClientToThread(Socket client) {
-        for (int i = 0; i < MAX_CLIENTS; i++) {
-            if (this.clients[i] == null) {
-                this.clients[i] = new SubServer(i, client);
-                this.clients[i].start();
-                return;
+            // TODO: MAX_CLIENT handling
+            if (this.clients[clientUID-1] == null) {
+                this.clients[clientUID-1] = new SubServer(clientUID, client);
+                this.clients[clientUID-1].start();
+                clientUID++;
             }
-        }
     }
 
     // SubServer Thread Class Section
