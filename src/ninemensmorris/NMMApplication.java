@@ -139,7 +139,7 @@ for(int j =0,k=1 ;j<arrVbox.size();j++,k++){
         //Button Transition
         btn1.setOnAction(e -> primaryStage.setScene(scene2));
         btn2.setOnAction(e ->{  primaryStage.setScene(scene);
-        NMMLogic nmm = new NMMLogic();
+        //NMMLogic nmm = new NMMLogic();
         
         BoardComp bc = new BoardComp();
         
