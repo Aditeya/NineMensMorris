@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package ninemensmorris.networking.demo;
-
 import java.util.Scanner;
 import ninemensmorris.networking.Server;
 
