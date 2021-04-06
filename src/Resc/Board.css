@@ -8,16 +8,8 @@ and open the template in the editor.
     Author     : LENOVO
 */
 
-.vbox {
-    -fx-fill: #9999ff;
-    -fx-padding: 15;
-    -fx-spacing: 10;
-      -fx-stroke-width: 10;  
-}
-    .hbox {
-    -fx-fill: #2f4f4f;
-    -fx-padding: 15;
-    -fx-spacing: 10;
-    -fx-stroke: appworkspace;
-  -fx-stroke-width: 10;  
+#c{
+    -fx-opacity:0.5;
+    -fx-background: rgb(219,112,147);
+    -fx-fill: #e3718c;
 }
