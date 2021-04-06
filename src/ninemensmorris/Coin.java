@@ -17,11 +17,8 @@
 package ninemensmorris;
 import java.util.HashMap;
 import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import static ninemensmorris.NMMApplication.POS_SIZE;
-import ninemensmorris.NMMApplication;
-
 import ninemensmorris.enums.MCoinType;
 
 /**
