@@ -104,6 +104,7 @@ public class NMMServiceThread extends Thread {
                             //Consider throwing exception here
                             break;
                     }
+                    return move;
                 }
 
                 @Override
@@ -119,19 +120,19 @@ public class NMMServiceThread extends Thread {
 
                     //String slot = new String();
                     //NMMCoin coin = null;
-
-                    PlayerTurn prevTurn = PlayerTurn.BLACK;
-                    InputType prevType = InputType.NONE;
+                    //PlayerTurn prevTurn = PlayerTurn.BLACK;
+                    //InputType prevType = InputType.NONE;
+                    boolean wrongMove = false;
                     while (nmm.getWinner() == MCoinType.EMPTY) {
                         try {
                             PlayerTurn turn = nmm.getNmmTurn();
                             InputType input = nmm.getInput();
 
                             // Wrong move indicator
-                            boolean wrongMove = prevTurn.equals(turn);
+                            //wrongMove = prevTurn.equals(turn);
 
                             //Sends the board with turn and wrong move information
-                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), input,wrongMove);
+                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), input, wrongMove);
                             sendBoard(board);
 
                             switch (input) {
@@ -152,31 +153,43 @@ public class NMMServiceThread extends Thread {
                                 case MOVE:
                                     printPlayerTurn(turn, 3);
                                     String slot = receiveMove(turn).getMove();
+                                    if (!(nmm.getVldMvs(slot).length == 0)) {
+                                        wrongMove = true;
+                                        break;
+                                    }
 
                                     System.out.println(turn + " Player, Move coin " + slot + " to? match regex [A-H]+[1-3]");
-                                    
+
                                     String slot2 = receiveMove(turn).getMove();
-                                    
+                                    if (!(nmm.getVldMvs(slot).length == 0)) {
+                                        wrongMove = true;
+                                        break;
+                                    }
+
                                     NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
                                     NMMCoin coin2 = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot2, false, null, null);
 
                                     //Sets the coin
                                     sendCoin.put(coin);
                                     sendCoin.put(coin2);
+                                    wrongMove = false;
                                     break;
 
                                 default:
                                     System.out.println("oh snep something broke");
                                     System.exit(-1);
                             }
-                            
-                            if(input == InputType.PLACE || input == InputType.REMOVE) {
+
+                            if (input == InputType.PLACE || input == InputType.REMOVE) {
                                 String slot = receiveMove(turn).getMove();
-                                NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
-                                sendCoin.put(coin);
+                                if (!(nmm.getVldMvs(slot).length == 0)) {
+                                    NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
+                                    sendCoin.put(coin);
+                                    wrongMove = false;
+                                }
                             }
-                            
-                            prevTurn = turn;
+
+                            //prevTurn = turn;
                             Thread.sleep(50);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
