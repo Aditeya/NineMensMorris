@@ -39,7 +39,7 @@ public class NMMClientDemo {
             Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-
+            
             // Client CLI interface
             boolean run = true;
             while (run) {
