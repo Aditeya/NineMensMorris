@@ -67,6 +67,8 @@ public class NMMServiceThread extends Thread {
                             System.out.println(turn + " Player, Select an opposing coin to be removed.\nEnter 'X' to conceed coin removal");
                             break;
                         case 3:
+                            System.out.println(turn + " Player, Select an coin to be moved");
+                            break;
                         default:
                             System.out.println("Incorrect Usage. Check Docs.");
                             return;
@@ -87,35 +89,52 @@ public class NMMServiceThread extends Thread {
                     nmm.cmdPrint(PrintType.VALUE);
                 }
 
+                private NMMmove receiveMove(PlayerTurn turn) throws IOException, ClassNotFoundException {
+                    // Reading the correct move from the correct socket
+                    NMMmove move;
+                    switch (turn) {
+                        case WHITE: //Play white turn
+                            move = (NMMmove) p1ois.readObject();
+                            break;
+                        case BLACK: //Play black turn
+                            move = (NMMmove) p2ois.readObject();
+                            break;
+                        default:    //Error
+                            move = new NMMmove("A1");
+                            //Consider throwing exception here
+                            break;
+                    }
+                }
+
                 @Override
                 public void run() {
                     // Sends an empty board with the player information, i.e. p1 is WHITE and p2 is BLACK
                     try {
-                        NMMboard turn = new NMMboard(null, MCoinType.WHITE, false);
+                        NMMboard turn = new NMMboard(null, MCoinType.WHITE, null, false);
                         p1oos.writeObject(turn);
-                        turn = new NMMboard(null, MCoinType.BLACK, false);
+                        turn = new NMMboard(null, MCoinType.BLACK, null, false);
                         p2oos.writeObject(turn);
                     } catch (IOException ex) {
                     }
 
-                    String slot = new String();
-                    String slot2 = new String();
-                    NMMCoin coin = null;
-                    NMMCoin coin2 = null;
+                    //String slot = new String();
+                    //NMMCoin coin = null;
 
                     PlayerTurn prevTurn = PlayerTurn.BLACK;
+                    InputType prevType = InputType.NONE;
                     while (nmm.getWinner() == MCoinType.EMPTY) {
                         try {
                             PlayerTurn turn = nmm.getNmmTurn();
+                            InputType input = nmm.getInput();
 
                             // Wrong move indicator
                             boolean wrongMove = prevTurn.equals(turn);
 
                             //Sends the board with turn and wrong move information
-                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), wrongMove);
+                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), input,wrongMove);
                             sendBoard(board);
 
-                            switch (nmm.getInput()) {
+                            switch (input) {
                                 case NONE:
                                     while (nmm.getInput() == InputType.NONE) {
                                         Thread.sleep(150);
@@ -124,72 +143,44 @@ public class NMMServiceThread extends Thread {
 
                                 case PLACE:
                                     printPlayerTurn(turn, 1);
-
-                                    slot = input.nextLine();
-                                    if (!slot.matches("[A-H]+[1-3]")) {
-                                        System.out.println("Does not match regex, please try again");
-                                        break;
-                                    }
-
-                                    coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
-
-                                    //Sets the coin
-                                    sendCoin.put(coin);
-                                    Thread.sleep(50);
                                     break;
 
                                 case REMOVE:
                                     printPlayerTurn(turn, 2);
-                                    slot = input.nextLine();
-                                    if (!slot.matches("[A-H]+[1-3]") && !slot.equals("X")) {
-                                        System.out.println("Does not match regex, please try again");
-                                        break;
-                                    }
-
-                                    coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
-
-                                    //Sets the coin
-                                    sendCoin.put(coin);
-                                    Thread.sleep(50);
                                     break;
 
                                 case MOVE:
-                                    System.out.println(turn + " Player, Select an coin to be moved");
-                                    System.out.println("match regex [A-H]+[1-3]");
+                                    printPlayerTurn(turn, 3);
+                                    String slot = receiveMove(turn).getMove();
 
-                                    slot = input.nextLine();
-                                    if (!slot.matches("[A-H]+[1-3]")) {
-                                        System.out.println("Does not match regex, please try again");
-                                        break;
-                                    }
-
-                                    System.out.println(turn + " Player, Move coin " + slot + " to?");
-                                    System.out.println("match regex [A-H]+[1-3]");
-
-                                    slot2 = input.nextLine();
-                                    if (!slot.matches("[A-H]+[1-3]")) {
-                                        System.out.println("Does not match regex, please try again");
-                                        break;
-                                    }
-
-                                    coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
-                                    coin2 = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot2, false, null, null);
+                                    System.out.println(turn + " Player, Move coin " + slot + " to? match regex [A-H]+[1-3]");
+                                    
+                                    String slot2 = receiveMove(turn).getMove();
+                                    
+                                    NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
+                                    NMMCoin coin2 = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot2, false, null, null);
 
                                     //Sets the coin
                                     sendCoin.put(coin);
                                     sendCoin.put(coin2);
-                                    Thread.sleep(50);
                                     break;
 
                                 default:
                                     System.out.println("oh snep something broke");
                                     System.exit(-1);
-
                             }
-
+                            
+                            if(input == InputType.PLACE || input == InputType.REMOVE) {
+                                String slot = receiveMove(turn).getMove();
+                                NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
+                                sendCoin.put(coin);
+                            }
+                            
+                            prevTurn = turn;
+                            Thread.sleep(50);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
+                        } catch (IOException | ClassNotFoundException ex) {
                             Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
                         }
 

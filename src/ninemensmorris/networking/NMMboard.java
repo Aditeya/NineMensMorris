@@ -7,6 +7,7 @@ package ninemensmorris.networking;
 
 import java.io.Serializable;
 import ninemensmorris.NMMCoin;
+import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
 
 /**
@@ -18,6 +19,7 @@ public class NMMboard implements Serializable {
 
     private final NMMCoin[][] nmmBoard;
     private final MCoinType turn;
+    private final InputType iType;
     private final boolean wrongMove;
 
     /**
@@ -25,11 +27,13 @@ public class NMMboard implements Serializable {
      * 
      * @param nmmBoard  Double array of NMMCoin for board state
      * @param turn      Current turn of player of the game
+     * @param iType     Current InputType
      * @param wrongMove To be set if a move is invalid
      */
-    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn, boolean wrongMove) {
+    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn, InputType iType, boolean wrongMove) {
         this.nmmBoard = nmmBoard;
         this.turn = turn;
+        this.iType = iType;
         this.wrongMove = wrongMove;
     }
 
@@ -39,6 +43,10 @@ public class NMMboard implements Serializable {
 
     public MCoinType getTurn() {
         return turn;
+    }
+
+    public InputType getiType() {
+        return iType;
     }
 
     public boolean isWrongMove() {
