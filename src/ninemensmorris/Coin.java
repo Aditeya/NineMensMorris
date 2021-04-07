@@ -16,7 +16,13 @@
  */
 package ninemensmorris;
 import java.util.HashMap;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.shape.Circle;
 import static ninemensmorris.NMMApplication.POS_SIZE;
 import ninemensmorris.enums.MCoinType;
@@ -50,31 +56,76 @@ class Coin {
         return posY;
     }
     
-     public Group ReturnCoin(HashMap bcs) {
+     public Group ReturnCoin() {
         Group CoinGroup = new Group();
+        
+        
+        
         this.bg = new Circle(POS_SIZE/15*3.125);
         this.bg.setId("coinbg");
         this.bg.setTranslateX(posX);
         this.bg.setTranslateY(posY);
-       Circle c = new Circle(POS_SIZE/15*3.125);
+       
+        
+        Circle c = new Circle(POS_SIZE/15*3.125);
        c.setTranslateX(this.posX-4);
        c.setTranslateY(this.posY-4);
-       
-       
-       
-       c.setOnMouseClicked(e->{
-           bcs.remove(this.slot);
-           System.out.println("Removing()"+bcs.keySet());
-       });
-       
-       CoinGroup.getChildren().addAll(bg,c);
+       if(this.type != MCoinType.EMPTY){
+           c.setOnDragDetected((MouseEvent event) -> {
+            System.out.println("Circle 1 drag detected");
+            Dragboard db = c.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("");
+            db.setContent(content);
+        });
+        c.setOnMouseDragged((MouseEvent event) -> {
+            event.setDragDetect(true);
+        });
+           
+           
+       }
        if(this.type==MCoinType.BLACK){
                  c.setId("coinblack");
+                CoinGroup.getChildren().addAll(bg);
+                
+                
+                
+
        }else if(this.type==MCoinType.WHITE) {
            c.setId("coinwhite");
-       }else{
-           c.setId(slot);
+                  CoinGroup.getChildren().addAll(bg);
        }
+       else{
+           c.setId("slot");
+           c.setRadius(10);
+           c.setTranslateX(this.posX);
+           c.setTranslateY(this.posY);
+           
+           c.setOnDragOver(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                if (event.getGestureSource() != c && event.getDragboard().hasString()) {
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
+
+                event.consume();
+            }
+        });
+
+        c.setOnDragDropped((DragEvent event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                System.out.println("Dropped: ");
+                event.setDropCompleted(true);
+            } else {
+                event.setDropCompleted(false);
+            }
+            event.consume();
+        });
+           
+           
+       }
+       
+       CoinGroup.getChildren().addAll(c);
        return CoinGroup;
     }
     public Circle getBg() {

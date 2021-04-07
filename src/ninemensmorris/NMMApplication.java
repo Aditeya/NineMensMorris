@@ -42,6 +42,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import ninemensmorris.enums.MCoinType;
 import ninemensmorris.networking.NCommand;
 import ninemensmorris.networking.NetworkCommand;
 import ninemensmorris.networking.demo.NMMClientDemo;
@@ -56,24 +57,20 @@ public class NMMApplication extends Application {
     public static final int POS_SIZE = 100;
     public static final int WIDTH = 7;
     public static final int HEIGHT = 7;
-    public HashMap<String, Group> bcs = new HashMap<>();
-
- 
-
+    public HashMap<String,Coin> bcs = new HashMap<>();
     //Rooms - To choose,Show Availibility and select Rooms
     public ArrayList<RoomsGUI> arrRoomSlot = new ArrayList<RoomsGUI>();
     int count_Room = 1;
     RoomsGUI rm = new RoomsGUI();
-
 //Creating Board in Screen    
     private Parent createContent() {
         Pane root = new Pane();
         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
         BoardComp bc = new BoardComp();
-        bc.GenerateBoard(root, bcs);
+        bc.GenerateBoard(root);
+        bc.CreateWithCoins(bcs, root);
         return root;
     }
-
     @Override
     public void start(Stage primaryStage) {
 //Scene 1 - Intro Scene
@@ -92,7 +89,6 @@ public class NMMApplication extends Application {
         layout1.setId("layout1");
         Scene scene1 = new Scene(layout1);
         scene1.getStylesheets().add("Resc/NMMBoard.css");
-
 //Scene 2 - Select Rooms 
         Label label2 = new Label("Choose your Room");
         Button btn2 = new Button("Let's Play");
@@ -102,10 +98,8 @@ public class NMMApplication extends Application {
         layout2.setAlignment(Pos.CENTER);
         layout2.setId("layout2");
         layout2.setSpacing(POS_SIZE / 2);
-
-        //Rooms in 2 Rows
+ //Rooms in 2 Rows
         int num_Rooms = 12; //Hard coded, Number of Rooms available at Server
-
         /*Arraging the Rooms to a Tile View with 2 rows and appropriate number of columns*/
         ArrayList rooms = new ArrayList(); //ArrayList of Room GUI Components
         VBox vb_roomView = new VBox();
@@ -174,7 +168,10 @@ public class NMMApplication extends Application {
         scene2.getStylesheets().add("Resc/NMMBoard.css");
 //Scene 3 - Game Board
         Button btnend_game = new Button("End Game");
-        HBox hbMenu = new HBox(btnend_game);
+        Button btnaddCoin = new Button(" aDD BTN");
+       
+        
+        HBox hbMenu = new HBox(btnend_game,btnaddCoin);
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
         VBox root = new VBox();
@@ -183,6 +180,33 @@ public class NMMApplication extends Application {
         Label tPlayerName = new Label("Player 1");
         Button btnStat = new Button("Button Start");
         root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);
+         btnaddCoin.setOnAction(e->{
+              double d[] = getSlot("A3");
+                   Coin bc = new Coin(MCoinType.WHITE, d[0] * POS_SIZE, d[1] * POS_SIZE, false,"A1");
+                   bcs.put("A3",bc);
+                  // System.out.println("BCS = "+bcs.keySet()); 
+                   
+                   d= getSlot("B1");
+                   Coin bc2 = new Coin(MCoinType.BLACK,d[0] * POS_SIZE,d[1] * POS_SIZE, false,"B1");
+                   bcs.put("B1",bc2);   
+                  // System.out.println("BCS = "+bcs.keySet());
+                   
+                  
+                  
+                  
+                  
+                  //Setting available moves in the initial phase
+                   d= getSlot("H1");
+                   Coin bc3 = new Coin(MCoinType.EMPTY,d[0] * POS_SIZE,d[1] * POS_SIZE, false,"B1");
+                   bcs.put("H1",bc3);
+             
+             
+             System.out.println("btn AddCOinads and Check ");
+        root.getChildren().removeAll(root.getChildren());
+        root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);
+     
+             
+    });
         Scene scene = new Scene(root);
         btnStat.setOnAction(e -> {
         });
@@ -225,6 +249,111 @@ public class NMMApplication extends Application {
         primaryStage.setTitle("Nine Men's Morris");
         primaryStage.setScene(scene);//chanfe to scene1
         primaryStage.show();
+    }
+    public double[] getSlot(String pos) {
+        double[] doubleArr = new double[2];
+        switch (pos) {
+            case "A1":
+                doubleArr[0] = 1;
+                doubleArr[1] = 1;
+                break;
+            case "A2":
+                doubleArr[0] = 3.5;
+                doubleArr[1] = 1;
+                break;
+            case "A3":
+                doubleArr[1] = 1;
+                doubleArr[0] = 6;
+                break;
+            case "B1":
+                doubleArr[1] = 2;
+                doubleArr[0] = 2;
+                break;
+            case "B2":
+                doubleArr[1] = 2;
+                doubleArr[0] = 3.5;
+                break;
+            case "B3":
+                doubleArr[1] = 2;
+                doubleArr[0] = 5;
+                break;
+            case "C1":
+                doubleArr[1] = 3;
+                doubleArr[0] = 3;
+                break;
+            case "C2":
+                doubleArr[1] = 3;
+                doubleArr[0] = 3.5;
+                break;
+            case "C3":
+                doubleArr[1] = 3;
+                doubleArr[0] = 4;
+                break;
+            case "D1":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 1;
+                break;
+            case "D2":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 2;
+                break;
+            case "D3":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 3;
+                break;
+            case "E1":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 4;
+                break;
+            case "E2":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 5;
+                break;
+            case "E3":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 6;
+                break;
+            case "F1":
+                doubleArr[1] = 4;
+                doubleArr[0] = 3;
+                break;
+            case "F2":
+                doubleArr[1] = 4;
+                doubleArr[0] = 3.5;
+                break;
+            case "F3":
+                doubleArr[1] = 4;
+                doubleArr[0] = 4;
+                break;
+            case "G1":
+                doubleArr[1] = 5;
+                doubleArr[0] = 2;
+                break;
+            case "G2":
+                doubleArr[1] = 5;
+                doubleArr[0] = 3.5;
+                break;
+            case "G3":
+                doubleArr[1] = 5;
+                doubleArr[0] = 5;
+                break;
+            case "H1":
+                doubleArr[1] = 6;
+                doubleArr[0] = 1;
+                break;
+            case "H2":
+                doubleArr[1] = 6;
+                doubleArr[0] = 3.5;
+                break;
+            case "H3":
+                doubleArr[1] = 6;
+                doubleArr[0] = 6;
+                break;
+            default:
+                doubleArr[0] = 0;
+                doubleArr[1] = 0;
+        }
+        return doubleArr;
     }
     public static void main(String[] args) throws InterruptedException {
         launch(args);
@@ -286,4 +415,5 @@ public class NMMApplication extends Application {
 
         return success;
     }
+
 }

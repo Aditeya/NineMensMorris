@@ -74,7 +74,7 @@
 
 }
 #coinblack {
-    -fx-fill: linear-gradient(to top left, violet, pink);
+    -fx-fill: linear-gradient(to top left, black, grey);
     -fx-stroke: whitesmoke;
 
 }
