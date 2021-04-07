@@ -5,7 +5,7 @@
     -fx-vgap: 10;
     -fx-hgap: 10;
     -fx-padding: 50;
-    -fx-background-color: linear-gradient(to bottom right, #4c9e97, #402237);/*Does Nothing for root lol*/
+    -fx-background-color: linear-gradient(to bottom right, #4c9e97, lightcoral);/*Does Nothing for root lol*/
 }
 .label{
     -fx-font-family: "Times New Roman", Times, serif;
@@ -21,10 +21,10 @@
     -fx-background-radius: 90;
     -fx-border-width:5;
     -fx-border-color: #003366;
-
     -fx-font-family: "Garamond";
     -fx-text-fill: #003366;
-    -fx-font-size: 20pt;
+    -fx-font-size: 17pt;
+    -fx-padding-bottom: 5;
 
 }.button:hover {
     opacity: 0.9;
@@ -92,19 +92,6 @@
     -fx-stroke: whitesmoke;
 
 }
-#Roomview{
-    -fx-fill: brown;
-    -fx-stroke: appworkspace;
-}   
-#RoomScene{
-    -fx-fill: blanchedalmond;
-    -fx-stroke: appworkspace;
-}
-
-#btn{
-    -fx-font-size: 15pt;
-    -fx-border-color: aliceblue;
-}
 
 /*Screen 1 - Intro*/
 #layout1{
@@ -120,12 +107,11 @@
 
 /*Screen 2 - Choosing Rooms*/
 #layout2{
-    -fx-padding: 10;
+    -fx-padding: 5;
     -fx-align-self: center;
    
 }
 #roomslot{
-    -fx-fill: linear-gradient(to bottom right, black,blue, pink);/*Does Nothing for root lol*/
     -fx-opacity:0.2;
     -fx-border-color:white;
     -fx-border-width:100;
@@ -133,22 +119,21 @@
     -fx-padding: 3 0 0 3 ;
     -fx-border-color: #003366;/*dark blue*/
 }
-#room {
+#room{
     -fx-border-color: #3e8069;
-    -fx-fill: #9999ff;
+    /*-fx-fill: #9999ff
+    -fx-background-color:linear-gradient);/*Vbox*/
     -fx-padding: 5;
     -fx-stroke-width: 10;  
 }
 #btnplus{
+    -fx-opacity:1;
     -fx-background-color: transparent;
-    -fx-border-color: #9999ff;
-   -fx-border-radius: 10;
+    -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-border-width:2;
-    -fx-border-color: #003366;
     -fx-font-family: "Garamond";
     -fx-text-fill: #003366;
-    -fx-font-size: 10pt;
+    -fx-font-size: 20 pt;
        
 }:hover #btnplus {
     opacity: 0.9;
@@ -157,12 +142,12 @@
 
 }
 #blackFilledStot{
-     opacity: 0.9;
+        -fx-opacity:1;
      -fx-fill: linear-gradient(to bottom, black,grey);/*Does Nothing for root lol*/
 
 }
 #whiteFilledStot{
- opacity: 0.9;
+       -fx-opacity:1;
      -fx-fill: linear-gradient(to bottom, white,pink);/*Does Nothing for root lol*/
     
 }

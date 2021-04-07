@@ -59,6 +59,9 @@ class Coin {
        Circle c = new Circle(POS_SIZE/15*3.125);
        c.setTranslateX(this.posX-4);
        c.setTranslateY(this.posY-4);
+       
+       
+       
        c.setOnMouseClicked(e->{
            bcs.remove(this.slot);
            System.out.println("Removing()"+bcs.keySet());
