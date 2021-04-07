@@ -131,6 +131,23 @@ public class NMMLogicDemo {
         
         
         Thread turnTh = new Thread(new Runnable() {
+            
+            private void printPlayerTurn(PlayerTurn turn, int msg) {
+                switch(msg){
+                    case 1:
+                        System.out.println(turn + " Player, Place a coin.");
+                        break;
+                    case 2:
+                        System.out.println(turn + " Player, Select an opposing coin to be removed.\nEnter 'X' to conceed coin removal");
+                        break;
+                    case 3:
+                    default:
+                        System.out.println("Incorrect Usage. Check Docs.");
+                        return;
+                }
+                
+                System.out.println("match regex [A-H]+[1-3]");
+            }
 
             @Override
             public void run() {
@@ -156,14 +173,11 @@ public class NMMLogicDemo {
                                 break;
                                 
                             case PLACE:
-                                System.out.println(nmm.getNmmTurn() + " Player, Place a "
-                                        + "coin.");
-                                System.out.println("match regex [A-H]+[1-3]");
+                                printPlayerTurn(nmm.getNmmTurn(), 1);
                                 slot = input.nextLine();
                                 if(!slot.matches("[A-H]+[1-3]")) //check for regex
                                 {
-                                    System.out.println("Does not match regex, "
-                                            + "please try again");
+                                    System.out.println("Does not match regex, please try again");
                                     break;
                                 }
                                 
@@ -175,19 +189,14 @@ public class NMMLogicDemo {
                                 break;
                                 
                             case REMOVE:
-                                System.out.println(nmm.getNmmTurn() + " Player, "
-                                        + "Select an opposing coin to be removed");
-                                
-                                System.out.println("match regex [A-H]+[1-3]");
-                                System.out.println("Enter 'X' to conceed coin removal");
+                                printPlayerTurn(nmm.getNmmTurn(), 2);
                                 slot = input.nextLine();
                                 if(!slot.matches("[A-H]+[1-3]")//check for regex
                                         //This checker is hot fix only, remove
                                         //it later
                                         && !slot.equals("X")) 
                                 {
-                                    System.out.println("Does not match regex, "
-                                            + "please try again");
+                                    System.out.println("Does not match regex, please try again");
                                     break;
                                 }
                                 
@@ -199,27 +208,23 @@ public class NMMLogicDemo {
                                 break;
                                 
                             case MOVE:
-                                System.out.println(nmm.getNmmTurn() + " Player, "
-                                        + "Select an coin to be moved");
+                                System.out.println(nmm.getNmmTurn() + " Player, Select an coin to be moved");
                                 
                                 System.out.println("match regex [A-H]+[1-3]");
                                 slot = input.nextLine();
                                 if(!slot.matches("[A-H]+[1-3]")) //check for regex
                                 {
-                                    System.out.println("Does not match regex, "
-                                            + "please try again");
+                                    System.out.println("Does not match regex, please try again");
                                     break;
                                 }
                                 
-                                System.out.println(nmm.getNmmTurn() + " Player, "
-                                        + "Move coin " + slot + " to?");
+                                System.out.println(nmm.getNmmTurn() + " Player, Move coin " + slot + " to?");
                                 
                                 System.out.println("match regex [A-H]+[1-3]");
                                 slot2 = input.nextLine();
                                 if(!slot.matches("[A-H]+[1-3]")) //check for regex
                                 {
-                                    System.out.println("Does not match regex, "
-                                            + "please try again");
+                                    System.out.println("Does not match regex, please try again");
                                     break;
                                 }
                                 

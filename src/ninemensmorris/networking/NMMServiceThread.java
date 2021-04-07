@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import ninemensmorris.NMMCoin;
 import ninemensmorris.NMMLogic;
 import ninemensmorris.NMMLogicDemo;
+import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
 import ninemensmorris.enums.PlayerTurn;
 import ninemensmorris.enums.PrintType;
@@ -55,7 +56,37 @@ public class NMMServiceThread extends Thread {
             ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
 
             // Thread Setup for the game
-            Thread setupTh = new Thread(new Runnable() {
+            Thread gameThread = new Thread(new Runnable() {
+
+                private void printPlayerTurn(PlayerTurn turn, int msg) {
+                    switch (msg) {
+                        case 1:
+                            System.out.println(turn + " Player, Place a coin.");
+                            break;
+                        case 2:
+                            System.out.println(turn + " Player, Select an opposing coin to be removed.\nEnter 'X' to conceed coin removal");
+                            break;
+                        case 3:
+                        default:
+                            System.out.println("Incorrect Usage. Check Docs.");
+                            return;
+                    }
+
+                    System.out.println("match regex [A-H]+[1-3]");
+                }
+
+                private void sendBoard(NMMboard board) throws IOException {
+                    //resets output streams to fix empty board being received by client
+                    p1oos.reset();
+                    p2oos.reset();
+                    //sends board to players
+                    p1oos.writeObject(board);
+                    p2oos.writeObject(board);
+
+                    //prints the board
+                    nmm.cmdPrint(PrintType.VALUE);
+                }
+
                 @Override
                 public void run() {
                     // Sends an empty board with the player information, i.e. p1 is WHITE and p2 is BLACK
@@ -67,61 +98,111 @@ public class NMMServiceThread extends Thread {
                     } catch (IOException ex) {
                     }
 
-                    PlayerTurn prevTurn = PlayerTurn.BLACK;     // used to check if a wrong move was submitted.
-                    while (nmm.getMenLeft() > 0) {  //CHANGE TO WHILE MEN LEFT
+                    String slot = new String();
+                    String slot2 = new String();
+                    NMMCoin coin = null;
+                    NMMCoin coin2 = null;
+
+                    PlayerTurn prevTurn = PlayerTurn.BLACK;
+                    while (nmm.getWinner() == MCoinType.EMPTY) {
                         try {
                             PlayerTurn turn = nmm.getNmmTurn();
-                            System.out.println(turn + " Player, Place a coin.");    // verbose
 
                             // Wrong move indicator
                             boolean wrongMove = prevTurn.equals(turn);
 
                             //Sends the board with turn and wrong move information
                             NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), wrongMove);
+                            sendBoard(board);
 
-                            //resets output streams to fix empty board being received by client
-                            p1oos.reset();
-                            p2oos.reset();
-                            //sends board to players
-                            p1oos.writeObject(board);
-                            p2oos.writeObject(board);
+                            switch (nmm.getInput()) {
+                                case NONE:
+                                    while (nmm.getInput() == InputType.NONE) {
+                                        Thread.sleep(150);
+                                    }
+                                    break;
 
-                            //prints the board
-                            nmm.cmdPrint(PrintType.VALUE);
+                                case PLACE:
+                                    printPlayerTurn(turn, 1);
 
-                            // Reading the correct move from the correct socket
-                            NMMmove move;
-                            switch (turn) {
-                                case WHITE: //Play white turn
-                                    move = (NMMmove) p1ois.readObject();
+                                    slot = input.nextLine();
+                                    if (!slot.matches("[A-H]+[1-3]")) {
+                                        System.out.println("Does not match regex, please try again");
+                                        break;
+                                    }
+
+                                    coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
+
+                                    //Sets the coin
+                                    sendCoin.put(coin);
+                                    Thread.sleep(50);
                                     break;
-                                case BLACK: //Play black turn
-                                    move = (NMMmove) p2ois.readObject();
+
+                                case REMOVE:
+                                    printPlayerTurn(turn, 2);
+                                    slot = input.nextLine();
+                                    if (!slot.matches("[A-H]+[1-3]") && !slot.equals("X")) {
+                                        System.out.println("Does not match regex, please try again");
+                                        break;
+                                    }
+
+                                    coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
+
+                                    //Sets the coin
+                                    sendCoin.put(coin);
+                                    Thread.sleep(50);
                                     break;
-                                default:    //Error
-                                    move = new NMMmove("A1");
-                                    //Consider throwing exception here
+
+                                case MOVE:
+                                    System.out.println(turn + " Player, Select an coin to be moved");
+                                    System.out.println("match regex [A-H]+[1-3]");
+
+                                    slot = input.nextLine();
+                                    if (!slot.matches("[A-H]+[1-3]")) {
+                                        System.out.println("Does not match regex, please try again");
+                                        break;
+                                    }
+
+                                    System.out.println(turn + " Player, Move coin " + slot + " to?");
+                                    System.out.println("match regex [A-H]+[1-3]");
+
+                                    slot2 = input.nextLine();
+                                    if (!slot.matches("[A-H]+[1-3]")) {
+                                        System.out.println("Does not match regex, please try again");
+                                        break;
+                                    }
+
+                                    coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
+                                    coin2 = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot2, false, null, null);
+
+                                    //Sets the coin
+                                    sendCoin.put(coin);
+                                    sendCoin.put(coin2);
+                                    Thread.sleep(50);
                                     break;
+
+                                default:
+                                    System.out.println("oh snep something broke");
+                                    System.exit(-1);
+
                             }
 
-                            // Creating and setting the coin
-                            String slot = move.getMove();
-                            NMMCoin coin = new NMMCoin(nmm.getNmmTurn().toMCntyp(), slot, false, null, null);
-                            sendCoin.put(coin);
-                            
-                            prevTurn = turn;
-                            Thread.sleep(50);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(NMMLogicDemo.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException | ClassNotFoundException ex) {
+                        } catch (IOException ex) {
                             Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
                         }
+
                     }
                 }
             });
 
-            setupTh.start();
-            this.nmm.nmmSetup(sendCoin, true);
+            gameThread.start();
+            this.nmm.nmmSetup(sendCoin, false);
+
+            while (nmm.getWinner() == MCoinType.EMPTY) {
+                nmm.nmmTurnHandle(sendCoin, true);
+            }
 
             player1.close();
             player2.close();
