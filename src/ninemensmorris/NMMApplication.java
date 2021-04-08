@@ -62,8 +62,14 @@ public class NMMApplication extends Application {
     public ArrayList<RoomsGUI> arrRoomSlot = new ArrayList<RoomsGUI>();
     int count_Room = 1;
     RoomsGUI rm = new RoomsGUI();
+    
+    int numWhite_CoinsLeft =9,numBlack_CoinsLeft =9;
+    
+    
+    
 //Creating Board in Screen    
     private Parent createContent() {
+        System.out.println("Creating COn");
         Pane root = new Pane();
         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
         BoardComp bc = new BoardComp();
@@ -181,34 +187,38 @@ public class NMMApplication extends Application {
         Button btnStat = new Button("Button Start");
         root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);
          btnaddCoin.setOnAction(e->{
-              double d[] = getSlot("A3");
-                   Coin bc = new Coin(MCoinType.WHITE, d[0] * POS_SIZE, d[1] * POS_SIZE, false,"A1");
-                   bcs.put("A3",bc);
-                  // System.out.println("BCS = "+bcs.keySet()); 
-                   
-                   d= getSlot("B1");
-                   Coin bc2 = new Coin(MCoinType.BLACK,d[0] * POS_SIZE,d[1] * POS_SIZE, false,"B1");
-                   bcs.put("B1",bc2);   
-                  // System.out.println("BCS = "+bcs.keySet());
-                   
-                  
-                  
-                  
-                  
-                  //Setting available moves in the initial phase
-                   d= getSlot("H1");
-                   Coin bc3 = new Coin(MCoinType.EMPTY,d[0] * POS_SIZE,d[1] * POS_SIZE, false,"B1");
-                   bcs.put("H1",bc3);
-             
-             
-             System.out.println("btn AddCOinads and Check ");
-        root.getChildren().removeAll(root.getChildren());
-        root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);
-     
-             
+             String Scenario = "Place Anywhere";
+             switch(Scenario){
+                     case "Place Anywhere":  //Place slots whereever available
+                         System.out.println("dasfsa");
+                         double d[] = getSlot("A2");
+                         MCoinType clientPlayerType = MCoinType.WHITE;
+                         Coin placingnewCoin = new Coin(MCoinType.EMPTY,clientPlayerType, "A2",d[0]*POS_SIZE,d[1]*POS_SIZE,Scenario,bcs);
+                         System.out.println("In Client >"+placingnewCoin.getType());
+                         bcs = placingnewCoin.getBcs();
+                         for (Object value : bcs.values()) {
+                                Coin c = (Coin) value;
+                                System.out.println("Place Anywhere slot = "+c.slot+" type ="+c.getType());
+                            }
+                         AddCompTobsc(placingnewCoin);
+                         root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
+                         root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);        //Reload  Board
+             }
+                   AddCompTobsc( new Coin(MCoinType.WHITE, "A3"));
+//                   AddCompTobsc( new Coin(MCoinType.BLACK, "A1"));
+//                   AddCompTobsc( new Coin(MCoinType.EMPTY, "H3"));
+//                   AddCompTobsc( new Coin(MCoinType.WHITE, "F3"));
+//                   AddCompTobsc( new Coin(MCoinType.BLACK, "D3"));
+
+                   System.out.println("btn AddCOinads and Check ");
+        root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
+        root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);        //Reload  Board
     });
         Scene scene = new Scene(root);
         btnStat.setOnAction(e -> {
+              root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
+                         root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);        //Reload  Board
+           
         });
 
         //Button Transition
@@ -358,6 +368,20 @@ public class NMMApplication extends Application {
     public static void main(String[] args) throws InterruptedException {
         launch(args);
     }
+    /**
+     * Adds BoardComp to specified slot position and sets PosX and PosY
+     * BoardComp should set CoinType and slot
+     * @param slot
+     * @param bc 
+     */
+    public void AddCompTobsc(Coin bc){
+         double d[] = getSlot(bc.getSlot());
+                    bc.setPosX(d[0] * POS_SIZE);
+                    bc.setPosY(d[1] * POS_SIZE);
+//                   String [] vldMvs = {"A2","B3"};
+//                   bc.setVldMvs(vldMvs);
+                   bcs.put(bc.getSlot(),bc);
+     }
     public static void test2(int[] test) {
         test[1] = 19;
     }
@@ -415,5 +439,4 @@ public class NMMApplication extends Application {
 
         return success;
     }
-
 }

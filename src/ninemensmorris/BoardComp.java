@@ -17,7 +17,7 @@
 package ninemensmorris;
 
 import java.util.HashMap;
-import javafx.scene.Parent;
+import javafx.geometry.HPos;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -27,7 +27,6 @@ import javafx.scene.text.Text;
 import static ninemensmorris.NMMApplication.HEIGHT;
 import static ninemensmorris.NMMApplication.POS_SIZE;
 import static ninemensmorris.NMMApplication.WIDTH;
-import ninemensmorris.enums.MCoinType;
 
 class BoardComp {
 
@@ -54,7 +53,21 @@ class BoardComp {
      */
     public void GenerateBoard(Pane root) {
        HashMap hpos=createSlotHash();
-        /*Creating a concentric square*/
+       Rectangle BlackCoinSlot = new Rectangle(POS_SIZE * HEIGHT, POS_SIZE * WIDTH);
+        BlackCoinSlot.setX(0);
+        BlackCoinSlot.setY(0);
+        BlackCoinSlot.setId("coinHolder");
+        root.getChildren().add(BlackCoinSlot);
+
+       Rectangle WhiteCoinSlot = new Rectangle(0 ,0,10,10);
+       
+       /*Creating a concentric square*/
+        
+
+        
+        
+        
+        
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * POS_SIZE), POS_SIZE * WIDTH - (2 * i * POS_SIZE));
             r1.setStroke(Color.CADETBLUE);
@@ -86,18 +99,23 @@ class BoardComp {
             root.getChildren().addAll(c1);
         }  
     }
-    //Delete this later Kay?
+    /**
+     * Goes through the bcs(Coins) list and places it accordingly.
+     * 
+     * @param bcs : HashMap of Positions and Contents(Coins)
+     * @param root : Pane of GameBoard
+     */
     public void CreateWithCoins(HashMap bcs,Pane root){
-        
-               
-                   System.out.println("BCS = "+bcs.keySet()); 
+                   System.out.println("Creating Content with componets is bcs"); 
+   System.out.println("BCS = "+bcs.keySet()); 
                             for (Object value : bcs.values()) {
-                                System.out.println("values "+bcs.keySet());
+                             //   System.out.println("values "+bcs.keySet());
                                 Coin c = (Coin) value;
+                                System.out.println("slot = "+c.slot+" type ="+c.getType()+" pos "+c.getPosX());
                               root.getChildren().add(c.ReturnCoin());
                             }
     }
-    
+    {    
 //    public void setCoins(Pane root,String Scenario,HashMap bcs){
 //        //Clear everything On the Board
 //         for (Object value : bcs.values()) {
@@ -131,7 +149,9 @@ class BoardComp {
 //                    Coin c = (Coin) value;
 //                    root.getChildren().add(c.ReturnCoin(bcs));
 //                }
-/**
+    }
+        
+        /**
  * 
    Get A double with pos Indexes on giving String of Pos.
      **/
