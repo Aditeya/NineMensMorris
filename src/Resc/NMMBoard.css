@@ -68,6 +68,11 @@
     -fx-stroke: cadetblue;
     -fx-stroke-width: 10;    
 }
+#coinHolder{
+        -fx-stroke:gray;
+        -fx-stroke-width: 5;    
+
+}
 #coinbg{
     -fx-fill: cornflowerblue;
     -fx-stroke: whitesmoke;
@@ -141,12 +146,12 @@
     -fx-border-color: #4c9e97;
 
 }
-#blackFilledStot{
+#blackFilledSlot{
         -fx-opacity:1;
      -fx-fill: linear-gradient(to bottom, black,grey);/*Does Nothing for root lol*/
 
 }
-#whiteFilledStot{
+#whiteFilledSlot{
        -fx-opacity:1;
      -fx-fill: linear-gradient(to bottom, white,pink);/*Does Nothing for root lol*/
     

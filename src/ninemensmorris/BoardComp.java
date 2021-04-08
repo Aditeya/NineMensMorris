@@ -53,21 +53,9 @@ class BoardComp {
      */
     public void GenerateBoard(Pane root) {
        HashMap hpos=createSlotHash();
-       Rectangle BlackCoinSlot = new Rectangle(POS_SIZE * HEIGHT, POS_SIZE * WIDTH);
-        BlackCoinSlot.setX(0);
-        BlackCoinSlot.setY(0);
-        BlackCoinSlot.setId("coinHolder");
-        root.getChildren().add(BlackCoinSlot);
-
-       Rectangle WhiteCoinSlot = new Rectangle(0 ,0,10,10);
+     
        
        /*Creating a concentric square*/
-        
-
-        
-        
-        
-        
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * POS_SIZE), POS_SIZE * WIDTH - (2 * i * POS_SIZE));
             r1.setStroke(Color.CADETBLUE);
@@ -83,6 +71,33 @@ class BoardComp {
             line.setId("boardlines");
             root.getChildren().add(line);
         }
+           int numWhite_CoinsLeft =9,numBlack_CoinsLeft =9;
+ 
+        Rectangle BlackCoinSlot = new Rectangle(POS_SIZE-10, POS_SIZE * WIDTH);
+        BlackCoinSlot.setX(0);
+        BlackCoinSlot.setY(0);
+        BlackCoinSlot.setId("coinHolder");
+        root.getChildren().add(BlackCoinSlot);
+        Rectangle WhiteCoinSlot = new Rectangle(POS_SIZE, POS_SIZE * WIDTH-10);
+       WhiteCoinSlot.setX(600);
+       WhiteCoinSlot.setY(0);
+       WhiteCoinSlot.setId("coinHolder");
+        root.getChildren().add(WhiteCoinSlot);
+        for(int i=0;i<numBlack_CoinsLeft;i++){
+            Circle numC = new Circle(45,(600-(30*i)),30 );
+            numC.setId("blackFilledSlot");
+                    root.getChildren().add(numC);
+        }
+        for(int i=0;i<numWhite_CoinsLeft;i++){
+            Circle numC = new Circle(600+45,(600-(30*i)),30 );
+            System.out.println(" ====> "+20+"  "+(600-(30*i)));
+            numC.setId("whiteFilledSlot");
+                    root.getChildren().add(numC);
+        }
+        
+        
+      
+        
         
         for (Object objectName : hpos.keySet()) {
             double[] d = (double[]) hpos.get(objectName);

@@ -133,9 +133,9 @@ public class NMMApplication extends Application {
                 arrRoomSlot.add(rm);
                 count_Room++;
                 //To set to BlACK
-//                    arrRoomSlot.get(1).getBlackSlot().setId("blackFilledStot");
+//                    arrRoomSlot.get(1).getBlackSlot().setId("blackFilledSlot");
                 //To set to WHITE
-                //                  arrRoomSlot.get(2).getBlackSlot().setId("whiteFilledStot");
+                //                  arrRoomSlot.get(2).getBlackSlot().setId("whiteFilledSlot");
                 hb.setAlignment(Pos.CENTER);
                 hb.getStyleClass().add("hbox");
                 VBox v4 = new VBox(new HBox(enterUser), hb);
