@@ -44,7 +44,7 @@ public class NMMClientDemo {
             boolean run = true;
             while (run) {
                 System.out.print("Client> ");
-                String command = INPUT.nextLine();
+                String command = INPUT.next();
 
                 switch (command) {
                     case "list":
@@ -110,8 +110,8 @@ public class NMMClientDemo {
         command.setCommand(NetworkCommand.CHOOSE_ROOM);
 
         // Ask for the room number and set it in the request
-        System.out.print("Enter Room Number: ");
-        int room = Integer.parseInt(INPUT.nextLine());
+        System.out.print("Enter Room Number: \n");
+        int room = INPUT.nextInt();//Integer.parseInt(INPUT.nextLine());
         command.setRoom(room);
 
         try {
