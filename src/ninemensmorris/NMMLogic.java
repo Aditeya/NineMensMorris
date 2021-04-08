@@ -80,7 +80,7 @@ public class NMMLogic {
             try {
                 slotIndxRef = (JSONObject) new JSONParser().parse(
                         new InputStreamReader(getClass().getResourceAsStream(
-                                "//ninemensmorris//resources//slot_index_ref.json")));
+                                "/ninemensmorris/resources/slot_index_ref.json")));
 
             } catch (Exception ex) {
                 System.out.println("slot_index_ref.json could not be loaded.\n"
@@ -96,7 +96,7 @@ public class NMMLogic {
                         new InputStreamReader(
                                 getClass()
                                         .getResourceAsStream(
-                                "\\ninemensmorris\\resources\\mill_ref.json")));
+                                "/ninemensmorris/resources/mill_ref.json")));
                  
             } catch (Exception ex) {
                 System.out.println("mill_ref.json could not be loaded.\n"
@@ -110,7 +110,7 @@ public class NMMLogic {
             try {
                 vldMvsRef = (JSONObject) new JSONParser().parse(
                         new InputStreamReader(getClass().getResourceAsStream(
-                                "//ninemensmorris//resources//vld_mvs_ref.json")));
+                                "/ninemensmorris/resources/vld_mvs_ref.json")));
                  
             } catch (Exception ex) {
                 System.out.println("vld_mvs_ref_ref.json could not be loaded.\n"
@@ -1329,8 +1329,8 @@ public class NMMLogic {
         } else {
             try (BufferedReader in
                     = new BufferedReader(
-                            new InputStreamReader(
-                                    NMMLogic.class.getResourceAsStream("//ninemensmorris//resources//cmd_board.txt")))) {
+                            new InputStreamReader( ///ninemensmorris/resources/slot_index_ref.json
+                                    NMMLogic.class.getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
                 //Reads File and Buils String
                 StringBuilder sb = new StringBuilder();
                 String line = in.readLine();

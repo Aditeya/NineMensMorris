@@ -1,11 +1,11 @@
 .root{
-    -fx-text-fill: #003366;/*Does nothing*/
+    -fx-text-fill: #003366;
     -fx-font-size: 15pt;
     -fx-font: 50px Tahoma;
     -fx-vgap: 10;
     -fx-hgap: 10;
     -fx-padding: 50;
-    -fx-background-color: linear-gradient(to bottom right, #4c9e97, lightcoral);/*Does Nothing for root lol*/
+    -fx-background-color: linear-gradient(to bottom right, #4c9e97, lightcoral);/*set Fill for Shape*/
 }
 .label{
     -fx-font-family: "Times New Roman", Times, serif;
@@ -109,12 +109,12 @@
 }
 #blackFilledSlot{
         -fx-opacity:1;
-     -fx-fill: linear-gradient(to bottom, black,grey);/*Does Nothing for root lol*/
+        -fx-fill: linear-gradient(to bottom, #333333,grey);/*set Fill for Shape*/
 
 }
 #whiteFilledSlot{
        -fx-opacity:1;
-     -fx-fill: linear-gradient(to bottom, white,pink);/*Does Nothing for root lol*/
+     -fx-fill: linear-gradient(to bottom, white,pink);/*set Fill for Shape*/
     
 }
 
@@ -155,7 +155,7 @@
 
 }
 #coinwhite{
-    -fx-fill: linear-gradient(to top left, white, pink);/*Does Nothing for root lol*/
+    -fx-fill: linear-gradient(to top left, white, pink);/*set Fill for Shape*/
     -fx-stroke: whitesmoke;
 }  
 #milledLines{

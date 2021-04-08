@@ -18,7 +18,6 @@ package ninemensmorris;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import javafx.geometry.HPos;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -33,7 +32,11 @@ class BoardComp {
     
     String whatComp;
     String Pos;
-
+  String[] millLineStr = { "A1", "A3",            "A3", "H3",      "H3", "H1",
+            "H1", "A1",            "B1", "B3",            "B3", "G3",     "G3","G1",
+            "G1","B1",            "C1","C3",            "C3","F3",     "F3","F1",
+            "F1","C1"       };
+   String[] lineStr = {"A2", "C2", "D1", "D3", "E1", "E3", "F2", "H2"};
     public BoardComp() {
     }
     
@@ -49,25 +52,19 @@ class BoardComp {
      * @param bcs Hash Map of Board Components;
      */
     public void GenerateBoard(Pane root, int numWhite_CoinsLeft, int numBlack_CoinsLeft) {
-        
-        
-        
-        HashMap hpos = createSlotHash();
+       HashMap hpos = createSlotHash();
         /*Creating a concentric square*/
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * POS_SIZE), POS_SIZE * WIDTH - (2 * i * POS_SIZE));
             r1.setStroke(Color.CADETBLUE);
-            r1.setX(i * POS_SIZE);
-            r1.setY(i * POS_SIZE);
+            r1.setX(i * POS_SIZE);            r1.setY(i * POS_SIZE);
             r1.setId("boardlines");
             root.getChildren().add(r1);
         }
        
-            ArrayList<Line> ArrLis_mill_Lines = new ArrayList<Line>();
-
-        
+        ArrayList<Line> ArrLis_mill_Lines = new ArrayList<Line>();
+ 
         /*Joining the lines on the board*/
-        String[] lineStr = {"A2", "C2", "D1", "D3", "E1", "E3", "F2", "H2"};
         for (int i = 0; i < lineStr.length; i = i + 2) {
             Line line = new Line(getSlot(lineStr[i])[0] * 100, getSlot(lineStr[i])[1] * 100, getSlot(lineStr[i + 1])[0] * 100, getSlot(lineStr[i + 1])[1] * 100);
             ArrLis_mill_Lines.add(line); //Adding to the Mills
@@ -76,17 +73,8 @@ class BoardComp {
             root.getChildren().add(line);
         }
         
-        String[] millLineStr = { "A1", "A3",            "A3", "H3",      "H3", "H1",
-            "H1", "A1",            "B1", "B3",            "B3", "G3",     "G3","G1",
-            "G1","B1",            "C1","C3",            "C3","F3",     "F3","F1",
-            "F1","C1"       };
-        
+        /*Adding mills to the lines on the square*/
         for (int i = 0; i < millLineStr.length; i = i + 2) {
-System.out.println(millLineStr[i]+"  = "+
-        getSlot(millLineStr[i])[0] * 100+"   "+
-        getSlot(millLineStr[i])[1] * 100+"  "+
-        getSlot(millLineStr[i + 1])[0]*100+" "+
-        getSlot(millLineStr[i + 1])[1] * 100        );
             Line line = new Line(
                     getSlot(millLineStr[i])[0] * 100, 
                     getSlot(millLineStr[i])[1] * 100,
@@ -95,14 +83,14 @@ System.out.println(millLineStr[i]+"  = "+
             ArrLis_mill_Lines.add(line); //Adding to the Mills
         }
         
-       for (int i = 0; i < ArrLis_mill_Lines.size(); i++) {
-           System.out.println("Mill Sixw"+ArrLis_mill_Lines.size());          
-
-      ArrLis_mill_Lines.get(i).setId("milledLines");
-      
-      if(i>3)
-      root.getChildren().add(ArrLis_mill_Lines.get(i));
-     }
+        
+        //Setting Glow on Specific Lines in ArroFlINES
+//       for (int i = 0; i < ArrLis_mill_Lines.size(); i++) {
+//           ArrLis_mill_Lines.get(i).setId("milledLines");
+//      
+//      if(i>3)
+//      root.getChildren().add(ArrLis_mill_Lines.get(i));
+//     }
         
         for (int i = 0; i < numBlack_CoinsLeft; i++) {
             Circle numC = new Circle(40, (600 - (30 * i)), 30);
@@ -152,44 +140,7 @@ System.out.println(millLineStr[i]+"  = "+
             root.getChildren().add(c.ReturnCoin());
         }
     }
-
-    {
-//    public void setCoins(Pane root,String Scenario,HashMap bcs){
-//        //Clear everything On the Board
-//         for (Object value : bcs.values()) {
-//                         Coin c = (Coin) value;
-//                     //    root.getChildren().remove(c.ReturnCoin(bcs));
-//                         }
-//                switch (Scenario) {
-//                    case "Place Anywhere":
-////                    c1.setOnMouseClicked(e -> {
-////                        System.out.println("Placing Anywhere");
-////                        Coin bc = new Coin(MCoinType.WHITE, d[0] * POS_SIZE, d[1] * POS_SIZE, false, objectName.toString());
-////                        bcs.put(objectName.toString(), bc);
-////                        System.out.println("KeySet" + bcs.keySet());
-////                                    });
-//
-//                    case "Remove":
-//                        System.out.println("Remove Coin");
-//                   //     bcs.remove(objectName);
-//                        //RemoveEverything
-//                         for (Object value : bcs.values()) {
-//                         Coin c = (Coin) value;
-//                         root.getChildren().remove(c.ReturnCoin(bcs));
-//                         }
-//                        
-//                      //  root.getChildren().remove(bcs.get(this.));
-//                }
-//
-//                 
-//                
-//                for (Object value : bcs.values()) {
-//                    Coin c = (Coin) value;
-//                    root.getChildren().add(c.ReturnCoin(bcs));
-//                }
-    }
-
-    /**
+      /**
      *
      * Get A double with pos Indexes on giving String of Pos.
      *
@@ -299,7 +250,6 @@ System.out.println(millLineStr[i]+"  = "+
         }
         return doubleArr;
     }
-
     /**
      * Create a SlotHash to set Components
      *
@@ -319,7 +269,6 @@ System.out.println(millLineStr[i]+"  = "+
         }
         return hCoinPos;
     }
-
     public double[] doublePosValues(String pos) {
         double[] doubleArr = new double[2];
         switch (pos) {

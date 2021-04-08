@@ -27,7 +27,6 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -48,11 +47,10 @@ import ninemensmorris.networking.NetworkCommand;
 import ninemensmorris.networking.demo.NMMClientDemo;
 
 /**
- *
- * @author aditeya
+ *NMM Client Application
+ * 
  */
 public class NMMApplication extends Application {
-
     //Gui Component Sizing - For Scaling if needed
     public static final int POS_SIZE = 100;
     public static final int WIDTH = 7;
@@ -62,10 +60,7 @@ public class NMMApplication extends Application {
     public ArrayList<RoomsGUI> arrRoomSlot = new ArrayList<RoomsGUI>();
     int count_Room = 1;
     RoomsGUI rm = new RoomsGUI();
-    
     int numWhite_CoinsLeft =9,numBlack_CoinsLeft =9;
-    
-    
     
 //Creating Board in Screen    
     private Parent createContent() {
