@@ -56,6 +56,11 @@ public class NMMClientThread extends Thread {
                 NMMboard board = (NMMboard) pois.readObject();
                 NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
 
+                // Notify if input is valid
+                if (board.isWrongMove()) {
+                    System.out.println("Invalid move, Try again");
+                }
+
                 MCoinType turn = board.getTurn();
                 // Take input and send, if it is players turn
                 if (turn == player) {
@@ -71,19 +76,23 @@ public class NMMClientThread extends Thread {
                             break;
                         case MOVE:
                             printPlayerTurn(turn, 3);
-                            String slot = input.nextLine();
-                            System.out.println(turn + " Player, Move coin " + slot + " to? match regex [A-H]+[1-3]");
+                            String[] slots = new String[2];
+                            slots[0] = input.nextLine();
+
+                            System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
+                            slots[1] = input.nextLine();
+
+                            sendBoard(poos, new NMMmove(slots[0]));
+                            sendBoard(poos, new NMMmove(slots[1]));
+
                             break;
                         default:
                     }
-
-                    // Notify if input is valid
-                    if (board.isWrongMove()) {
-                        System.out.println("Invalid move, Try again");
+                    
+                    if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+                        System.out.print("Enter Move: ");
+                        poos.writeObject(new NMMmove(input.nextLine()));
                     }
-
-                    System.out.print("Enter Move: ");
-                    poos.writeObject(new NMMmove(input.nextLine()));
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
@@ -109,4 +118,12 @@ public class NMMClientThread extends Thread {
 
         System.out.println("match regex [A-H]+[1-3]");
     }
+
+    private void sendBoard(ObjectOutputStream poos, Object obj) throws IOException {
+        //resets output streams to fix empty board being received by client
+        poos.reset();
+        //sends board to players
+        poos.writeObject(obj);
+    }
+
 }
