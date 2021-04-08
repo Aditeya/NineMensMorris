@@ -182,6 +182,7 @@ public class NMMServiceThread extends Thread {
 
                             if (input == InputType.PLACE || input == InputType.REMOVE) {
                                 String slot = receiveMove(turn).getMove();
+                                //TOFIX: dO NOT CHECK VALID AGAINST X
                                 if (!(nmm.getVldMvs(slot).length == 0)) {
                                     NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
                                     sendCoin.put(coin);
