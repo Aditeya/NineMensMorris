@@ -73,7 +73,7 @@ public class NMMApplication extends Application {
         Pane root = new Pane();
         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
         BoardComp bc = new BoardComp();
-        bc.GenerateBoard(root);
+        bc.GenerateBoard(root,numBlack_CoinsLeft,numWhite_CoinsLeft);
         bc.CreateWithCoins(bcs, root);
         return root;
     }

@@ -37,14 +37,6 @@
     opacity: 0.2; 
 }
 
-#gameTitle{
-    -fx-font-weight: bold;
-    -fx-text-fill: #bae3e3;
-    -fx-font-family: 'Copperplate';
-    -fx-font-size: 50 pt;
-    -fx-opacity:100; 
-
-}
 .hbox {
 
     -fx-padding: 15;
@@ -59,39 +51,8 @@
     -fx-stroke-width: 10;  
 }
 
-
-#slot{
-    -fx-fill: coral;
-    /*-fx-size: 10 pt; */
-}
-#boardlines{
-    -fx-stroke: cadetblue;
-    -fx-stroke-width: 10;    
-}
-#coinHolder{
-        -fx-stroke:gray;
-        -fx-stroke-width: 5;    
-
-}
-#coinbg{
-    -fx-fill: cornflowerblue;
-    -fx-stroke: whitesmoke;
-
-}
-#coinblack {
-    -fx-fill: linear-gradient(to top left, black, grey);
-    -fx-stroke: whitesmoke;
-
-}
-#coinwhite{
-    -fx-fill: linear-gradient(to top left, white, pink);/*Does Nothing for root lol*/
-    -fx-stroke: whitesmoke;
-}    
-
-#coinobj{
-    -fx-stroke: yellow;
-    -fx-stroke-width: 5;    
-}  
+  
+ 
 #intropage{
     -fx-fill: violet;
     -fx-stroke: whitesmoke;
@@ -159,3 +120,45 @@
 
 
 /*Screen 3 - Game Board*/
+
+#gameTitle{
+    -fx-font-weight: bold;
+    -fx-text-fill: #bae3e3;
+    -fx-font-family: 'Copperplate';
+    -fx-font-size: 50 pt;
+    -fx-opacity:100; 
+
+}
+
+
+#slot{
+    -fx-fill: coral;
+    /*-fx-size: 10 pt; */
+}
+#boardlines{
+    -fx-stroke: cadetblue;
+    -fx-stroke-width: 10;    
+}
+#coinHolder{
+        -fx-stroke:gray;
+        -fx-stroke-width: 5;    
+
+}
+#coinbg{
+    -fx-fill: cornflowerblue;
+    -fx-stroke: whitesmoke;
+
+}
+#coinblack {
+    -fx-fill: linear-gradient(to top left, black, grey);
+    -fx-stroke: whitesmoke;
+
+}
+#coinwhite{
+    -fx-fill: linear-gradient(to top left, white, pink);/*Does Nothing for root lol*/
+    -fx-stroke: whitesmoke;
+}  
+#milledLines{
+    -fx-stroke: yellow;
+    -fx-stroke-width: 10;  
+}
