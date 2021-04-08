@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ninemensmorris;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -25,43 +27,123 @@ import javafx.scene.text.Text;
 import static ninemensmorris.NMMApplication.HEIGHT;
 import static ninemensmorris.NMMApplication.POS_SIZE;
 import static ninemensmorris.NMMApplication.WIDTH;
-import ninemensmorris.enums.MCoinType;
 
 class BoardComp {
-
+    
     String whatComp;
     String Pos;
-
+  String[] millLineStr = { "A1", "A3",            "A3", "H3",      "H3", "H1",
+            "H1", "A1",            "B1", "B3",            "B3", "G3",     "G3","G1",
+            "G1","B1",            "C1","C3",            "C3","F3",     "F3","F1",
+            "F1","C1"       };
+   String[] lineStr = {"A2", "C2", "D1", "D3", "E1", "E3", "F2", "H2"};
     public BoardComp() {
     }
-
+    
     public BoardComp(String whatComp, String Pos) {
         this.whatComp = whatComp;
         this.Pos = Pos;
     }
-
-    public void GlowMill() {
-        System.out.println("Glow Mill");
-    }
+       
     /**
-     * funtion description
-     * @param root guhiohiojij
-     * @param bcs dfghjkl;
+     * function description
+     *
+     * @param root Pane
+     * @param bcs Hash Map of Board Components;
      */
-    public void GenerateBoard(Pane root,HashMap bcs) {
+    public void GenerateBoard(Pane root, int numWhite_CoinsLeft, int numBlack_CoinsLeft) {
+       HashMap hpos = createSlotHash();
+        /*Creating a concentric square*/
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * POS_SIZE), POS_SIZE * WIDTH - (2 * i * POS_SIZE));
-            r1.setStroke(Color.CADETBLUE);            r1.setX(i * POS_SIZE);
-            r1.setFill(Color.WHITE);            r1.setY(i * POS_SIZE);
-            r1.setStrokeWidth(10);            root.getChildren().add(r1);
+            r1.setStroke(Color.CADETBLUE);
+            r1.setX(i * POS_SIZE);            r1.setY(i * POS_SIZE);
+            r1.setId("boardlines");
+            root.getChildren().add(r1);
         }
-        String[] lineStr = {"A2", "C2", "D1", "D3", "E1", "E3", "F2", "H2"};
-        for (int i = 0; i < lineStr.length; i = i + 2) {            Line line = new Line(getSlot(lineStr[i])[0] * 100, getSlot(lineStr[i])[1] * 100,getSlot(lineStr[i + 1])[0] * 100, getSlot(lineStr[i + 1])[1] * 100);            line.setId("boardlines");            root.getChildren().add(line);  }
-        CreateComps(createSlotHash(), root,bcs);
+       
+        ArrayList<Line> ArrLis_mill_Lines = new ArrayList<Line>();
+ 
+        /*Joining the lines on the board*/
+        for (int i = 0; i < lineStr.length; i = i + 2) {
+            Line line = new Line(getSlot(lineStr[i])[0] * 100, getSlot(lineStr[i])[1] * 100, getSlot(lineStr[i + 1])[0] * 100, getSlot(lineStr[i + 1])[1] * 100);
+            ArrLis_mill_Lines.add(line); //Adding to the Mills
+            System.out.println("mill ==>"+ArrLis_mill_Lines.size());
+            line.setId("boardlines");
+            root.getChildren().add(line);
+        }
+        
+        /*Adding mills to the lines on the square*/
+        for (int i = 0; i < millLineStr.length; i = i + 2) {
+            Line line = new Line(
+                    getSlot(millLineStr[i])[0] * 100, 
+                    getSlot(millLineStr[i])[1] * 100,
+                    getSlot(millLineStr[i + 1])[0] * 100, 
+                    getSlot(millLineStr[i + 1])[1] * 100);
+            ArrLis_mill_Lines.add(line); //Adding to the Mills
+        }
+        
+        
+        //Setting Glow on Specific Lines in ArroFlINES
+//       for (int i = 0; i < ArrLis_mill_Lines.size(); i++) {
+//           ArrLis_mill_Lines.get(i).setId("milledLines");
+//      
+//      if(i>3)
+//      root.getChildren().add(ArrLis_mill_Lines.get(i));
+//     }
+        
+        for (int i = 0; i < numBlack_CoinsLeft; i++) {
+            Circle numC = new Circle(40, (600 - (30 * i)), 30);
+            numC.setId("blackFilledSlot");
+            root.getChildren().add(numC);
+        }
+        for (int i = 0; i < numWhite_CoinsLeft; i++) {
+            Circle numC = new Circle(700 - 40, (600 - (30 * i)), 30);
+            numC.setId("whiteFilledSlot");
+            root.getChildren().add(numC);
+        }
+        for (Object objectName : hpos.keySet()) {
+            double[] d = (double[]) hpos.get(objectName);
+            // Creating slots
+            Circle c1 = new Circle(10);
+            Text text = new Text(objectName.toString());
+            c1.setCenterX(d[0] * POS_SIZE);
+            text.setX(d[0] * POS_SIZE);
+            text.setY(d[1] * POS_SIZE);
+            c1.setCenterY(d[1] * POS_SIZE);
+            c1.setFill(Color.CORAL);
+            c1.setFill(Color.CORAL);
+            c1.setId("slot");
+            root.getChildren().addAll(c1);
+        }        
+        
+          //  System.out.println("Glow Mill");
+        
+      
+        
+        
     }
 
-    /*
-   Get A double with pos Indexes on giving String of Pos.
+    /**
+     * Goes through the bcs(Coins) list and places it accordingly.
+     *
+     * @param bcs : HashMap of Positions and Contents(Coins)
+     * @param root : Pane of GameBoard
+     */
+    public void CreateWithCoins(HashMap bcs, Pane root) {
+        System.out.println("Creating Content with componets is bcs");        
+        System.out.println("BCS = " + bcs.keySet());        
+        for (Object value : bcs.values()) {
+            //   System.out.println("values "+bcs.keySet());
+            Coin c = (Coin) value;
+            System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
+            root.getChildren().add(c.ReturnCoin());
+        }
+    }
+      /**
+     *
+     * Get A double with pos Indexes on giving String of Pos.
+     *
      */
     public double[] getSlot(String pos) {
         double[] doubleArr = new double[2];
@@ -168,60 +250,26 @@ class BoardComp {
         }
         return doubleArr;
     }
-
-    public void CreateComps(HashMap hpos, Pane root,HashMap bcs) {
-        for (Object objectName : hpos.keySet()) {
-            double[]  d = (double[] ) hpos.get(objectName);
-            //System.out.println("Slot: "+objectName+" "+ d[0]+d[1]);
-            Circle c1 = new Circle(10);
-            Text text = new Text(objectName.toString());
-            c1.setCenterX(d[0] * POS_SIZE);
-            text.setX(d[0] * POS_SIZE);            text.setY(d[1] * POS_SIZE);
-            c1.setCenterY(d[1] * POS_SIZE);
-            c1.setFill(Color.CORAL);
-            c1.setFill(Color.CORAL);
-             c1.setId("slot");
-            root.getChildren().addAll(c1);//,text);
-            c1.setOnMouseClicked(e -> {
-                String Scenario = "Place Anywhere";//Remove";
-                switch(Scenario){
-                  case  "Place Anywhere":
-                  System.out.println("Placing Anywhere");
-                Coin bc = new Coin(MCoinType.WHITE,d[0] * POS_SIZE, d[1] * POS_SIZE, false,objectName.toString());
-                bcs.put(objectName.toString(),bc);
-                      System.out.println("KeySet"+bcs.keySet());
-                break;
-                  case "Remove":
-                      System.out.println("Remove Coin" );
-                              
-                      bcs.remove(objectName);
-                }
-              
-               
-               for (Object value : bcs.values()) {
-    Coin c = (Coin) value;
-                    root.getChildren().add(c.ReturnCoin(bcs));
-}
-                
-
-            });
-        }
-    }
+    /**
+     * Create a SlotHash to set Components
+     *
+     * @return
+     */
     public HashMap createSlotHash() {
         HashMap<String, double[]> hCoinPos = new HashMap<String, double[]>();
         char t;
-            for (t = 'A'; t <= 'H'; t++) {
-              String str = "";
-                for (char i = '1'; i < '4'; i++) {
-                    str = String.valueOf(t) + String.valueOf(i);
-                    double d[] = createSlotHash1(str);
-                 //   System.out.println("str =" +") "+ str + "  " + " d =" + d[0] + " " + d[1]);
-                    hCoinPos.put(str, d);
-                }
+        for (t = 'A'; t <= 'H'; t++) {
+            String str = "";
+            for (char i = '1'; i < '4'; i++) {
+                str = String.valueOf(t) + String.valueOf(i);
+                double d[] = doublePosValues(str);
+                //   System.out.println("str =" +") "+ str + "  " + " d =" + d[0] + " " + d[1]);
+                hCoinPos.put(str, d);
+            }
         }
         return hCoinPos;
     }
-    public double[] createSlotHash1(String pos) {
+    public double[] doublePosValues(String pos) {
         double[] doubleArr = new double[2];
         switch (pos) {
             case "A1":
@@ -324,5 +372,4 @@ class BoardComp {
         }
         return doubleArr;
     }
-
 }

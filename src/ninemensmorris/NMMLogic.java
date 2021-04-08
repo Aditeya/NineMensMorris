@@ -93,7 +93,9 @@ public class NMMLogic {
         if (millRef == null) {
             try {
                 millRef = (JSONObject) new JSONParser().parse(
-                        new InputStreamReader(getClass().getResourceAsStream(
+                        new InputStreamReader(
+                                getClass()
+                                        .getResourceAsStream(
                                 "/ninemensmorris/resources/mill_ref.json")));
                  
             } catch (Exception ex) {
@@ -1327,7 +1329,7 @@ public class NMMLogic {
         } else {
             try (BufferedReader in
                     = new BufferedReader(
-                            new InputStreamReader(
+                            new InputStreamReader( ///ninemensmorris/resources/slot_index_ref.json
                                     NMMLogic.class.getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
                 //Reads File and Buils String
                 StringBuilder sb = new StringBuilder();

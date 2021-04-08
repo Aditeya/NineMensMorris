@@ -16,16 +16,56 @@
  */
 package ninemensmorris;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.shape.Circle;
+
 /**
  *
  * @author LENOVO
  */
 public class RoomsGUI {
 
-    
-    
+    Circle blackSlot;
+        Circle whiteSlot;
+      int RoomNum;
+    RadioButton btn;
     public RoomsGUI() {
     }
+
+    public RoomsGUI(Circle blackSlot, Circle whiteSlot, RadioButton btn) {
+        this.blackSlot = blackSlot;
+        this.whiteSlot = whiteSlot;
+        this.btn = btn;
+    }
+
+    public RoomsGUI(Circle blackSlot, Circle whiteSlot, int RoomNum, RadioButton btn) {
+        this.blackSlot = blackSlot;
+        this.whiteSlot = whiteSlot;
+      this.RoomNum = RoomNum;
+        this.btn = btn;
+    }
+
+    public int getRoomNum() {
+        return RoomNum;
+    }
+
+  
+
+    public RadioButton getBtn() {
+        return btn;
+    }
+
+    public Circle getBlackSlot() {
+        return blackSlot;
+    }
+
+    public Circle getWhiteSlot() {
+        return whiteSlot;
+    }
+
+    
+
 
     /**
      * @param args the command line arguments

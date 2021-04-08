@@ -1,11 +1,11 @@
 .root{
-    -fx-text-fill: #003366;/*Does nothing*/
+    -fx-text-fill: #003366;
     -fx-font-size: 15pt;
     -fx-font: 50px Tahoma;
     -fx-vgap: 10;
     -fx-hgap: 10;
     -fx-padding: 50;
-    -fx-background-color: linear-gradient(to bottom right, #4c9e97, #402237);/*Does Nothing for root lol*/
+    -fx-background-color: linear-gradient(to bottom right, #4c9e97, lightcoral);/*set Fill for Shape*/
 }
 .label{
     -fx-font-family: "Times New Roman", Times, serif;
@@ -21,10 +21,10 @@
     -fx-background-radius: 90;
     -fx-border-width:5;
     -fx-border-color: #003366;
-
     -fx-font-family: "Garamond";
     -fx-text-fill: #003366;
-    -fx-font-size: 20pt;
+    -fx-font-size: 17pt;
+    -fx-padding-bottom: 5;
 
 }.button:hover {
     opacity: 0.9;
@@ -37,14 +37,6 @@
     opacity: 0.2; 
 }
 
-#gameTitle{
-    -fx-font-weight: bold;
-    -fx-text-fill: #bae3e3;
-    -fx-font-family: 'Copperplate';
-    -fx-font-size: 50 pt;
-    -fx-opacity:100; 
-
-}
 .hbox {
 
     -fx-padding: 15;
@@ -59,51 +51,12 @@
     -fx-stroke-width: 10;  
 }
 
-
-#slot{
-    -fx-fill: coral;
-    /*-fx-size: 10 pt; */
-}
-#boardlines{
-    -fx-stroke: cadetblue;
-    -fx-stroke-width: 10;    
-}
-#coinbg{
-    -fx-fill: cornflowerblue;
-    -fx-stroke: whitesmoke;
-
-}
-#coinblack {
-    -fx-fill: linear-gradient(to top left, violet, pink);
-    -fx-stroke: whitesmoke;
-
-}
-#coinwhite{
-    -fx-fill: linear-gradient(to top left, white, pink);/*Does Nothing for root lol*/
-    -fx-stroke: whitesmoke;
-}    
-
-#coinobj{
-    -fx-stroke: yellow;
-    -fx-stroke-width: 5;    
-}  
+  
+ 
 #intropage{
     -fx-fill: violet;
     -fx-stroke: whitesmoke;
 
-}
-#Roomview{
-    -fx-fill: brown;
-    -fx-stroke: appworkspace;
-}   
-#RoomScene{
-    -fx-fill: blanchedalmond;
-    -fx-stroke: appworkspace;
-}
-
-#btn{
-    -fx-font-size: 15pt;
-    -fx-border-color: aliceblue;
 }
 
 /*Screen 1 - Intro*/
@@ -120,31 +73,33 @@
 
 /*Screen 2 - Choosing Rooms*/
 #layout2{
-    -fx-padding: 10;
+    -fx-padding: 5;
+    -fx-align-self: center;
+   
 }
 #roomslot{
-    -fx-fill: linear-gradient(to bottom right, white, pink);/*Does Nothing for root lol*/
-    -fx-opacity:0.5;
+    -fx-opacity:0.2;
+    -fx-border-color:white;
+    -fx-border-width:100;
     -fx-stroke-width: 10; 
     -fx-padding: 3 0 0 3 ;
     -fx-border-color: #003366;/*dark blue*/
 }
-#room {
+#room{
     -fx-border-color: #3e8069;
-    -fx-fill: #9999ff;
+    /*-fx-fill: #9999ff
+    -fx-background-color:linear-gradient);/*Vbox*/
     -fx-padding: 5;
     -fx-stroke-width: 10;  
 }
 #btnplus{
-        -fx-background-color: transparent;
-    -fx-border-color: #9999ff;
-   -fx-border-radius: 10;
+    -fx-opacity:1;
+    -fx-background-color: transparent;
+    -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-border-width:2;
-    -fx-border-color: #003366;
     -fx-font-family: "Garamond";
     -fx-text-fill: #003366;
-    -fx-font-size: 10pt;
+    -fx-font-size: 20 pt;
        
 }:hover #btnplus {
     opacity: 0.9;
@@ -152,4 +107,58 @@
     -fx-border-color: #4c9e97;
 
 }
+#blackFilledSlot{
+        -fx-opacity:1;
+        -fx-fill: linear-gradient(to bottom, #333333,grey);/*set Fill for Shape*/
+
+}
+#whiteFilledSlot{
+       -fx-opacity:1;
+     -fx-fill: linear-gradient(to bottom, white,pink);/*set Fill for Shape*/
+    
+}
+
+
 /*Screen 3 - Game Board*/
+
+#gameTitle{
+    -fx-font-weight: bold;
+    -fx-text-fill: #bae3e3;
+    -fx-font-family: 'Copperplate';
+    -fx-font-size: 50 pt;
+    -fx-opacity:100; 
+
+}
+
+
+#slot{
+    -fx-fill: coral;
+    /*-fx-size: 10 pt; */
+}
+#boardlines{
+    -fx-stroke: cadetblue;
+    -fx-stroke-width: 10;    
+}
+#coinHolder{
+        -fx-stroke:gray;
+        -fx-stroke-width: 5;    
+
+}
+#coinbg{
+    -fx-fill: cornflowerblue;
+    -fx-stroke: whitesmoke;
+
+}
+#coinblack {
+    -fx-fill: linear-gradient(to top left, black, grey);
+    -fx-stroke: whitesmoke;
+
+}
+#coinwhite{
+    -fx-fill: linear-gradient(to top left, white, pink);/*set Fill for Shape*/
+    -fx-stroke: whitesmoke;
+}  
+#milledLines{
+    -fx-stroke: yellow;
+    -fx-stroke-width: 10;  
+}
