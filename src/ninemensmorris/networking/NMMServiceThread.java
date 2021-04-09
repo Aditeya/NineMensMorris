@@ -118,7 +118,7 @@ public class NMMServiceThread extends Thread {
                     } catch (IOException ex) {
                     }
 
-                    //String slot = new String();
+                    String slot = new String();
                     //NMMCoin coin = null;
                     //PlayerTurn prevTurn = PlayerTurn.BLACK;
                     //InputType prevType = InputType.NONE;
@@ -130,7 +130,6 @@ public class NMMServiceThread extends Thread {
 
                             // Wrong move indicator
                             //wrongMove = prevTurn.equals(turn);
-
                             //Sends the board with turn and wrong move information
                             NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), input, wrongMove);
                             sendBoard(board);
@@ -144,15 +143,36 @@ public class NMMServiceThread extends Thread {
 
                                 case PLACE:
                                     printPlayerTurn(turn, 1);
+                                    slot = receiveMove(turn).getMove();
+                                    if (!(nmm.getVldMvs(slot).length == 0)) {
+                                        NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
+                                        sendCoin.put(coin);
+                                        wrongMove = false;
+                                    }
                                     break;
 
                                 case REMOVE:
                                     printPlayerTurn(turn, 2);
+
+                                    slot = receiveMove(turn).getMove();
+                                    boolean send = false;
+                                    if (slot.equals("X")) {
+                                        send = true;
+                                    } else if (!(nmm.getVldMvs(slot).length == 0)) {
+                                        send = true;
+                                    }
+
+                                    if (send) {
+                                        NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
+                                        sendCoin.put(coin);
+                                        wrongMove = false;
+                                    }
+
                                     break;
 
                                 case MOVE:
                                     printPlayerTurn(turn, 3);
-                                    String slot = receiveMove(turn).getMove();
+                                    slot = receiveMove(turn).getMove();
                                     if (!(nmm.getVldMvs(slot).length == 0)) {
                                         wrongMove = true;
                                         break;
@@ -178,16 +198,6 @@ public class NMMServiceThread extends Thread {
                                 default:
                                     System.out.println("oh snep something broke");
                                     System.exit(-1);
-                            }
-
-                            if (input == InputType.PLACE || input == InputType.REMOVE) {
-                                String slot = receiveMove(turn).getMove();
-                                //TOFIX: dO NOT CHECK VALID AGAINST X
-                                if (!(nmm.getVldMvs(slot).length == 0)) {
-                                    NMMCoin coin = new NMMCoin(turn.toMCntyp(), slot, false, null, null);
-                                    sendCoin.put(coin);
-                                    wrongMove = false;
-                                }
                             }
 
                             //prevTurn = turn;
