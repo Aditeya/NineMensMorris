@@ -85,6 +85,20 @@
     -fx-padding: 3 0 0 3 ;
     -fx-border-color: #003366;/*dark blue*/
 }
+
+#roomslot{
+    -fx-opacity:0.2;
+    -fx-border-color:white;
+    -fx-padding: 3 0 0 3 ;
+    -fx-border-color: #003366;/*dark blue*/
+}
+
+#selectedRoomSlot{
+    -fx-border-width: 10 px;
+    -fx-border-color: #3e8069;
+
+}
+
 #room{
     -fx-border-color: #3e8069;
     /*-fx-fill: #9999ff
