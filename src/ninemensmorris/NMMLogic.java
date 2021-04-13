@@ -658,9 +658,6 @@ public class NMMLogic {
         //holds the oringal mill state of the coin to be checked
         boolean ogIsMill = coinCheck.isMilled();
         
-        //sets the return var newMills first position to the current slot
-        //newMills[0] = coinCheck.getCoinSlot();
-        
         ArrayList<NMMCoin> coinList =
                 this.getCoinsFromSlots(coinCheck.millCombo);
         
@@ -767,47 +764,6 @@ public class NMMLogic {
         
         //returns the new mill String
         return newMillStats;
-        
-        /*
-        for(int i = 0; i < 2; i++)
-        {
-            //sets the return var newMills first position to the current slot
-            newMills[0] = coinCheck.getCoinSlot();
-            /////////Needs Major Work/////////
-            for(int j = 0; j < 2; j++)
-            {
-                String millCheck = coinCheck.millCombo[i][j];
-                
-                //Compares the coin vs it's possible mills
-                if(coinCheck.getCoin() == 
-                        getNmmCnType(millCheck))
-                {
-                    //if mill adds the value to the return String
-                    //and changes that coin mill to true
-                    newMills[mill_I++] = millCheck;
-                    this.setNmmCnMill(true, millCheck);                  
-                }
-                else    //if a single coin doesn't match the rest in this line
-                {
-                    if(i==0)
-                    {
-                        //overwrites newMills to null
-                        newMills = null;
-                        //reset mill_I to 1
-                        mill_I=1;
-                        //sets previously set coins isCoinMilled to false
-                        if(j == 0)
-                            this.setNmmCnMill(ogIsMill, millCheck);
-                    }
-                    break;
-                    
-                }
-            }
-        }*/
-        
-        
-        
-        //return null;
     }
 
     //</editor-fold>
