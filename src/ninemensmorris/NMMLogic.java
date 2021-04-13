@@ -17,9 +17,7 @@
 package ninemensmorris;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -36,7 +34,7 @@ import ninemensmorris.enums.PrintType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+//tHis works
 /**
  * The class whose objects will implement the boards of Nine Mens Morris Handles
  * the internal logic of NMM
@@ -97,7 +95,10 @@ public class NMMLogic {
         if (millRef == null) {
             try {
                 millRef = (JSONObject) new JSONParser().parse(
-                        new InputStreamReader(getClass().getResourceAsStream(
+
+                        new InputStreamReader(
+                                getClass()
+                                        .getResourceAsStream(
                                 "/ninemensmorris/resources/mill_ref.json")));
                  
             } catch (Exception ex) {
@@ -1163,7 +1164,7 @@ public class NMMLogic {
                 //Logger.getLogger(NMMLogic.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            
+         
             //var for coinFrom slot
             String cFSlot = coinFrom.getCoinSlot();
             
@@ -1331,7 +1332,7 @@ public class NMMLogic {
         } else {
             try (BufferedReader in
                     = new BufferedReader(
-                            new InputStreamReader(
+                            new InputStreamReader( ///ninemensmorris/resources/slot_index_ref.json
                                     NMMLogic.class.getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
                 //Reads File and Buils String
                 StringBuilder sb = new StringBuilder();

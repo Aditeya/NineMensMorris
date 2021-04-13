@@ -1,0 +1,178 @@
+.root{
+    -fx-text-fill: #003366;
+    -fx-font-size: 15pt;
+    -fx-font: 50px Tahoma;
+    -fx-vgap: 10;
+    -fx-hgap: 10;
+    -fx-padding: 50;
+    -fx-background-color: linear-gradient(to bottom right, #4c9e97, lightcoral);/*set Fill for Shape*/
+}
+.label{
+    -fx-font-family: "Times New Roman", Times, serif;
+    -fx-font-size: 35 pt;
+    -fx-stroke-width: 6;
+    -fx-padding: 5; 
+    -fx-text-fill: black;
+}
+.button{
+    -fx-background-color: transparent;
+    -fx-border-color: #003366;
+    -fx-border-radius: 90;
+    -fx-background-radius: 90;
+    -fx-border-width:5;
+    -fx-border-color: #003366;
+    -fx-font-family: "Garamond";
+    -fx-text-fill: #003366;
+    -fx-font-size: 17pt;
+    -fx-padding-bottom: 5;
+
+}.button:hover {
+    opacity: 0.9;
+    -fx-background-color: #e3718c;
+    -fx-border-color: #ccccff;
+
+}
+
+.rect{
+    opacity: 0.2; 
+}
+
+.hbox {
+
+    -fx-padding: 15;
+    -fx-spacing: 10;
+
+}  
+.vbox {
+    -fx-border-color:white; /*#3e8069;*/
+    -fx-fill: #9999ff;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-stroke-width: 10;  
+}
+
+  
+ 
+#intropage{
+    -fx-fill: violet;
+    -fx-stroke: whitesmoke;
+
+}
+
+/*Screen 1 - Intro*/
+#layout1{
+    -fx-padding: 50;
+    -fx-border-color: #003366;/*dark blue*/
+}
+
+#Introanim{
+    -fx-border-color: aliceblue;
+    -fx-opacity:0.5;
+    -fx-stroke-width: 10;  
+}
+
+/*Screen 2 - Choosing Rooms*/
+#layout2{
+    -fx-padding: 5;
+    -fx-align-self: center;
+   
+}
+#roomslot{
+    -fx-opacity:0.2;
+    -fx-border-color:white;
+    -fx-border-width:100;
+    -fx-stroke-width: 10; 
+    -fx-padding: 3 0 0 3 ;
+    -fx-border-color: #003366;/*dark blue*/
+}
+
+#roomslot{
+    -fx-opacity:0.2;
+    -fx-border-color:white;
+    -fx-padding: 3 0 0 3 ;
+    -fx-border-color: #003366;/*dark blue*/
+}
+
+#selectedRoomSlot{
+    -fx-border-width: 10 px;
+    -fx-border-color: #3e8069;
+
+}
+
+#room{
+    -fx-border-color: #3e8069;
+    /*-fx-fill: #9999ff
+    -fx-background-color:linear-gradient);/*Vbox*/
+    -fx-padding: 5;
+    -fx-stroke-width: 10;  
+}
+#btnplus{
+    -fx-opacity:1;
+    -fx-background-color: transparent;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-family: "Garamond";
+    -fx-text-fill: #003366;
+    -fx-font-size: 20 pt;
+       
+}:hover #btnplus {
+    opacity: 0.9;
+    -fx-background-color: #9999ff;
+    -fx-border-color: #4c9e97;
+
+}
+#blackFilledSlot{
+        -fx-opacity:1;
+        -fx-fill: linear-gradient(to bottom, #333333,grey);/*set Fill for Shape*/
+
+}
+#whiteFilledSlot{
+       -fx-opacity:1;
+     -fx-fill: linear-gradient(to bottom, white,pink);/*set Fill for Shape*/
+    
+}
+
+
+/*Screen 3 - Game Board*/
+
+#gameTitle{
+    -fx-font-weight: bold;
+    -fx-text-fill: #bae3e3;
+    -fx-font-family: 'Copperplate';
+    -fx-font-size: 50 pt;
+    -fx-opacity:100; 
+
+}
+
+
+#slot{
+    -fx-fill: coral;
+    /*-fx-size: 10 pt; */
+}
+#boardlines{
+    -fx-stroke: cadetblue;
+    -fx-stroke-width: 10;    
+}
+#coinHolder{
+        -fx-stroke:gray;
+        -fx-stroke-width: 5;    
+
+}
+#coinbg{
+    -fx-fill: cornflowerblue;
+    -fx-stroke: whitesmoke;
+
+}
+#coinblack {
+    -fx-fill: linear-gradient(to top left, black, grey);
+    -fx-stroke: whitesmoke;
+
+}
+#coinwhite{
+    -fx-fill: linear-gradient(to top left, white, pink);/*set Fill for Shape*/
+    -fx-stroke: whitesmoke;
+}  
+#milledLines{
+    -fx-stroke: yellow;
+    -fx-stroke-width: 10;  
+}

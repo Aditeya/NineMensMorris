@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +49,9 @@ public class NMMClientDemo {
 
                 switch (command) {
                     case "list":
-                        list(ois, oos);
+                        int [][] listy = list(ois, oos);
+                        System.out.println(Arrays.deepToString(listy));
+                        System.out.println("list === ");
                         break;
                     case "choose":
                         run = !choose(ois, oos);
@@ -75,7 +78,8 @@ public class NMMClientDemo {
      * @param ois   Client ObjectInputStream
      * @param oos   Client ObjectOutputStream
      */
-    private static void list(ObjectInputStream ois, ObjectOutputStream oos) {
+
+    private static int [][] list(ObjectInputStream ois, ObjectOutputStream oos) {
         // Create command
         NCommand command = new NCommand();
         command.setCommand(NetworkCommand.LIST_ROOMS);
@@ -88,9 +92,13 @@ public class NMMClientDemo {
 
             // Print room list from reply
             printRooms(reply.getRooms());
+
+            
+            return  reply.getRooms();
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(NMMClientDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     /**

@@ -1,0 +1,15 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 7, 2021, 8:36:47 PM
+    Author     : LENOVO
+*/
+
+#c{
+    -fx-opacity:0.5;
+    -fx-background: rgb(219,112,147);
+    -fx-fill: #e3718c;
+}
