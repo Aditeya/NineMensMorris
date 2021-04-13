@@ -1086,10 +1086,8 @@ public class NMMLogic {
     /**
      * Moves a coin from one location to another, handles all mills that may 
      * form/break because of the movement 
-     * @param coinFrom
-     * @param coinTo
-     * @param coinIN
-     * @param verbose 
+     * @param coinIN The queue used to send in coins 
+     * @param verbose Will print verbose messages when set to true
      */
     public void nmmTurnHandle(/*NMMCoin coinFrom, NMMCoin coinTo,*/
             LinkedBlockingQueue<NMMCoin> coinIN, boolean verbose)
@@ -1298,10 +1296,11 @@ public class NMMLogic {
     }
     
      /**
-     * Prints the NMM Board to the cmd line based on the type RAW_LOC : Prints
+     * Prints and external NMM Board to the cmd line based on the type RAW_LOC : Prints
      * Location in a simple grid RAW_VALUE : Prints Values in a simple grid LOC
      * : Prints Location in a NMM board VALUE : Prints Values in a NMM board
      *
+     * @param nmmBoard A NMM board to be printed
      * @param type The type of print
      */
     public static void cmdPrint(NMMCoin[][] nmmBoard, PrintType type) {

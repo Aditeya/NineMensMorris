@@ -59,7 +59,7 @@ public class NMMCoin implements Serializable{
      * constructor lets you initialize only coin slot with the arrays set to
      * null
      *
-     * @param coinSlot
+     * @param coinSlot The coin slot to assign to this coin
      */
     public NMMCoin(String coinSlot) {
         this.coinType = MCoinType.EMPTY;
@@ -73,10 +73,10 @@ public class NMMCoin implements Serializable{
      * constructor lets you initialize everything sans CoinType which is set to
      * empty, horizonal and vertical mill, which are set to false
      *
-     * @param coinSlot
-     * @param milled
-     * @param vldMvs
-     * @param millCombo
+     * @param coinSlot The coin slot to assign to this coin
+     * @param milled If the coin is milled or not
+     * @param vldMvs The valid moves of this coin
+     * @param millCombo The mill combos of this coin
      */
     public NMMCoin(String coinSlot, boolean milled, String[] vldMvs, String[][] millCombo) {
         this.coinType = MCoinType.EMPTY;
@@ -91,11 +91,11 @@ public class NMMCoin implements Serializable{
     /**
      * constructor for when you want to initialize everything for some reason
      *
-     * @param coinType
-     * @param coinSlot
-     * @param milled
-     * @param vldMvs
-     * @param millCombo
+     * @param coinType The coin type to assign to this coin
+     * @param coinSlot The coin slot to assign to this coin
+     * @param milled If the coin is milled or not
+     * @param vldMvs he valid moves of this coin
+     * @param millCombo The mill combos of this coin
      */
     public NMMCoin(MCoinType coinType, String coinSlot, boolean milled, String[] vldMvs, String[][] millCombo) {
         this.coinType = coinType;

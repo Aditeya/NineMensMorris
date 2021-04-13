@@ -34,6 +34,7 @@ public class NMMLogicDemo {
 
     /**
      * @param args the command line arguments
+     * @throws InterruptedException can be interrupted
      */
     public static void main(String[] args) throws InterruptedException {
         
