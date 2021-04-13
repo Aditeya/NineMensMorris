@@ -83,7 +83,7 @@ public class NMMLogic {
         if (slotIndxRef == null) {
             try {
                 slotIndxRef = (JSONObject) new JSONParser().parse(
-                        new InputStreamReader(getClass().getResourceAsStream(
+                        new InputStreamReader(NMMLogic.class.getResourceAsStream(
                                 "/ninemensmorris/resources/slot_index_ref.json")));
 
             } catch (Exception ex) {
@@ -97,7 +97,7 @@ public class NMMLogic {
         if (millRef == null) {
             try {
                 millRef = (JSONObject) new JSONParser().parse(
-                        new InputStreamReader(getClass().getResourceAsStream(
+                        new InputStreamReader(NMMLogic.class.getResourceAsStream(
                                 "/ninemensmorris/resources/mill_ref.json")));
                  
             } catch (Exception ex) {
@@ -111,7 +111,7 @@ public class NMMLogic {
         if (vldMvsRef == null) {
             try {
                 vldMvsRef = (JSONObject) new JSONParser().parse(
-                        new InputStreamReader(getClass().getResourceAsStream(
+                        new InputStreamReader(NMMLogic.class.getResourceAsStream(
                                 "/ninemensmorris/resources/vld_mvs_ref.json")));
                  
             } catch (Exception ex) {
