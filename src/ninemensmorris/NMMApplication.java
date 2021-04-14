@@ -29,6 +29,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -51,21 +52,28 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
+import ninemensmorris.enums.PlayerTurn;
+import ninemensmorris.enums.PrintType;
 import ninemensmorris.networking.NCommand;
 import ninemensmorris.networking.NMMClientThread;
+import ninemensmorris.networking.NMMboard;
+import ninemensmorris.networking.NMMmove;
 import ninemensmorris.networking.NetworkCommand;
 import ninemensmorris.networking.demo.NMMClientDemo;
 
 /**
  * NMM Client Application
  *
-<<<<<<< HEAD
- * @author eltojaro
-=======
->>>>>>> gui
+ * <<<<<<< HEAD
+ * @a
+ *
+ * uthor eltojaro ======= >>>>>>> gui
  */
 public class NMMApplication extends Application {
+
+    Scanner input = new Scanner(System.in); // Scanner for input, might be changed in GUI section
 
     //Gui Component Sizing - For Scaling if needed
     public static final int POS_SIZE = 100;
@@ -75,11 +83,12 @@ public class NMMApplication extends Application {
     BoardComp boardcomp = new BoardComp();
     //Rooms - To choose,Show Availibility and select Rooms
     public ArrayList<RoomsGUI> arrRoomSlot = new ArrayList<RoomsGUI>();
-    int[][] dArr_room = null;
-
     RoomsGUI rmGUI = new RoomsGUI();
     int numWhite_CoinsLeft = 9, numBlack_CoinsLeft = 9;
     int SelectedRoomNum = -1;
+
+    MCoinType player;
+    Label lbInstruct = new Label("");
 
 //Creating Board in Screen    
     private Parent createContent() {
@@ -149,9 +158,10 @@ public class NMMApplication extends Application {
         VBox root = new VBox();
         root.setId("vbox");
         Label tGuide = new Label("Let's Play");
-        Label tPlayerName = new Label("Player 1");
-        Button btnStat = new Button("Button Start");
-        root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);
+        Label lbPlayerName = new Label("Player 1");
+
+        Button btnStat = new Button("");
+        root.getChildren().addAll(hbMenu, tGuide, lbInstruct, btnStat, createContent(), lbPlayerName);
         btnaddCoin.setOnAction(e -> {
             String Scenario = "Place Anywhere";
             switch (Scenario) {
@@ -168,12 +178,12 @@ public class NMMApplication extends Application {
                     }
                     AddCompTobsc(placingnewCoin);
                     root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
-                    root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);        //Reload  Board
+                    root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
             }
             AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
             System.out.println("btn AddCOinads and Check ");
             root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
-            root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);        //Reload  Board
+            root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
         });
         Scene scene = new Scene(root);
 
@@ -181,7 +191,7 @@ public class NMMApplication extends Application {
 
         btnStat.setOnAction(e -> {
             root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
-            root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), tPlayerName);        //Reload  Board
+            root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
 
         });
 
@@ -228,14 +238,15 @@ public class NMMApplication extends Application {
         primaryStage.setScene(scene1);//chanfe to scene1
         primaryStage.show();
     }
-/**
- * 
- * @param btn_ChosenRooms
- * @param scene
- * @param primaryStage
- * @param arrVbox
- * @param roomTg 
- */
+
+    /**
+     *
+     * @param btn_ChosenRooms
+     * @param scene
+     * @param primaryStage
+     * @param arrVbox
+     * @param roomTg
+     */
     public void Go_Selected_Room(Button btn_ChosenRooms, Scene scene, Stage primaryStage, ArrayList arrVbox, ToggleGroup roomTg) {
         /* Selected Room and Going to Game*/
         btn_ChosenRooms.setOnAction(e -> {
@@ -248,21 +259,65 @@ public class NMMApplication extends Application {
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     // Client CLI interface
                     if (choose(ois, oos, SelectedRoomNum)) {
-                        // Create and start the game thread after room is chosen.
-                        NMMClientThread game = new NMMClientThread(socket);
-                        Thread thread = new Thread(game);
-                        System.out.println("thread "+thread.getName());
-                        thread.start();
+                        
+                                                primaryStage.setScene(scene);
 
-                        primaryStage.setScene(scene);
-
-                    } else {
-                        throw new UnknownHostException();
-                    }
+                        
+//                        // Create and start the game thread after room is chosen.
+                      NMMboard p = (NMMboard) ois.readObject();
+                        player = p.getTurn();
+//
+//
+//                        // Start the game
+//                        
+                            // Receive board and print it out
+                            NMMboard board = (NMMboard) ois.readObject();
+                            
+                            NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
+                            // Notify if input is valid
+                            if (board.isWrongMove()) {
+                                lbInstruct.setText("Invalid move, Try again");
+                            }
+                            MCoinType turn = board.getTurn();
+//                            // Take input and send, if it is players turn
+//                            if (turn == player) {
+//                                switch (board.getiType()) {
+//                                    case NONE:
+//                                        break;
+//                                    case PLACE:
+                                        printPlayerTurn(turn, 1);
+//                                        break;
+//                                    case REMOVE:
+//                                        printPlayerTurn(turn, 2);
+//                                        break;
+//                                    case MOVE:
+//                                        printPlayerTurn(turn, 3);
+//                                        String[] slots = new String[2];
+//                                        slots[0] = input.nextLine();
+//                                        System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
+//                                        slots[1] = input.nextLine();
+//                                        sendBoard(oos, new NMMmove(slots[0]));
+//                                        sendBoard(oos, new NMMmove(slots[1]));
+//                                        break;
+//                                    default:
+//                                }
+//
+//                                if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+//                                    System.out.print("Enter Move: ");
+//                                    oos.writeObject(new NMMmove(input.nextLine()));
+//                                }
+//                            }
+//                       
+//
+//                    } else {
+//                        throw new UnknownHostException();
+//                    }
+                }
                 }
             } catch (Exception ex) {
-                Alert a1 = new Alert(Alert.AlertType.ERROR, "Sorry Room unavailable,Please try again", ButtonType.OK);
-                a1.showAndWait();
+                System.out.println("ex "+ex);
+//                Alert a1 = new Alert(Alert.AlertType.ERROR, "Sorry Room unavailable,Please try again", ButtonType.OK);
+//                a1.showAndWait();
             }
         });
     }
@@ -299,10 +354,10 @@ public class NMMApplication extends Application {
 
                     }
                     SelectedRoomNum = Integer.parseInt(rb.getText().replaceAll("Room ", "").trim());
-                    System.out.println("Selected Room Num  " + SelectedRoomNum);
+                  //  System.out.println("Selected Room Num  " + SelectedRoomNum);
                     RoomsGUI rm2 = arrRoomSlot.get(SelectedRoomNum - 1);
                     if (rm2.isWhiteFilled()) { //White is filled
-                        System.out.println("Black selected ");
+                    //    System.out.println("Black selected ");
                         rm2.getBlackSlot().setRadius(25);
                         rm2.getBlackSlot().setStrokeWidth(5);
                         rm2.getBlackSlot().setStroke(Color.BLACK);
@@ -313,7 +368,7 @@ public class NMMApplication extends Application {
                         rm2.getWhiteSlot().setStrokeWidth(5);
                         rm2.getWhiteSlot().setStroke(Color.WHITE);
                     } else if (rm2.isBlackFilled() && rm2.isWhiteFilled()) { //Full Room
-                        System.out.println("Not  selected ");
+                      //  System.out.println("Not  selected ");
                     }
                 }
             }
@@ -385,10 +440,10 @@ public class NMMApplication extends Application {
         command.setCommand(NetworkCommand.CHOOSE_ROOM);
 
         // Ascount_Roomfor the room number and set it in the request
-        int room = roomSelected - 1;
-        System.out.println("Selected Room Num  " + roomSelected);
+        int room = 7 - 1;  //CHANGE TO roomSelected
+      //  System.out.println("Selected Room Num  " + roomSelected);
 
-        System.out.println("Room Selected is " + room);
+        //System.out.println("Room Selected is " + room);
         command.setRoom(room);
 
         try {
@@ -406,7 +461,6 @@ public class NMMApplication extends Application {
                     return success;
                 case ROOM_FULL:
                     System.out.println("Rooms Full. Choose Another:");
-                //        printRooms(reply.getRooms());
                 default:
                     success = false;
             }
@@ -430,4 +484,31 @@ public class NMMApplication extends Application {
     public static void main(String[] args) throws InterruptedException {
         launch(args);
     }
+
+    private void printPlayerTurn(MCoinType turn, int msg) {
+        switch (msg) {
+            case 1:
+                System.out.println(turn + " Player, Place a coin.");
+                break;
+            case 2:
+                System.out.println(turn + " Player, Select an opposing coin to be removed.\nEnter 'X' to conceed coin removal");
+                break;
+            case 3:
+                System.out.println(turn + " Player, Select an coin to be moved");
+                break;
+            default:
+                System.out.println("Incorrect Usage. Check Docs.");
+                return;
+        }
+
+        System.out.println("match regex [A-H]+[1-3]");
+    }
+
+    private void sendBoard(ObjectOutputStream poos, Object obj) throws IOException {
+        //resets output streams to fix empty board being received by client
+        poos.reset();
+        //sends board to players
+        poos.writeObject(obj);
+    }
+
 }
