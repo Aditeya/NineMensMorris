@@ -245,7 +245,7 @@ public class NMMApplication extends Application {
                         Thread thread = new Thread(game);
                         System.out.println("thread "+thread.getName());
                         thread.start();
-
+                        
                         primaryStage.setScene(scene);
 
                     } else {
