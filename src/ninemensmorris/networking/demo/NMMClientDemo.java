@@ -78,7 +78,6 @@ public class NMMClientDemo {
      * @param ois   Client ObjectInputStream
      * @param oos   Client ObjectOutputStream
      */
-
     private static int [][] list(ObjectInputStream ois, ObjectOutputStream oos) {
         // Create command
         NCommand command = new NCommand();
@@ -161,7 +160,7 @@ public class NMMClientDemo {
      * 
      * @param rooms Double Array to be printed out
      */
-    private static void printRooms(int[][] rooms) {
+    public static void printRooms(int[][] rooms) {
         for (int i = 0; i < rooms.length; i++) {
             System.out.print(i + ". ");
             for (int j = 0; j < rooms[i].length; j++) {
