@@ -28,7 +28,7 @@ import static ninemensmorris.NMMApplication.HEIGHT;
 import static ninemensmorris.NMMApplication.POS_SIZE;
 import static ninemensmorris.NMMApplication.WIDTH;
 
-class BoardComp {
+public class BoardComp {
     
     String whatComp;
     String Pos;
