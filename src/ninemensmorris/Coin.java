@@ -16,6 +16,8 @@
  */
 package ninemensmorris;
 import java.util.HashMap;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.ClipboardContent;
@@ -41,6 +43,7 @@ class Coin {
     public String[] vldMvs;
     Circle bg;
 HashMap<String, Coin> bcs;
+    LinkedBlockingQueue<Object> lb_in = new LinkedBlockingQueue<>();
 
     public Coin(MCoinType type,MCoinType toPlacetype,String slot, double posX,double posY,String Scenario, HashMap<String, Coin> bcs) {
         this.type = type;
