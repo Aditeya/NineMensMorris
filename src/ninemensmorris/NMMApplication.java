@@ -21,10 +21,6 @@
 package ninemensmorris;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,17 +49,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
-import ninemensmorris.enums.PlayerTurn;
-import ninemensmorris.enums.PrintType;
-import ninemensmorris.networking.NCommand;
-import ninemensmorris.networking.NMMClientThread;
 import ninemensmorris.networking.NMMGUINetworkingThread;
-import ninemensmorris.networking.NMMboard;
-import ninemensmorris.networking.NMMmove;
-import ninemensmorris.networking.NetworkCommand;
-import ninemensmorris.networking.demo.NMMClientDemo;
 
 /**
  * NMM Client Application
@@ -95,6 +82,7 @@ public class NMMApplication extends Application {
     LinkedBlockingQueue<Object> in_lbq = new LinkedBlockingQueue<>();
     LinkedBlockingQueue<Object> out_lbq = new LinkedBlockingQueue<>();
     NMMGUINetworkingThread nmmNet = new NMMGUINetworkingThread(in_lbq, out_lbq);
+    NMMGUIBoardThread guiBoard = new NMMGUIBoardThread(in_lbq, out_lbq, boardcomp);
 
 //Creating Board in Screen    
     private Parent createContent() {
@@ -207,32 +195,10 @@ public class NMMApplication extends Application {
                     if(nmmNet.choose(SelectedRoomNum)){
                        primaryStage.setScene(scene);
                         System.out.println("");
-                 //      player =(MCoinType) out_lbq.take();  //WHat player it is.
                         System.out.println("player =="+player.name());
-//                       NMMboard nboard = (NMMboard)out_lbq.take();
-//                       NMMCoin[][] coin = nboard.getNmmBoard(); //The board.
-//                       if (nboard.getTurn()== player){
-//                           //YOur turn
-//                           switch(nboard.getiType()){
-//                               case NONE:
-//                                    break;
-//                                case PLACE:
-//                                    System.out.println("place");
-//                                    //read player move
-//                                    //input.add("move ")
-//                                    break;
-//                                case REMOVE:
-//                                    //place x to skip move
-//                                    //read player move
-//                                    //input.add("move ")
-//                                    break;
-//                                case MOVE:
-//                                    //read player move
-//                                    //input.add("move ")
-//                                    break;
-//                                default:
-//                       }
-           // }
+                        
+                        Thread game = new Thread(guiBoard);
+                        game.start();
                     }
                }
             } catch (Exception ex) {
