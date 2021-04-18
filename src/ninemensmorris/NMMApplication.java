@@ -195,14 +195,14 @@ public class NMMApplication extends Application {
                     if(nmmNet.choose(SelectedRoomNum)){
                        primaryStage.setScene(scene);
                         System.out.println("");
-                        System.out.println("player =="+player.name());
+                        //System.out.println("player =="+player.name());
                         
                         Thread game = new Thread(guiBoard);
                         game.start();
                     }
                }
             } catch (Exception ex) {
-                System.out.println("ex "+ex);
+                ex.printStackTrace();
 //                Alert a1 = new Alert(Alert.AlertType.ERROR, "Sorry Room unavailable,Please try again", ButtonType.OK);
 //                a1.showAndWait();
             }
