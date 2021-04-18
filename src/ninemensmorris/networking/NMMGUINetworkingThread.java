@@ -51,7 +51,7 @@ public class NMMGUINetworkingThread extends Thread {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
-    
+
     private boolean roomChosen;
     private final LinkedBlockingQueue input;
     private final LinkedBlockingQueue output;
@@ -61,7 +61,7 @@ public class NMMGUINetworkingThread extends Thread {
         this.lock = new ReentrantReadWriteLock();
         this.writeLock = lock.writeLock();
         this.readLock = lock.readLock();
-        
+
         this.roomChosen = false;
         this.input = input;
         this.output = output;
@@ -93,7 +93,8 @@ public class NMMGUINetworkingThread extends Thread {
                 try {
                     NMMboard p = (NMMboard) ois.readObject();
                     player = p.getTurn();
-
+                    output.add(player);
+                    
                     // Start the game
                     while (true) {
                         // Receive board and print it out
@@ -138,11 +139,11 @@ public class NMMGUINetworkingThread extends Thread {
 
                             if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
                                 System.out.print("Enter Move: ");
-                                oos.writeObject(new NMMmove((String) input.take()));
+                                sendBoard(new NMMmove((String) input.take()));
                             }
                         }
                     }
-                } catch ( IOException | ClassNotFoundException | InterruptedException ex) {
+                } catch (IOException | ClassNotFoundException | InterruptedException ex) {
                     Logger.getLogger(NMMGUINetworkingThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -155,10 +156,10 @@ public class NMMGUINetworkingThread extends Thread {
      * @return double array of rooms
      */
     public int[][] list() {
-        if(roomChosen) {
+        if (roomChosen) {
             return null;
         }
-        
+
         NCommand reply = null;
         // Create command
         NCommand command = new NCommand();
@@ -194,7 +195,7 @@ public class NMMGUINetworkingThread extends Thread {
      */
     public boolean choose(int room) {
         boolean success = true;
-        if(roomChosen) {
+        if (roomChosen) {
             return success;
         }
 
@@ -233,7 +234,7 @@ public class NMMGUINetworkingThread extends Thread {
 
         return success;
     }
-    
+
     private void sendBoard(Object obj) throws IOException {
         //resets output streams to fix empty board being received by client
         oos.reset();
