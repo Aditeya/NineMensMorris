@@ -191,8 +191,10 @@ public class Server extends Thread {
          */
         public void closeConnection() {
             try {
-                this.client.close();
+                this.poos.reset();
+                this.pois.reset();
             } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
 
@@ -239,8 +241,8 @@ public class Server extends Thread {
                         Socket p1 = clients[ID1-1].getClient();
                         Socket p2 = clients[ID2-1].getClient();
 
-                        //clients[ID1-1].interrupt();
-                        //clients[ID2-1].interrupt();
+                        clients[ID1-1].closeConnection();
+                        clients[ID2-1].closeConnection();
                         clients[ID1-1] = null;
                         clients[ID2-1] = null;
                         System.out.println("ran service thread");
