@@ -1,322 +1,375 @@
-package nmmguisample;
+/*
+ * Copyright (C) 2021 LENOVO
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package ninemensmorris.nmmguisample;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import static nmmguisample.SaMPLENMM.HEIGHT;
-import static nmmguisample.SaMPLENMM.POS_SIZE;
-import static nmmguisample.SaMPLENMM.WIDTH;
+import javafx.scene.text.Text;
+import static ninemensmorris.nmmguisample.NMMApplication.HEIGHT;
+import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
+import static ninemensmorris.nmmguisample.NMMApplication.WIDTH;
 
-/*
- *The board components ared designed using a blocked graph as referance.
- */
-
-/**
- * @author LENOVO
- */
-public class BoardComp extends Rectangle{
-    private Coin coin;
-
-     HashMap<String, Circle> hashCircle = new HashMap<String, Circle>();    
-
-
-    public boolean hasCoin(){
-        return coin != null;
-    }
-    public Coin getCoin(){
-        return coin;
-    }
-    public void setCoin(Coin coin){
-        this.coin = coin;
-    }
-    public BoardComp(boolean posMove, int x,int y ) {
-        setHeight(SaMPLENMM.POS_SIZE);
-        setWidth(SaMPLENMM.POS_SIZE);
-        relocate(x*SaMPLENMM.POS_SIZE,y*SaMPLENMM.POS_SIZE);
-        setFill(posMove ? Color.GREEN: Color.GREY);
-    }
-
+public class BoardComp {
+    
+    String whatComp;
+    String Pos;
+  String[] millLineStr = { "A1", "A3",            "A3", "H3",      "H3", "H1",
+            "H1", "A1",            "B1", "B3",            "B3", "G3",     "G3","G1",
+            "G1","B1",            "C1","C3",            "C3","F3",     "F3","F1",
+            "F1","C1"       };
+   String[] lineStr = {"A2", "C2", "D1", "D3", "E1", "E3", "F2", "H2"};
     public BoardComp() {
     }
     
-      public void PlaceCoin(Pane root,CoinType ct,double [] xy){
-        double x= xy[0]*100;        double y= xy[1]*100;
-         Coin c = new Coin(ct, x,y,true);
-         
-         hashCircle.put("H3",c.getBg());
-
-         
-         
-         root.getChildren().addAll(c.ReturnCoin());
+    public BoardComp(String whatComp, String Pos) {
+        this.whatComp = whatComp;
+        this.Pos = Pos;
     }
-    
-      public void GlowMill(){
-       System.out.println("Glow Mill");
-          
-      
-      }
-      
-      
-   public void GenerateBoard(Pane root){
+       
+    /**
+     * function description
+     *
+     * @param root Pane
+     * @param bcs Hash Map of Board Components;
+     */
+    public void GenerateBoard(Pane root, int numWhite_CoinsLeft, int numBlack_CoinsLeft) {
+       HashMap hpos = createSlotHash();
+        /*Creating a concentric square*/
         for (int i = 0; i < 4; i++) {
             Rectangle r1 = new Rectangle(POS_SIZE * HEIGHT - (2 * i * POS_SIZE), POS_SIZE * WIDTH - (2 * i * POS_SIZE));
             r1.setStroke(Color.CADETBLUE);
-            r1.setX(i * POS_SIZE);         r1.setY(i * POS_SIZE);
-            r1.setStrokeWidth(10); root.getChildren().add(r1);
+            r1.setX(i * POS_SIZE);            r1.setY(i * POS_SIZE);
+            r1.setId("boardlines");
+            root.getChildren().add(r1);
         }
-        String[] lineStr = {"A2","C2","D1","D3","E1","E3","F2","H2"};
+       
+        ArrayList<Line> ArrLis_mill_Lines = new ArrayList<Line>();
+ 
+        /*Joining the lines on the board*/
+        for (int i = 0; i < lineStr.length; i = i + 2) {
+            Line line = new Line(getSlot(lineStr[i])[0] * 100, getSlot(lineStr[i])[1] * 100, getSlot(lineStr[i + 1])[0] * 100, getSlot(lineStr[i + 1])[1] * 100);
+            ArrLis_mill_Lines.add(line); //Adding to the Mills
+            System.out.println("mill ==>"+ArrLis_mill_Lines.size());
+            line.setId("boardlines");
+            root.getChildren().add(line);
+        }
         
-        for(int i = 0;i<lineStr.length;i=i+2){
-            System.out.println("i="+i);
-        Line line = new Line(getSlot(lineStr[i])[0]*100,getSlot(lineStr[i])[1]*100,
-        getSlot(lineStr[i+1])[0]*100,getSlot(lineStr[i+1])[1]*100);
-      //  System.out.println("= "+"\n  "+lineStr[i]+" "+bc.getSlot(lineStr[i])[0]*100+""    + " "+bc.getSlot(lineStr[i])[1]*100+ "\n "+lineStr[i+1]+" "+    bc.getSlot(lineStr[i+1])[0]*100+" "+bc.getSlot(lineStr[i+1])[1]*100);
-        line.setId("boardlines");  
-        root.getChildren().add(line);
+        /*Adding mills to the lines on the square*/
+        for (int i = 0; i < millLineStr.length; i = i + 2) {
+            Line line = new Line(
+                    getSlot(millLineStr[i])[0] * 100, 
+                    getSlot(millLineStr[i])[1] * 100,
+                    getSlot(millLineStr[i + 1])[0] * 100, 
+                    getSlot(millLineStr[i + 1])[1] * 100);
+            ArrLis_mill_Lines.add(line); //Adding to the Mills
         }
+        
+        
+        //Setting Glow on Specific Lines in ArroFlINES
+//       for (int i = 0; i < ArrLis_mill_Lines.size(); i++) {
+//           ArrLis_mill_Lines.get(i).setId("milledLines");
+//      
+//      if(i>3)
+//      root.getChildren().add(ArrLis_mill_Lines.get(i));
+//     }
+        
+        for (int i = 0; i < numBlack_CoinsLeft; i++) {
+            Circle numC = new Circle(40, (600 - (30 * i)), 30);
+            numC.setId("blackFilledSlot");
+            root.getChildren().add(numC);
+        }
+        for (int i = 0; i < numWhite_CoinsLeft; i++) {
+            Circle numC = new Circle(700 - 40, (600 - (30 * i)), 30);
+            numC.setId("whiteFilledSlot");
+            root.getChildren().add(numC);
+        }
+        for (Object objectName : hpos.keySet()) {
+            double[] d = (double[]) hpos.get(objectName);
+            // Creating slots
+            Circle c1 = new Circle(10);
+            Text text = new Text(objectName.toString());
+            c1.setCenterX(d[0] * POS_SIZE);
+            text.setX(d[0] * POS_SIZE);
+            text.setY(d[1] * POS_SIZE);
+            c1.setCenterY(d[1] * POS_SIZE);
+            c1.setFill(Color.CORAL);
+            c1.setFill(Color.CORAL);
+            c1.setId("slot");
+            root.getChildren().addAll(c1);
+        }        
+        
+          //  System.out.println("Glow Mill");
+        
+      
+        
+        
+    }
 
-        int[] posX = {100,600};      int[] posY = {100,350,600};
-        int[] posX1 = {200,500};        int[] posY1 = {200,350,500};
-        int[] posX2 = {300,400};        int[] posY2 = {300,350,400};
-        int[] posX3 = {350};       int[] posY3 = {100,200,300,400,500,600};
-        
-        CreateSlots(posX,posY,root);
-        CreateSlots(posX1,posY1,root);
-        CreateSlots(posX2,posY2,root);
-        CreateSlots(posX3,posY3,root);
-       
-       
-  
-   }   
-   
-    public double[] getSlot(String pos){
-        double [] doubleArr = new double[2];
-        switch(pos) {
-  case "A1":
-    doubleArr[0]= 1;    doubleArr[1]= 1;
-    break;
-  case "A2":
-    doubleArr[0]= 3.5;    doubleArr[1]= 1;
-    break;
-  case "A3":
-    doubleArr[1]= 1;    doubleArr[0]= 6;
-    break;
-  case "B1":
-    doubleArr[1]= 2;    doubleArr[0]= 2;
-    break;
-  case "B2":
-    doubleArr[1]= 2;    doubleArr[0]= 3.5;
-    break;
-  case "B3":
-    doubleArr[1]= 2;    doubleArr[0]= 5;
-    break;
-  case "C1":
-    doubleArr[1]= 3;    doubleArr[0]= 3;
-    break;
-  case "C2":
-    doubleArr[1]= 3;    doubleArr[0]= 3.5;
-    break;
-  case "C3":
-    doubleArr[1]= 3;    doubleArr[0]= 4;
-    break;
-  case "D1":
-    doubleArr[1]= 3.5;    doubleArr[0]= 1;
-    break;
-  case "D2":
-    doubleArr[1]= 3.5;    doubleArr[0]= 2;
-    break;
-  case "D3":
-    doubleArr[1]= 3.5;    doubleArr[0]= 3;
-    break;
-  case "E1":
-    doubleArr[1]= 3.5;    doubleArr[0]= 4;
-    break;
-  case "E2":
-    doubleArr[1]= 3.5;    doubleArr[0]= 5;
-    break;
-  case "E3":
-    doubleArr[1]= 3.5;    doubleArr[0]= 6;
-    break;
-  case "F1":
-    doubleArr[1]= 4;    doubleArr[0]= 3;
-    break;
-  case "F2":
-    doubleArr[1]= 4;    doubleArr[0]= 3.5;
-    break;
-  case "F3":
-    doubleArr[1]= 4;    doubleArr[0]= 4;
-    break;
-  case "G1":
-    doubleArr[1]= 5;    doubleArr[0]= 2;
-    break;
-  case "G2":
-    doubleArr[1]= 5;    doubleArr[0]= 3.5;
-    break;
-  case "G3":
-    doubleArr[1]= 5;    doubleArr[0]= 5;
-    break;  
-  case "H1":
-    doubleArr[1]= 6;    doubleArr[0]= 1;
-    break;
-  case "H2":
-    doubleArr[1]= 6;    doubleArr[0]= 3.5;
-    break;
-  case "H3":
-    doubleArr[1]= 6;    doubleArr[0]= 6;
-    break;  
-  default:       doubleArr[0]= 0;    doubleArr[1]= 0;
-}
+    /**
+     * Goes through the bcs(Coins) list and places it accordingly.
+     *
+     * @param bcs : HashMap of Positions and Contents(Coins)
+     * @param root : Pane of GameBoard
+     */
+    public void CreateWithCoins(HashMap bcs, Pane root) {
+        System.out.println("Creating Content with componets is bcs");        
+        System.out.println("BCS = " + bcs.keySet());        
+        for (Object value : bcs.values()) {
+            //   System.out.println("values "+bcs.keySet());
+            Coin c = (Coin) value;
+            System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
+            root.getChildren().add(c.ReturnCoin());
+        }
+    }
+      /**
+     *
+     * Get A double with pos Indexes on giving String of Pos.
+     *
+     */
+    public double[] getSlot(String pos) {
+        double[] doubleArr = new double[2];
+        switch (pos) {
+            case "A1":
+                doubleArr[0] = 1;
+                doubleArr[1] = 1;
+                break;
+            case "A2":
+                doubleArr[0] = 3.5;
+                doubleArr[1] = 1;
+                break;
+            case "A3":
+                doubleArr[1] = 1;
+                doubleArr[0] = 6;
+                break;
+            case "B1":
+                doubleArr[1] = 2;
+                doubleArr[0] = 2;
+                break;
+            case "B2":
+                doubleArr[1] = 2;
+                doubleArr[0] = 3.5;
+                break;
+            case "B3":
+                doubleArr[1] = 2;
+                doubleArr[0] = 5;
+                break;
+            case "C1":
+                doubleArr[1] = 3;
+                doubleArr[0] = 3;
+                break;
+            case "C2":
+                doubleArr[1] = 3;
+                doubleArr[0] = 3.5;
+                break;
+            case "C3":
+                doubleArr[1] = 3;
+                doubleArr[0] = 4;
+                break;
+            case "D1":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 1;
+                break;
+            case "D2":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 2;
+                break;
+            case "D3":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 3;
+                break;
+            case "E1":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 4;
+                break;
+            case "E2":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 5;
+                break;
+            case "E3":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 6;
+                break;
+            case "F1":
+                doubleArr[1] = 4;
+                doubleArr[0] = 3;
+                break;
+            case "F2":
+                doubleArr[1] = 4;
+                doubleArr[0] = 3.5;
+                break;
+            case "F3":
+                doubleArr[1] = 4;
+                doubleArr[0] = 4;
+                break;
+            case "G1":
+                doubleArr[1] = 5;
+                doubleArr[0] = 2;
+                break;
+            case "G2":
+                doubleArr[1] = 5;
+                doubleArr[0] = 3.5;
+                break;
+            case "G3":
+                doubleArr[1] = 5;
+                doubleArr[0] = 5;
+                break;
+            case "H1":
+                doubleArr[1] = 6;
+                doubleArr[0] = 1;
+                break;
+            case "H2":
+                doubleArr[1] = 6;
+                doubleArr[0] = 3.5;
+                break;
+            case "H3":
+                doubleArr[1] = 6;
+                doubleArr[0] = 6;
+                break;
+            default:
+                doubleArr[0] = 0;
+                doubleArr[1] = 0;
+        }
         return doubleArr;
     }
-    
-  public void CreateSlots(int[] posX,int[] posY,Pane root){
-      for (int i = 0; i < posX.length; i++) {
-            for (int j = 0; j < posY.length; j++) {
-                Circle c1 = new Circle(10);
-                // c1.setCenterX(posX[i]);
-                //c1.setCenterY(posY[j]);
-                c1.setCenterX(posX[i]);
-                c1.setCenterY(posY[j]);
-                c1.setFill(Color.CORAL);
-                System.out.println("X " +posX[i] + " Y " +posY[j]);
-                c1.setFill(Color.CORAL);
-                root.getChildren().addAll(c1);
+    /**
+     * Create a SlotHash to set Components
+     *
+     * @return
+     */
+    public HashMap createSlotHash() {
+        HashMap<String, double[]> hCoinPos = new HashMap<String, double[]>();
+        char t;
+        for (t = 'A'; t <= 'H'; t++) {
+            String str = "";
+            for (char i = '1'; i < '4'; i++) {
+                str = String.valueOf(t) + String.valueOf(i);
+                double d[] = doublePosValues(str);
+                //   System.out.println("str =" +") "+ str + "  " + " d =" + d[0] + " " + d[1]);
+                hCoinPos.put(str, d);
             }
         }
+        return hCoinPos;
     }
-    public static HashMap createSlotHash(){
-      HashMap<String, Double[]> hCoinPos = new HashMap<String, Double[]>();   
-          char t;
-         double[] dbpos = {       1,      1,      3.5,    1,       1,      6,      2,      2,      2,      3.5,2,    5,      3,      3,      3,      3.5,      3,    4,      3.5,      1,    3.5,      2,    3.5,      3,     3.5,      4,      3.5,
-      5,3.5,      6,      4,      3,      4,     3.5,      4,      4,      5,2,      5,      3.5,      5,      5,      6,      1,    6,      3.5,      6,      6,};          
-      int o=0;    
-while(o<dbpos.length){          
-    Double d[] = new Double[2];
-          for (t = 'A'; t <= 'H'; t++)
-          { 
-              String str ="";
-              for(char i='1';i<'4';i++){
-                  str = String.valueOf(t)+String.valueOf(i);
-                  d[0]=dbpos[o];
-                  d[1]=dbpos[o+1];
-                  o=o+2;
-                  System.out.println("str ="+str+"  "+ " d ="+d[1]);
-                  hCoinPos.put(str,d);
-              }
-           //   str= (char)(a+'0');;
-          
-          }
-}
-          
-          return hCoinPos;
-   }
-    public double[] createSlotHash1(String pos){
-                double [] doubleArr = new double[2];
-        switch(pos) {
-  case "A1":
-    doubleArr[0]= 1;
-    doubleArr[1]= 1;
-    break;
-  case "A2":
-    doubleArr[0]= 3.5;
-    doubleArr[1]= 1;
-    break;
-  case "A3":
-    doubleArr[1]= 1;
-    doubleArr[0]= 6;
-    break;
-  case "B1":
-    doubleArr[1]= 2;
-    doubleArr[0]= 2;
-    break;
-  case "B2":
-    doubleArr[1]= 2;
-    doubleArr[0]= 3.5;
-    break;
-  case "B3":
-    doubleArr[1]= 2;
-    doubleArr[0]= 5;
-    break;
-  case "C1":
-    doubleArr[1]= 3;
-    doubleArr[0]= 3;
-    break;
-  case "C2":
-    doubleArr[1]= 3;
-    doubleArr[0]= 3.5;
-    break;
-  case "C3":
-    doubleArr[1]= 3;
-    doubleArr[0]= 4;
-    break;
-  case "D1":
-    doubleArr[1]= 3.5;
-    doubleArr[0]= 1;
-    break;
-  case "D2":
-    doubleArr[1]= 3.5;
-    doubleArr[0]= 2;
-    break;
-  case "D3":
-    doubleArr[1]= 3.5;
-    doubleArr[0]= 3;
-    break;
-  case "E1":
-    doubleArr[1]= 3.5;
-    doubleArr[0]= 4;
-    break;
-  case "E2":
-    doubleArr[1]= 3.5;
-    doubleArr[0]= 5;
-    break;
-  case "E3":
-    doubleArr[1]= 3.5;
-    doubleArr[0]= 6;
-    break;
-  case "F1":
-    doubleArr[1]= 4;
-    doubleArr[0]= 3;
-    break;
-  case "F2":
-    doubleArr[1]= 4;
-    doubleArr[0]= 3.5;
-    break;
-  case "F3":
-    doubleArr[1]= 4;
-    doubleArr[0]= 4;
-    break;
-  case "G1":
-    doubleArr[1]= 5;
-    doubleArr[0]= 2;
-    break;
-  case "G2":
-    doubleArr[1]= 5;
-    doubleArr[0]= 3.5;
-    break;
-  case "G3":
-    doubleArr[1]= 5;
-    doubleArr[0]= 5;
-    break;  
-  case "H1":
-    doubleArr[1]= 6;
-    doubleArr[0]= 1;
-    break;
-  case "H2":
-    doubleArr[1]= 6;
-    doubleArr[0]= 3.5;
-    break;
-  case "H3":
-    doubleArr[1]= 6;
-    doubleArr[0]= 6;
-    break;  
-  default:
-}
+    public double[] doublePosValues(String pos) {
+        double[] doubleArr = new double[2];
+        switch (pos) {
+            case "A1":
+                doubleArr[0] = 1;
+                doubleArr[1] = 1;
+                break;
+            case "A2":
+                doubleArr[0] = 3.5;
+                doubleArr[1] = 1;
+                break;
+            case "A3":
+                doubleArr[1] = 1;
+                doubleArr[0] = 6;
+                break;
+            case "B1":
+                doubleArr[1] = 2;
+                doubleArr[0] = 2;
+                break;
+            case "B2":
+                doubleArr[1] = 2;
+                doubleArr[0] = 3.5;
+                break;
+            case "B3":
+                doubleArr[1] = 2;
+                doubleArr[0] = 5;
+                break;
+            case "C1":
+                doubleArr[1] = 3;
+                doubleArr[0] = 3;
+                break;
+            case "C2":
+                doubleArr[1] = 3;
+                doubleArr[0] = 3.5;
+                break;
+            case "C3":
+                doubleArr[1] = 3;
+                doubleArr[0] = 4;
+                break;
+            case "D1":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 1;
+                break;
+            case "D2":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 2;
+                break;
+            case "D3":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 3;
+                break;
+            case "E1":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 4;
+                break;
+            case "E2":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 5;
+                break;
+            case "E3":
+                doubleArr[1] = 3.5;
+                doubleArr[0] = 6;
+                break;
+            case "F1":
+                doubleArr[1] = 4;
+                doubleArr[0] = 3;
+                break;
+            case "F2":
+                doubleArr[1] = 4;
+                doubleArr[0] = 3.5;
+                break;
+            case "F3":
+                doubleArr[1] = 4;
+                doubleArr[0] = 4;
+                break;
+            case "G1":
+                doubleArr[1] = 5;
+                doubleArr[0] = 2;
+                break;
+            case "G2":
+                doubleArr[1] = 5;
+                doubleArr[0] = 3.5;
+                break;
+            case "G3":
+                doubleArr[1] = 5;
+                doubleArr[0] = 5;
+                break;
+            case "H1":
+                doubleArr[1] = 6;
+                doubleArr[0] = 1;
+                break;
+            case "H2":
+                doubleArr[1] = 6;
+                doubleArr[0] = 3.5;
+                break;
+            case "H3":
+                doubleArr[1] = 6;
+                doubleArr[0] = 6;
+                break;
+            default:
+        }
         return doubleArr;
     }
-   
-   
 }
