@@ -243,7 +243,7 @@ public class Server extends Thread {
                         //clients[ID2-1].interrupt();
                         clients[ID1-1] = null;
                         clients[ID2-1] = null;
-
+                        System.out.println("ran service thread");
                         new Thread(new NMMServiceThread(p1, p2)).start();
                     }
                 }

@@ -55,8 +55,8 @@ import ninemensmorris.networking.NMMGUINetworkingThread;
 /**
  * NMM Client Application
  *
- * <<<<<<< HEAD
- * @a
+ * <<<<<<< HEAD @a
+ *
  *
  * uthor eltojaro ======= >>>>>>> gui
  */
@@ -78,7 +78,7 @@ public class NMMApplication extends Application {
 
     MCoinType player;
     Label lbInstruct = new Label("");
-    
+
     LinkedBlockingQueue<Object> in_lbq = new LinkedBlockingQueue<>();
     LinkedBlockingQueue<Object> out_lbq = new LinkedBlockingQueue<>();
     NMMGUINetworkingThread nmmNet = new NMMGUINetworkingThread(in_lbq, out_lbq);
@@ -97,10 +97,10 @@ public class NMMApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
+
         Thread networking = new Thread(nmmNet);
         networking.start();
-        
+
 //Scene 1 - Intro Scene
         Label lb1 = new Label("Welcome to the Game");
         Label tGameTitle = new Label("Nine Mens Morris");
@@ -184,23 +184,23 @@ public class NMMApplication extends Application {
             root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
         });
         Scene scene = new Scene(root);
-        
-        
-        
-         btn_ChosenRooms.setOnAction(e -> {
+
+        btn_ChosenRooms.setOnAction(e -> {
             arrVbox.clear();
             RadioButton rb = (RadioButton) roomTg.getSelectedToggle();
             try {
                 if (rb != null) {
-                    if(nmmNet.choose(SelectedRoomNum)){
-                       primaryStage.setScene(scene);
+                    boolean theChosen = 
+                            nmmNet.choose(SelectedRoomNum);
+                    if (theChosen) {
+                        primaryStage.setScene(scene);
                         System.out.println("");
                         //System.out.println("player =="+player.name());
-                        
+
                         Thread game = new Thread(guiBoard);
                         game.start();
                     }
-               }
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
 //                Alert a1 = new Alert(Alert.AlertType.ERROR, "Sorry Room unavailable,Please try again", ButtonType.OK);
@@ -254,7 +254,7 @@ public class NMMApplication extends Application {
         primaryStage.setScene(scene1);//chanfe to scene1
         primaryStage.show();
     }
-    
+
     /**
      * Adds BoardComp to specified slot position and sets PosX and PosY
      * BoardComp should set CoinType and slot
@@ -271,6 +271,7 @@ public class NMMApplication extends Application {
 //                   bc.setVldMvs(vldMvs);
         bcs.put(bc.getSlot(), bc);
     }
+
     public void ToggleGroup_ArraySelectionAnimation(ToggleGroup roomTg, Button btn_ChosenRooms) {
         roomTg.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n) {
@@ -286,10 +287,10 @@ public class NMMApplication extends Application {
 
                     }
                     SelectedRoomNum = Integer.parseInt(rb.getText().replaceAll("Room ", "").trim());
-                  //  System.out.println("Selected Room Num  " + SelectedRoomNum);
+                    //  System.out.println("Selected Room Num  " + SelectedRoomNum);
                     RoomsGUI rm2 = arrRoomSlot.get(SelectedRoomNum - 1);
                     if (rm2.isWhiteFilled()) { //White is filled
-                    //    System.out.println("Black selected ");
+                        //    System.out.println("Black selected ");
                         rm2.getBlackSlot().setRadius(25);
                         rm2.getBlackSlot().setStrokeWidth(5);
                         rm2.getBlackSlot().setStroke(Color.BLACK);
@@ -300,13 +301,14 @@ public class NMMApplication extends Application {
                         rm2.getWhiteSlot().setStrokeWidth(5);
                         rm2.getWhiteSlot().setStroke(Color.WHITE);
                     } else if (rm2.isBlackFilled() && rm2.isWhiteFilled()) { //Full Room
-                      //  System.out.println("Not  selected ");
+                        //  System.out.println("Not  selected ");
                     }
                 }
             }
 
         });
     }
+
     /**
      * Returns Room Availability from Server
      *
@@ -314,7 +316,6 @@ public class NMMApplication extends Application {
      * @param oos
      * @return
      */
-   
     /**
      * *
      * Adds Rooms from Server to Arr
@@ -323,7 +324,7 @@ public class NMMApplication extends Application {
      * @throws IOException
      */
     public void GetRoomsFromServer(ArrayList array) throws UnknownHostException, IOException {
-         int[][] room = nmmNet.list();
+        int[][] room = nmmNet.list();
         System.out.println(Arrays.deepToString(room));
         for (int row = 0; row < room.length; row++) {
             //Set room number + 1;
@@ -339,6 +340,7 @@ public class NMMApplication extends Application {
             array.add(row, rmGUI);
         }
     }
+
     /**
      * Prints the rooms with each line per room with room numbers.
      *
@@ -348,9 +350,11 @@ public class NMMApplication extends Application {
     public static void test2(int[] test) {
         test[1] = 19;
     }
+
     public static void main(String[] args) throws InterruptedException {
         launch(args);
     }
+
     private void printPlayerTurn(MCoinType turn, int msg) {
         switch (msg) {
             case 1:

@@ -49,11 +49,13 @@ public class NMMServiceThread extends Thread {
     @Override
     public void run() {
         try {
-            // Create Object IO Streams for both players
-            ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
+            System.out.println("Here at Service Thread");
+            
+            // Create Object IO Streams for both player
             ObjectOutputStream p1oos = new ObjectOutputStream(player1.getOutputStream());
-            ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());
+            ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
             ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
+            ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());    
 
             // Thread Setup for the game
             Thread gameThread = new Thread(new Runnable() {
@@ -111,9 +113,12 @@ public class NMMServiceThread extends Thread {
                 public void run() {
                     // Sends an empty board with the player information, i.e. p1 is WHITE and p2 is BLACK
                     try {
+                        System.out.println("here at Service thread");
                         NMMboard turn = new NMMboard(null, MCoinType.WHITE, null, false);
+                        p1oos.reset();
                         p1oos.writeObject(turn);
                         turn = new NMMboard(null, MCoinType.BLACK, null, false);
+                        p2oos.reset();
                         p2oos.writeObject(turn);
                     } catch (IOException ex) {
                     }
