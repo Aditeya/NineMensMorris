@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ninemensmorris;
+package ninemensmorris.nmmguisample;
 
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -22,9 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import static ninemensmorris.NMMApplication.HEIGHT;
-import static ninemensmorris.NMMApplication.POS_SIZE;
-import static ninemensmorris.NMMApplication.WIDTH;
+import ninemensmorris.NMMLogic;
+import static ninemensmorris.nmmguisample.NMMApplication.HEIGHT;
+import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
+import static ninemensmorris.nmmguisample.NMMApplication.WIDTH;
 import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
 import ninemensmorris.enums.PrintType;
