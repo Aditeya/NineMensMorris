@@ -190,17 +190,26 @@ public class Server extends Thread {
          * Closes the client socket connection.
          */
         public void closeConnection() {
-            try {
-                this.poos.reset();
-                this.pois.reset();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            //try {
+                System.out.println("no need");
+            //} catch (IOException ex) {
+            //    ex.printStackTrace();
+            //}
         }
 
         public Socket getClient() {
             return client;
         }
+
+        public ObjectInputStream getPois() {
+            return pois;
+        }
+
+        public ObjectOutputStream getPoos() {
+            return poos;
+        }
+        
+        
     }
 
     //RoomWatch Thread Class Section
@@ -246,7 +255,7 @@ public class Server extends Thread {
                         clients[ID1-1] = null;
                         clients[ID2-1] = null;
                         System.out.println("ran service thread");
-                        new Thread(new NMMServiceThread(p1, p2)).start();
+                        new Thread(new NMMServiceThread(p1, p2 )).start();
                     }
                 }
             }

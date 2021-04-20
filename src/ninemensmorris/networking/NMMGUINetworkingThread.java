@@ -91,6 +91,7 @@ public class NMMGUINetworkingThread extends Thread {
 
             if (roomChosen) {
                 try {
+                    Thread.sleep(5000);
                     NMMboard p = (NMMboard) ois.readObject();
                     player = p.getTurn();
                     output.add(player);

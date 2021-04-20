@@ -30,6 +30,10 @@ public class NMMServiceThread extends Thread {
 
     private final Socket player1;
     private final Socket player2;
+    private final ObjectOutputStream p1oos;
+    private final ObjectInputStream p1ois;
+    private final ObjectOutputStream p2oos;
+    private final ObjectInputStream p2ois;
     private final NMMLogic nmm;
     private final LinkedBlockingQueue sendCoin;
 
@@ -39,23 +43,32 @@ public class NMMServiceThread extends Thread {
      * @param player1 Socket of player1
      * @param player2 Socket of player2
      */
-    public NMMServiceThread(Socket player1, Socket player2) {
+    public NMMServiceThread(Socket player1, Socket player2, ObjectOutputStream p1oos, ObjectInputStream p1ois, ObjectOutputStream p2oos, ObjectInputStream p2ois) {
         this.player1 = player1;
         this.player2 = player2;
+        this.p1oos = p1oos;
+        this.p1ois = p1ois;
+        this.p2oos = p2oos;
+        this.p2ois = p2ois;
         this.sendCoin = new LinkedBlockingQueue(2);
         this.nmm = new NMMLogic();
     }
+    
+    
 
     @Override
     public void run() {
         try {
             System.out.println("Here at Service Thread");
-            
+
             // Create Object IO Streams for both player
+            /*
             ObjectOutputStream p1oos = new ObjectOutputStream(player1.getOutputStream());
             ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
             ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
-            ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());    
+            ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());*/
+
+            System.out.println("But not here");
 
             // Thread Setup for the game
             Thread gameThread = new Thread(new Runnable() {
