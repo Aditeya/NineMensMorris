@@ -62,8 +62,6 @@ import ninemensmorris.networking.NMMGUINetworkingThread;
  */
 public class NMMApplication extends Application {
 
-    Scanner input = new Scanner(System.in); // Scanner for input, might be changed in GUI section
-
     //Gui Component Sizing - For Scaling if needed
     public static final int POS_SIZE = 100;
     public static final int WIDTH = 7;
@@ -75,26 +73,24 @@ public class NMMApplication extends Application {
     RoomsGUI rmGUI = new RoomsGUI();
     int numWhite_CoinsLeft = 9, numBlack_CoinsLeft = 9;
     int SelectedRoomNum = -1;
-
     MCoinType player;
     Label lbInstruct = new Label("");
-
     LinkedBlockingQueue<Object> in_lbq = new LinkedBlockingQueue<>();
     LinkedBlockingQueue<Object> out_lbq = new LinkedBlockingQueue<>();
     NMMGUINetworkingThread nmmNet = new NMMGUINetworkingThread(in_lbq, out_lbq);
     NMMGUIBoardThread guiBoard = new NMMGUIBoardThread(in_lbq, out_lbq, boardcomp);
-
 //Creating Board in Screen    
-    private Parent createContent() {
+  public static Scene scene; 
+  
+    public static Parent createContent() {
         System.out.println("Creating COn");
         Pane root = new Pane();
         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
         BoardComp bc = new BoardComp();
-        bc.GenerateBoard(root, numBlack_CoinsLeft, numWhite_CoinsLeft);
-        bc.CreateWithCoins(bcs, root);
+        bc.GenerateBoard(root, 0, 0);
+        //bc.CreateWithCoins(bcs, root);
         return root;
     }
-
     @Override
     public void start(Stage primaryStage) {
 
@@ -153,13 +149,13 @@ public class NMMApplication extends Application {
         HBox hbMenu = new HBox(btnend_game, btnaddCoin);
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
-        VBox root = new VBox();
-        root.setId("vbox");
+        VBox v_root = new VBox();
+        v_root.setId("vbox");
         Label tGuide = new Label("Let's Play");
         Label lbPlayerName = new Label("Player 1");
 
         Button btnStat = new Button("");
-        root.getChildren().addAll(hbMenu, tGuide, lbInstruct, btnStat, createContent(), lbPlayerName);
+        v_root.getChildren().addAll(hbMenu, tGuide, lbInstruct, btnStat, createContent(), lbPlayerName);
         btnaddCoin.setOnAction(e -> {
             String Scenario = "Place Anywhere";
             switch (Scenario) {
@@ -175,15 +171,15 @@ public class NMMApplication extends Application {
                         System.out.println("Place Anywhere slot = " + c.slot + " type =" + c.getType());
                     }
                     AddCompTobsc(placingnewCoin);
-                    root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
-                    root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
+                    v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
+                    v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
             }
             AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
             System.out.println("btn AddCOinads and Check ");
-            root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
-            root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
+            v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
+            v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
         });
-        Scene scene = new Scene(root);
+       scene = new Scene(v_root);
 
         btn_ChosenRooms.setOnAction(e -> {
             arrVbox.clear();
@@ -191,12 +187,10 @@ public class NMMApplication extends Application {
             try {
                 if (rb != null) {
                     boolean theChosen = 
-                            nmmNet.choose(SelectedRoomNum);
+                            nmmNet.choose(SelectedRoomNum-1);
                     if (theChosen) {
                         primaryStage.setScene(scene);
                         System.out.println("");
-                        //System.out.println("player =="+player.name());
-
                         Thread game = new Thread(guiBoard);
                         game.start();
                     }
@@ -208,8 +202,8 @@ public class NMMApplication extends Application {
             }
         });
         btnStat.setOnAction(e -> {
-            root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
-            root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
+            v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
+            v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
         });
         //Button Transition
         /* Enter Name and Going to Select Room*/
@@ -309,13 +303,7 @@ public class NMMApplication extends Application {
         });
     }
 
-    /**
-     * Returns Room Availability from Server
-     *
-     * @param ois
-     * @param oos
-     * @return
-     */
+    
     /**
      * *
      * Adds Rooms from Server to Arr
@@ -347,10 +335,6 @@ public class NMMApplication extends Application {
      * @param rooms Double Array to be printed out
      */
     //</editor-fold>
-    public static void test2(int[] test) {
-        test[1] = 19;
-    }
-
     public static void main(String[] args) throws InterruptedException {
         launch(args);
     }

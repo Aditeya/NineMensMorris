@@ -20,8 +20,14 @@ import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.geometry.NodeOrientation;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import ninemensmorris.NMMLogic;
 import static ninemensmorris.nmmguisample.NMMApplication.HEIGHT;
 import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
@@ -31,6 +37,7 @@ import ninemensmorris.enums.MCoinType;
 import ninemensmorris.enums.PrintType;
 import ninemensmorris.networking.NMMboard;
 import ninemensmorris.networking.NMMmove;
+import static ninemensmorris.nmmguisample.NMMApplication.createContent;
 
 /**
  *
@@ -50,17 +57,32 @@ public class NMMGUIBoardThread extends Thread {
     }
 
     int numWhite_CoinsLeft = 9, numBlack_CoinsLeft = 9;
-
+    Label tGuide = new Label("Let's Play");
     public HashMap<String, Coin> bcs = new HashMap<>();
-
+  Label lbPlayerName = new Label("Player 1");
     private Parent createContent() {
         System.out.println("Creating COn");
+        VBox v_root = new VBox();
+
         Pane root = new Pane();
-        root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
+         Button btnend_game = new Button("End Game");
+        Button btnaddCoin = new Button(" aDD BTN");
+        HBox hbMenu = new HBox(btnend_game, btnaddCoin);
+          
+      
+            Label lbInstruct = new Label("");
+             Button btnStat = new Button("");
+
+        hbMenu.setId("exitMenu");
+        hbMenu.setAlignment(Pos.TOP_RIGHT);
+        v_root.setId("vbox");
+         root.setPrefSize(WIDTH * POS_SIZE, HEIGHT * POS_SIZE);
         BoardComp bc = new BoardComp();
         bc.GenerateBoard(root, numBlack_CoinsLeft, numWhite_CoinsLeft);
+        v_root.getChildren().add(lbPlayerName);
         bc.CreateWithCoins(bcs, root);
-        return root;
+        v_root.getChildren().addAll(hbMenu, tGuide,root ,lbInstruct, btnStat);
+        return v_root;
     }
 
     MCoinType player;
@@ -70,17 +92,18 @@ public class NMMGUIBoardThread extends Thread {
         System.out.println("Running");
         try {
             player = (MCoinType) this.input.take();
-
             System.out.println("player == " + player);
-
+            lbPlayerName.setText(player.toString());
+            NMMApplication.scene.setRoot(createContent());
+            NMMApplication.scene.setNodeOrientation(NodeOrientation.INHERIT);
             while (true) {
                 // Receive board and print it out
                 NMMboard board = (NMMboard) this.input.take();
                 NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
-
                 // Notify if input is valid
                 if (board.isWrongMove()) {
                     System.out.println("Invalid move, Try again");
+                    tGuide.setText("Invalid move, Try again");
                 }
 
                 MCoinType turn = board.getTurn();
