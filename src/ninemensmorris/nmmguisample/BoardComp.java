@@ -68,7 +68,6 @@ public class BoardComp {
         for (int i = 0; i < lineStr.length; i = i + 2) {
             Line line = new Line(getSlot(lineStr[i])[0] * 100, getSlot(lineStr[i])[1] * 100, getSlot(lineStr[i + 1])[0] * 100, getSlot(lineStr[i + 1])[1] * 100);
             ArrLis_mill_Lines.add(line); //Adding to the Mills
-            System.out.println("mill ==>"+ArrLis_mill_Lines.size());
             line.setId("boardlines");
             root.getChildren().add(line);
         }
@@ -82,16 +81,6 @@ public class BoardComp {
                     getSlot(millLineStr[i + 1])[1] * 100);
             ArrLis_mill_Lines.add(line); //Adding to the Mills
         }
-        
-        
-        //Setting Glow on Specific Lines in ArroFlINES
-//       for (int i = 0; i < ArrLis_mill_Lines.size(); i++) {
-//           ArrLis_mill_Lines.get(i).setId("milledLines");
-//      
-//      if(i>3)
-//      root.getChildren().add(ArrLis_mill_Lines.get(i));
-//     }
-        
         for (int i = 0; i < numBlack_CoinsLeft; i++) {
             Circle numC = new Circle(40, (600 - (30 * i)), 30);
             numC.setId("blackFilledSlot");
@@ -134,7 +123,6 @@ public class BoardComp {
         System.out.println("Creating Content with componets is bcs");        
         System.out.println("BCS = " + bcs.keySet());        
         for (Object value : bcs.values()) {
-            //   System.out.println("values "+bcs.keySet());
             Coin c = (Coin) value;
             System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
             root.getChildren().add(c.ReturnCoin());
@@ -263,7 +251,6 @@ public class BoardComp {
             for (char i = '1'; i < '4'; i++) {
                 str = String.valueOf(t) + String.valueOf(i);
                 double d[] = doublePosValues(str);
-                //   System.out.println("str =" +") "+ str + "  " + " d =" + d[0] + " " + d[1]);
                 hCoinPos.put(str, d);
             }
         }
