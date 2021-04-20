@@ -32,10 +32,8 @@ public class BoardComp {
     
     String whatComp;
     String Pos;
-  String[] millLineStr = { "A1", "A3",            "A3", "H3",      "H3", "H1",
-            "H1", "A1",            "B1", "B3",            "B3", "G3",     "G3","G1",
-            "G1","B1",            "C1","C3",            "C3","F3",     "F3","F1",
-            "F1","C1"       };
+  String[] millLineStr = { "A1", "A3",            "A3", "H3",      "H3", "H1",    "H1", "A1",            "B1", "B3",            "B3", "G3",     "G3","G1",
+            "G1","B1",            "C1","C3",            "C3","F3",     "F3","F1",            "F1","C1"       };
    String[] lineStr = {"A2", "C2", "D1", "D3", "E1", "E3", "F2", "H2"};
     public BoardComp() {
     }

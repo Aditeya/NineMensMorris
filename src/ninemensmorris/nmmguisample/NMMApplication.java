@@ -80,8 +80,8 @@ public class NMMApplication extends Application {
     NMMGUINetworkingThread nmmNet = new NMMGUINetworkingThread(in_lbq, out_lbq);
     NMMGUIBoardThread guiBoard = new NMMGUIBoardThread(in_lbq, out_lbq, boardcomp);
 //Creating Board in Screen    
-  public static Scene scene; 
-  
+    public static Scene scene;
+
     public static Parent createContent() {
         System.out.println("Creating COn");
         Pane root = new Pane();
@@ -91,6 +91,7 @@ public class NMMApplication extends Application {
         //bc.CreateWithCoins(bcs, root);
         return root;
     }
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -145,17 +146,14 @@ public class NMMApplication extends Application {
         scene2.getStylesheets().add("Resc/NMMBoard.css");
 //Scene 3 - Game Board
         Button btnend_game = new Button("End Game");
-        Button btnaddCoin = new Button(" aDD BTN");
+        Button btnaddCoin = new Button(" ADD BTN");
         HBox hbMenu = new HBox(btnend_game, btnaddCoin);
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
         VBox v_root = new VBox();
         v_root.setId("vbox");
-        Label tGuide = new Label("Let's Play");
-        Label lbPlayerName = new Label("Player 1");
-
-        Button btnStat = new Button("");
-        v_root.getChildren().addAll(hbMenu, tGuide, lbInstruct, btnStat, createContent(), lbPlayerName);
+        Label tGuide = new Label("Waiting For Your Opponent..");
+        v_root.getChildren().addAll(hbMenu, tGuide, lbInstruct,createContent());
         btnaddCoin.setOnAction(e -> {
             String Scenario = "Place Anywhere";
             switch (Scenario) {
@@ -170,24 +168,23 @@ public class NMMApplication extends Application {
                         Coin c = (Coin) value;
                         System.out.println("Place Anywhere slot = " + c.slot + " type =" + c.getType());
                     }
-                    AddCompTobsc(placingnewCoin);
+                  //  AddCompTobsc(placingnewCoin);
                     v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
-                    v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
+                    v_root.getChildren().addAll(hbMenu, tGuide,  createContent());        //Reload  Board
             }
-            AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
+            //AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
             System.out.println("btn AddCOinads and Check ");
             v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
-            v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
+            v_root.getChildren().addAll(hbMenu, tGuide,  createContent());        //Reload  Board
         });
-       scene = new Scene(v_root);
+        scene = new Scene(v_root);
 
         btn_ChosenRooms.setOnAction(e -> {
             arrVbox.clear();
             RadioButton rb = (RadioButton) roomTg.getSelectedToggle();
             try {
                 if (rb != null) {
-                    boolean theChosen = 
-                            nmmNet.choose(SelectedRoomNum-1);
+                    boolean theChosen = nmmNet.choose(SelectedRoomNum - 1);
                     if (theChosen) {
                         primaryStage.setScene(scene);
                         System.out.println("");
@@ -201,10 +198,10 @@ public class NMMApplication extends Application {
 //                a1.showAndWait();
             }
         });
-        btnStat.setOnAction(e -> {
-            v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
-            v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
-        });
+//        btnStat.setOnAction(e -> {
+//            v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
+//            v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent());        //Reload  Board
+//        });
         //Button Transition
         /* Enter Name and Going to Select Room*/
         btn_GoToSelectRooms.setOnAction(e -> {
@@ -249,22 +246,7 @@ public class NMMApplication extends Application {
         primaryStage.show();
     }
 
-    /**
-     * Adds BoardComp to specified slot position and sets PosX and PosY
-     * BoardComp should set CoinType and slot
-     *
-     * @param slot
-     * @param bc
-     */
-    public void AddCompTobsc(Coin bc) {
-        boardcomp = new BoardComp();
-        double d[] = boardcomp.getSlot(bc.getSlot());
-        bc.setPosX(d[0] * POS_SIZE);
-        bc.setPosY(d[1] * POS_SIZE);
-//                   String [] vldMvs = {"A2","B3"};
-//                   bc.setVldMvs(vldMvs);
-        bcs.put(bc.getSlot(), bc);
-    }
+  
 
     public void ToggleGroup_ArraySelectionAnimation(ToggleGroup roomTg, Button btn_ChosenRooms) {
         roomTg.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -303,7 +285,6 @@ public class NMMApplication extends Application {
         });
     }
 
-    
     /**
      * *
      * Adds Rooms from Server to Arr

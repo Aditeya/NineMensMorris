@@ -122,7 +122,7 @@ public class NewFXmAIN extends Application {
                     root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
                     root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
             }
-            AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
+ //           AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
             System.out.println("btn AddCOinads and Check ");
             root.getChildren().removeAll(root.getChildren());  //To avoid DuplicateChildren
             root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent(), lbPlayerName);        //Reload  Board
