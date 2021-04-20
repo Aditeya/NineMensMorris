@@ -62,7 +62,7 @@ public class NMMServiceThread extends Thread {
             System.out.println("Here at Service Thread");
 
             // Create Object IO Streams for both player
-            /*
+            /*Take that it works
             ObjectOutputStream p1oos = new ObjectOutputStream(player1.getOutputStream());
             ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
             ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
