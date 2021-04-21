@@ -22,7 +22,8 @@ public class NMMboard implements Serializable {
     private final MCoinType winner;
     private final InputType iType;
     private final boolean wrongMove;
-    private int menLeft;
+    private int menLeftBlack;
+    private int menLeftWhite;
     private int coinOBW;
     private int coinOBB;
 
@@ -59,8 +60,12 @@ public class NMMboard implements Serializable {
         return wrongMove;
     }
 
-    public int getMenLeft() {
-        return menLeft;
+    public int getMenLeftBlack() {
+        return menLeftBlack;
+    }
+
+    public int getMenLeftWhite() {
+        return menLeftWhite;
     }
 
     public int getCoinOBW() {
@@ -75,10 +80,14 @@ public class NMMboard implements Serializable {
         return winner;
     }
 
-    public void setMenLeft(int menLeft) {
-        this.menLeft = menLeft;
+    public void setMenLeftBlack(int menLeftBlack) {
+        this.menLeftBlack = menLeftBlack;
     }
 
+    public void setMenLeftWhite(int menLeftWhite) {
+        this.menLeftWhite = menLeftWhite;
+    }
+    
     public void setCoinOBW(int coinOBW) {
         this.coinOBW = coinOBW;
     }
