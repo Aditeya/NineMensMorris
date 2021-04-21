@@ -151,8 +151,8 @@ public class NMMServiceThread extends Thread {
                             //Sends the board with turn and wrong move information
                             NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), nmm.getWinner(), input, wrongMove);
                             board.setMenLeft(nmm.getMenLeft());
-                            board.setCoinOBB(0);
-                            board.setCoinOBW(0);
+                            board.setCoinOBB(nmm.getCoinOBB());
+                            board.setCoinOBW(nmm.getCoinOBW());
                             sendBoard(board);
 
                             switch (input) {
