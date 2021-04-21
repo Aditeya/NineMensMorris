@@ -154,13 +154,9 @@ public class NMMGUIBoardThread extends Thread {
                                 }
                                 break;
                             case MOVE:
-                                
                                 if (Move.matches("[A-H]+[1-3]\\s[A-H]+[1-3]")) {
                                     System.out.println("Move");
-                                    Alert a1 = new Alert(Alert.AlertType.ERROR);
-                                    a1.showAndWait();
                                     String[] slots = Move.split(" ");
-
                                     ReduceCoin(turn, board);
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("", true));
@@ -197,7 +193,7 @@ public class NMMGUIBoardThread extends Thread {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -247,7 +243,7 @@ public String getScenario(NMMboard board){
                                 System.out.println("PLACE!!");
                                 break;
                             case REMOVE:
-                                Scenario="Remove a Coin";
+                                Scenario="Remove a Coin from Opponent";
                                 break;
                             case MOVE:
                                 Scenario="Move a Coin";
