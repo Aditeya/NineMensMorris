@@ -134,9 +134,8 @@ public class NMMGUIBoardThread extends Thread {
                                 System.out.println("NONE");
                                 break;
                             case PLACE:
-                                System.out.println("PLACE!!");
+                                //System.out.println("PLACE!!");
                                 if (Move.matches("[A-H]+[1-3]")) {
-                                    
                                     takeInput = true;
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
@@ -145,7 +144,7 @@ public class NMMGUIBoardThread extends Thread {
                                 }
                                 break;
                             case REMOVE:
-                                System.out.println("Remove");
+                               // System.out.println("Remove");
                                 if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
                                     takeInput = true;
                                 } else {
@@ -158,6 +157,8 @@ public class NMMGUIBoardThread extends Thread {
                                 
                                 if (Move.matches("[A-H]+[1-3]\\s[A-H]+[1-3]")) {
                                     System.out.println("Move");
+                                    Alert a1 = new Alert(Alert.AlertType.ERROR);
+                                    a1.showAndWait();
                                     String[] slots = Move.split(" ");
 
                                     ReduceCoin(turn, board);
