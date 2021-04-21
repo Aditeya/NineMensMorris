@@ -118,11 +118,11 @@ public class BoardComp {
      * @param root : Pane of GameBoard
      */
     public void CreateWithCoins(HashMap bcs, Pane root) {
-        System.out.println("Creating Content with componets is bcs");        
-        System.out.println("BCS = " + bcs.keySet());        
+        //System.out.println("Creating Content with componets is bcs");        
+        //System.out.println("BCS = " + bcs.keySet());        
         for (Object value : bcs.values()) {
             Coin c = (Coin) value;
-            System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
+      //      System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
             root.getChildren().add(c.ReturnCoin());
         }
     }

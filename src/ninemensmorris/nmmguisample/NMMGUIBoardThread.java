@@ -70,14 +70,15 @@ public class NMMGUIBoardThread extends Thread {
     }
     Button btnStat = new Button("");
 
-    private Parent createContent() {
+    private Parent createContent(String guidetext, boolean tfMoveVisible) {
         System.out.println("Creating COn");
+        tGuide.setText(guidetext);
+        tfMove.setVisible(tfMoveVisible);
+
         VBox v_root = new VBox();
         Pane root = new Pane();
-        Button btnend_game = new Button("End Game");
-        Button btnaddCoin = new Button(" aDD BTN");
         tfMove.setPromptText("Enter Move");
-        HBox hbMenu = new HBox(tfMove, btnend_game, btnaddCoin);
+        HBox hbMenu = new HBox(tfMove, btnStat);
         Label lbInstruct = new Label("");
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
@@ -87,7 +88,7 @@ public class NMMGUIBoardThread extends Thread {
         bc.GenerateBoard(root, numBlack_CoinsLeft, numWhite_CoinsLeft);
         v_root.getChildren().add(lbPlayerName);
         bc.CreateWithCoins(bcs, root);
-        v_root.getChildren().addAll(hbMenu, tGuide, root, lbInstruct, btnStat);
+        v_root.getChildren().addAll(hbMenu, tGuide, root, lbInstruct);
         return v_root;
     }
     BoardComp boardComp = new BoardComp();
@@ -100,52 +101,35 @@ public class NMMGUIBoardThread extends Thread {
             player = (MCoinType) this.input.take();
             lbPlayerName.setText(player.toString());
             NMMApplication.scene.setNodeOrientation(NodeOrientation.INHERIT);
-            
             while (true) {
                 // Receive board and print it out
                 NMMboard board = (NMMboard) this.input.take();
-                NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
-                
-                NMMCoin[][] coins = board.getNmmBoard();
-                                NMMLogic nmm = new NMMLogic();
+                //   NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
 
-                char t;
-                    for (t = 'A'; t <= 'H'; t++) {
-                        String str = "";
-                        for (char i = '1'; i < '4'; i++) {
-                            str = String.valueOf(t) + String.valueOf(i);
-                            int idx[] = NMMLogic.slotLkUp(str); //
-                            System.out.printf("index= %d:%d\n", idx[0], idx[1]); //should be 0:0 for A1
-                            NMMCoin coin = coins[idx[0]][idx[1]]; //gets coin A1 
-                            System.out.println("coin at " + str + " = " + coin.getCoin());
-                            AddCompTobsc(new Coin(coin.getCoin(), str, "Place On Click")); //Added to ArrayList
-                        }
-                    }
-                
-                
-                
-                
-                
+                NMMCoin[][] coins = board.getNmmBoard();
+                NMMLogic nmm = new NMMLogic();
+
+                Load_Display_BoardFromServer(coins);
 
                 // Notify if input is valid
                 if (board.isWrongMove()) {
                     tGuide.setText("Invalid move, Try again");
                 }
-                
-                MCoinType turn = board.getTurn();
-                // Take input and send, if it is players turn
-                if (turn == player) {
-                    
-                    
-                    if (turn.equals(MCoinType.BLACK)) {
-                        numBlack_CoinsLeft = 2;// nmm.getMenLeft();
-                    } else if (turn.equals(MCoinType.WHITE)) {
-                        numWhite_CoinsLeft = nmm.getMenLeft();
-                    }
-                    NMMApplication.scene.setRoot(createContent());
-                    btnStat.setOnAction(e -> {
 
-                        String Move = tfMove.getText();
+                MCoinType turn = board.getTurn();// Take input and send, if it is players turn
+                if (turn == player) {
+//                    if (turn.equals(MCoinType.BLACK)) {
+//                        numBlack_CoinsLeft = //nmm.getMenLeft();
+//                    } else if (turn.equals(MCoinType.WHITE)) {
+//                        numWhite_CoinsLeft = nmm.getMenLeft();
+//                    }
+
+                    NMMApplication.scene.setRoot(clearContent());
+                    NMMApplication.scene.setRoot(createContent("Your Turn!", true));
+
+                    btnStat.setOnAction(e -> {
+                    
+                        String Move = tfMove.getText().trim();
 
                         switch (board.getiType()) {
                             case NONE:
@@ -153,11 +137,12 @@ public class NMMGUIBoardThread extends Thread {
                             case PLACE:
                                 // NMMApplication.scene.getRoot().getOnKeyPressed();
                                 System.out.println("PLACE!!");
+                                ReduceCoin(turn);
                                 // input.add(new NMMCoin(tfMove.getText().trim()));
                                 break;
                             case REMOVE:
                                 System.out.println("Remove");
-
+                                ReduceCoin(turn);
                                 //output.add(InputType.REMOVE);
                                 //printPlayerTurn(turn, 2);
                                 break;
@@ -167,8 +152,7 @@ public class NMMGUIBoardThread extends Thread {
                                 //printPlayerTurn(turn, 3);
                                 String[] slots = new String[2];
                                  {
-                                     //System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
-                                     
+                                    //System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
                                     // slots[1] = (String) input.add("A3");
                                     //                      try {
 //                            slots[0] = (String) input.take();
@@ -179,22 +163,21 @@ public class NMMGUIBoardThread extends Thread {
                                 break;
                             default:
                         }
-                        
+
                         if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
-                        System.out.print("Enter Move: ");
-                        output.add(tfMove.getText().trim());
+                            output.add(tfMove.getText().trim());
+                            tfMove.clear();
+
                         }
                     });
-                    
-                        
-                        
+
 //                        this.output.add(new NMMmove((String) input.take()));
 //                                oos.writeObject(new NMMmove((String) input.take()));
-                    
                 } else {
                     tGuide.setText("Waiting for Opponent...");
+                    tfMove.setVisible(false);
                 }
-            
+
             }
 
         } catch (Exception ex) {
@@ -217,4 +200,26 @@ public class NMMGUIBoardThread extends Thread {
         bcs.put(bc.getSlot(), bc);
     }
 
+    public void Load_Display_BoardFromServer(NMMCoin[][] coins) {
+        char t;
+        for (t = 'A'; t <= 'H'; t++) {
+            String str = "";
+            for (char i = '1'; i < '4'; i++) {
+                str = String.valueOf(t) + String.valueOf(i);
+                int idx[] = NMMLogic.slotLkUp(str); //
+                //      System.out.printf("index= %d:%d\n", idx[0], idx[1]); //should be 0:0 for A1
+                NMMCoin coin = coins[idx[0]][idx[1]]; //gets coin A1 
+                //    System.out.println("coin at " + str + " = " + coin.getCoin());
+                AddCompTobsc(new Coin(coin.getCoin(), str, "Place On Click")); //Added to ArrayList
+            }
+        }
+    }
+    public void ReduceCoin(MCoinType turn){
+        if (turn.equals(MCoinType.BLACK)) {
+                                    numBlack_CoinsLeft=numBlack_CoinsLeft-1;
+                                           
+                                } else if (turn.equals(MCoinType.WHITE)) {
+                                    numWhite_CoinsLeft = numWhite_CoinsLeft-1;
+                                }
+    }
 }
