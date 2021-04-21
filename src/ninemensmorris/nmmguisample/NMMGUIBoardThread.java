@@ -180,7 +180,7 @@ public class NMMGUIBoardThread extends Thread {
                             ReduceCoin(turn, board);
 //                            NMMApplication.scene.setRoot(clearContent());
 //                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
-                            output.add(tfMove.getText().trim());
+                            output.add(Move);
                             tfMove.clear();
                         }
 
