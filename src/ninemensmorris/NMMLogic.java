@@ -215,7 +215,7 @@ public class NMMLogic {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="getters-setters">
     /**
-     * Gets the remaining men
+     * Gets the remaining men left to be placed on board
      *
      * @return The men Left
      */
@@ -230,6 +230,22 @@ public class NMMLogic {
      */
     public InputType getInput() {
         return nmmInput;
+    }
+    
+    /**
+     * Gets the number of white coins left on board
+     * @return white coins left on board
+     */
+    public int getCoinOBW() {
+        return coinOBW;
+    }
+    
+    /**
+     * Gets the number of white coins left on board
+     * @return white coins left on board
+     */
+    public int getCoinOBB() {
+        return coinOBB;
     }
     
     /**
