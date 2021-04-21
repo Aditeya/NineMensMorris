@@ -51,8 +51,8 @@
     -fx-stroke-width: 10;  
 }
 
-  
- 
+
+
 #intropage{
     -fx-fill: violet;
     -fx-stroke: whitesmoke;
@@ -75,7 +75,7 @@
 #layout2{
     -fx-padding: 5;
     -fx-align-self: center;
-   
+
 }
 #roomslot{
     -fx-opacity:0.2;
@@ -114,7 +114,7 @@
     -fx-font-family: "Garamond";
     -fx-text-fill: #003366;
     -fx-font-size: 20 pt;
-       
+
 }:hover #btnplus {
     opacity: 0.9;
     -fx-background-color: #9999ff;
@@ -122,14 +122,14 @@
 
 }
 #blackFilledSlot{
-        -fx-opacity:1;
-        -fx-fill: linear-gradient(to bottom, #333333,grey);/*set Fill for Shape*/
+    -fx-opacity:1;
+    -fx-fill: linear-gradient(to bottom, #333333,grey);/*set Fill for Shape*/
 
 }
 #whiteFilledSlot{
-       -fx-opacity:1;
-     -fx-fill: linear-gradient(to bottom, white,pink);/*set Fill for Shape*/
-    
+    -fx-opacity:1;
+    -fx-fill: linear-gradient(to bottom, white,pink);/*set Fill for Shape*/
+
 }
 
 
@@ -154,8 +154,8 @@
     -fx-stroke-width: 10;    
 }
 #coinHolder{
-        -fx-stroke:gray;
-        -fx-stroke-width: 5;    
+    -fx-stroke:gray;
+    -fx-stroke-width: 5;    
 
 }
 #coinbg{
@@ -177,9 +177,9 @@
     -fx-stroke-width: 10;  
 }
 #slotPos{
-    -fx-font-family: "Arial"s, serif;
-     fx-font-size: 3pt;
-    -fx-text-fill: #e3718c;  
+    -fx-font-family: "Times New Roman", Times, serif;
+    -fx-font: 20px Tahoma;
+    -fx-text-fill: #e3718c ;/*##9999ff;*/  
 }
 .text-field {
     -fx-background-color: cornflowerblue , white , white;

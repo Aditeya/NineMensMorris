@@ -151,29 +151,7 @@ public class NMMApplication extends Application {
         v_root.setId("vbox");
         Label tGuide = new Label("Waiting For Your Opponent..");
         v_root.getChildren().addAll(hbMenu, tGuide, lbInstruct,createContent());
-        btnaddCoin.setOnAction(e -> {
-            String Scenario = "Place Anywhere";
-            switch (Scenario) {
-                case "Place Anywhere":  //Place slots whereever available
-                    System.out.println("dasfsa");
-                    double d[] = boardcomp.getSlot("A2");
-                    MCoinType clientPlayerType = MCoinType.WHITE;
-                    Coin placingnewCoin = new Coin(MCoinType.EMPTY, clientPlayerType, "A2", d[0] * POS_SIZE, d[1] * POS_SIZE, Scenario, bcs);
-                    System.out.println("In Client >" + placingnewCoin.getType());
-                    bcs = placingnewCoin.getBcs();
-                    for (Object value : bcs.values()) {
-                        Coin c = (Coin) value;
-                        System.out.println("Place Anywhere slot = " + c.slot + " type =" + c.getType());
-                    }
-                  //  AddCompTobsc(placingnewCoin);
-                    v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
-                    v_root.getChildren().addAll(hbMenu, tGuide,  createContent());        //Reload  Board
-            }
-            //AddCompTobsc(new Coin(MCoinType.WHITE, "A3"));
-            System.out.println("btn AddCOinads and Check ");
-            v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
-            v_root.getChildren().addAll(hbMenu, tGuide,  createContent());        //Reload  Board
-        });
+        
         scene = new Scene(v_root);
 
         btn_ChosenRooms.setOnAction(e -> {
@@ -191,14 +169,11 @@ public class NMMApplication extends Application {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-//                Alert a1 = new Alert(Alert.AlertType.ERROR, "Sorry Room unavailable,Please try again", ButtonType.OK);
-//                a1.showAndWait();
+                Alert a1 = new Alert(Alert.AlertType.ERROR, "Sorry Room unavailable,Please try again", ButtonType.OK);
+                a1.showAndWait();
             }
         });
-//        btnStat.setOnAction(e -> {
-//            v_root.getChildren().removeAll(v_root.getChildren());  //To avoid DuplicateChildren
-//            v_root.getChildren().addAll(hbMenu, tGuide, btnStat, createContent());        //Reload  Board
-//        });
+
         //Button Transition
         /* Enter Name and Going to Select Room*/
         btn_GoToSelectRooms.setOnAction(e -> {

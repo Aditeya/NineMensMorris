@@ -176,8 +176,8 @@ public class NMMGUIBoardThread extends Thread {
                         //If the input type is none, pnly for place
                         if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
                             ReduceCoin(turn, board);
-                            NMMApplication.scene.setRoot(clearContent());
-                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
+//                            NMMApplication.scene.setRoot(clearContent());
+//                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
                             output.add(tfMove.getText().trim());
                             tfMove.clear();
                         }

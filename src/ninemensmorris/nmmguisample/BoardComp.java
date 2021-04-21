@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import static ninemensmorris.nmmguisample.NMMApplication.HEIGHT;
 import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
@@ -125,9 +126,10 @@ public class BoardComp {
             Coin c = (Coin) value;
             Label lb = new Label(c.getSlot());
             lb.setId("slotPos");
-            lb.setLayoutX(c.getPosX()-1);
-            lb.setLayoutY(c.getPosY()-1);
-            lb.setMaxHeight(3);
+            lb.setLayoutX(c.getPosX()-3);
+            lb.setLayoutY(c.getPosY()-3);
+       
+//lb.setMaxHeight(3);
 //            lb.setScaleX();
 //            lb.setScaleY(c.getPosY()-1);
 
