@@ -100,10 +100,13 @@ public class NMMGUIBoardThread extends Thread {
             player = (MCoinType) this.input.take();
             lbPlayerName.setText(player.toString());
             NMMApplication.scene.setNodeOrientation(NodeOrientation.INHERIT);
+            
             while (true) {
                 // Receive board and print it out
                 NMMboard board = (NMMboard) this.input.take();
                 NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
+                
+                NMMCoin[][] coins = board.getNmmBoard();
                                 NMMLogic nmm = new NMMLogic();
 
                 char t;
@@ -113,7 +116,7 @@ public class NMMGUIBoardThread extends Thread {
                             str = String.valueOf(t) + String.valueOf(i);
                             int idx[] = NMMLogic.slotLkUp(str); //
                             System.out.printf("index= %d:%d\n", idx[0], idx[1]); //should be 0:0 for A1
-                            NMMCoin coin = nmm.nmmBoard[idx[0]][idx[1]]; //gets coin A1 
+                            NMMCoin coin = coins[idx[0]][idx[1]]; //gets coin A1 
                             System.out.println("coin at " + str + " = " + coin.getCoin());
                             AddCompTobsc(new Coin(coin.getCoin(), str, "Place On Click")); //Added to ArrayList
                         }
@@ -128,6 +131,7 @@ public class NMMGUIBoardThread extends Thread {
                 if (board.isWrongMove()) {
                     tGuide.setText("Invalid move, Try again");
                 }
+                
                 MCoinType turn = board.getTurn();
                 // Take input and send, if it is players turn
                 if (turn == player) {
@@ -175,16 +179,18 @@ public class NMMGUIBoardThread extends Thread {
                                 break;
                             default:
                         }
-
-                    });
-                    if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+                        
+                        if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
                         System.out.print("Enter Move: ");
                         output.add(tfMove.getText().trim());
+                        }
+                    });
+                    
                         
                         
 //                        this.output.add(new NMMmove((String) input.take()));
 //                                oos.writeObject(new NMMmove((String) input.take()));
-                    }
+                    
                 } else {
                     tGuide.setText("Waiting for Opponent...");
                 }
