@@ -71,7 +71,7 @@ public class NMMGUIBoardThread extends Thread {
     Button btnStat = new Button("");
 
     private Parent createContent(String guidetext, boolean tfMoveVisible) {
-      //  System.out.println("Creating COn");
+        //  System.out.println("Creating COn");
         tGuide.setText(guidetext);
         tfMove.setVisible(tfMoveVisible);
         VBox v_root = new VBox();
@@ -110,7 +110,8 @@ public class NMMGUIBoardThread extends Thread {
                 MCoinType turn = board.getTurn();// Take input and send, if it is players turn
 
                 if (board.getWinner() == MCoinType.EMPTY) {
-
+                    
+                    System.out.println(" No Winners Yet "+nmm.getMenLeft());
                 } else if (board.getWinner() == turn) {
                     Alert a1 = new Alert(Alert.AlertType.CONFIRMATION, "You WIN!!", ButtonType.OK);
                     a1.showAndWait();
@@ -121,13 +122,16 @@ public class NMMGUIBoardThread extends Thread {
                     break;
                 }
                 if (turn == player) {
+
                     System.out.println("you are " + player.toString());                    //Show Board
-                  
                     NMMApplication.scene.setRoot(clearContent());
-                    NMMApplication.scene.setRoot(createContent("Your Turn! ,"+getScenario(board), true));
+                    NMMApplication.scene.setRoot(createContent("Your Turn! ," + getScenario(board), true));
+
+                    System.out.println(" player " + board.getiType().toString());
+
                     btnStat.setOnAction(e -> {
                         String Move = tfMove.getText().trim().toUpperCase();
-                        
+
                         boolean takeInput = false;
                         switch (board.getiType()) {
                             case NONE:
@@ -144,7 +148,7 @@ public class NMMGUIBoardThread extends Thread {
                                 }
                                 break;
                             case REMOVE:
-                               // System.out.println("Remove");
+                                // System.out.println("Remove");
                                 if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
                                     takeInput = true;
                                 } else {
@@ -157,18 +161,21 @@ public class NMMGUIBoardThread extends Thread {
                                 if (Move.matches("[A-H]+[1-3]\\s[A-H]+[1-3]")) {
                                     System.out.println("Move");
                                     String[] slots = Move.split(" ");
-                                    ReduceCoin(turn, board);
+                                    System.out.println(" PRINT " + slots[0] + "  " + slots[1]);
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("", true));
                                     output.add(slots[0]);
                                     output.add(slots[1]);
                                     tfMove.clear();
+                                    break;
+
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
                                     //error handling
                                 }
                                 break;
+
                             default:
                         }
                         //If the input type is none, pnly for place
@@ -231,25 +238,25 @@ public class NMMGUIBoardThread extends Thread {
         numBlack_CoinsLeft = board.getMenLeft();
         numWhite_CoinsLeft = board.getMenLeft();;
     }
-public String getScenario(NMMboard board){
- String Scenario = "";
-                    
-                    switch (board.getiType()) {
-                            case NONE:
-                                System.out.println("NONE");
-                                break;
-                            case PLACE:
-                                Scenario="Place a Coin";
-                                System.out.println("PLACE!!");
-                                break;
-                            case REMOVE:
-                                Scenario="Remove a Coin from Opponent";
-                                break;
-                            case MOVE:
-                                Scenario="Move a Coin";
-                                break;
-                            default:
-                        }
-return Scenario;
-}
+
+    public String getScenario(NMMboard board) {
+        String Scenario = "";
+
+        switch (board.getiType()) {
+            case NONE:
+                System.out.println("NONE");
+                break;
+            case PLACE:
+                Scenario = " Place a Coin";
+                break;
+            case REMOVE:
+                Scenario = " Remove a Coin from Opponent";
+                break;
+            case MOVE:
+                Scenario = " Move a Coin";
+                break;
+            default:
+        }
+        return Scenario;
+    }
 }
