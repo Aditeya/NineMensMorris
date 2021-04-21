@@ -136,11 +136,22 @@ public class NMMGUIBoardThread extends Thread {
                                     // NMMApplication.scene.getRoot().getOnKeyPressed();
                                     System.out.println("PLACE!!");
                                     // input.add(new NMMCoin(tfMove.getText().trim()));
+                                    if(Move.matches("[A-H]+[1-3]")) {
+                                        //set move string
+                                    } else {
+                                        //errpr
+                                    }
                                     break;
                                 case REMOVE:
                                     System.out.println("Remove");
+                                    if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
+                                        //set move string
+                                    } else {
+                                        //error
+                                    }
                                     break;
                                 case MOVE:
+                                    if (Move.matches("[A-H]+[1-3]")) {
                                     System.out.println("Move");
                                     String[] slots = new String[2];
                                     slots[0] = tfFrom.getText().trim().toUpperCase();
@@ -150,6 +161,9 @@ public class NMMGUIBoardThread extends Thread {
                                     NMMApplication.scene.setRoot(createContent("", true,true));
                                     output.add(tfMove.getText().trim());
                                     tfMove.clear();
+                                    } else {
+                                        //error handling
+                                    }
                                     break;
                                 default:
                             }
