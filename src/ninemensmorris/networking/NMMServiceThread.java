@@ -127,16 +127,16 @@ public class NMMServiceThread extends Thread {
                     // Sends an empty board with the player information, i.e. p1 is WHITE and p2 is BLACK
                     try {
                         System.out.println("here at Service thread");
-                        NMMboard turn = new NMMboard(null, MCoinType.WHITE, null, false);
+                        NMMboard turn = new NMMboard(null, MCoinType.WHITE, null, null, false);
                         p1oos.reset();
                         p1oos.writeObject(turn);
-                        turn = new NMMboard(null, MCoinType.BLACK, null, false);
+                        turn = new NMMboard(null, MCoinType.BLACK, null, null, false);
                         p2oos.reset();
                         p2oos.writeObject(turn);
                     } catch (IOException ex) {
                     }
 
-                    String slot = new String();
+                    String slot;
                     //NMMCoin coin = null;
                     //PlayerTurn prevTurn = PlayerTurn.BLACK;
                     //InputType prevType = InputType.NONE;
@@ -149,7 +149,10 @@ public class NMMServiceThread extends Thread {
                             // Wrong move indicator
                             //wrongMove = prevTurn.equals(turn);
                             //Sends the board with turn and wrong move information
-                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), input, wrongMove);
+                            NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), nmm.getWinner(), input, wrongMove);
+                            board.setMenLeft(nmm.getMenLeft());
+                            board.setCoinOBB(0);
+                            board.setCoinOBW(0);
                             sendBoard(board);
 
                             switch (input) {
