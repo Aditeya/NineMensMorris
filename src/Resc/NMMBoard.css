@@ -177,8 +177,9 @@
     -fx-stroke-width: 10;  
 }
 #slotPos{
-     fx-font-size: 10 pt;
-    -fx-text-fill: white;  
+    -fx-font-family: "Arial"s, serif;
+     fx-font-size: 3pt;
+    -fx-text-fill: #e3718c;  
 }
 .text-field {
     -fx-background-color: cornflowerblue , white , white;
