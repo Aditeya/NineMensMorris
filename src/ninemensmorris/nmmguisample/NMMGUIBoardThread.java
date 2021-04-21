@@ -126,7 +126,8 @@ public class NMMGUIBoardThread extends Thread {
                     NMMApplication.scene.setRoot(createContent("Your Turn!", true));
                     btnStat.setOnAction(e -> {
                         String Move = tfMove.getText().trim().toUpperCase();
-
+                        
+                        boolean takeInput = false;
                         switch (board.getiType()) {
                             case NONE:
                                 System.out.println("NONE");
@@ -134,8 +135,7 @@ public class NMMGUIBoardThread extends Thread {
                             case PLACE:
                                 System.out.println("PLACE!!");
                                 if (Move.matches("[A-H]+[1-3]")) {
-                                    //
-                                    //
+                                    takeInput = true;
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
@@ -145,8 +145,7 @@ public class NMMGUIBoardThread extends Thread {
                             case REMOVE:
                                 System.out.println("Remove");
                                 if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
-                                    
-                                //set move string
+                                    takeInput = true;
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
@@ -174,7 +173,7 @@ public class NMMGUIBoardThread extends Thread {
                             default:
                         }
                         //If the input type is none, pnly for place
-                        if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+                        if (takeInput) {
                             ReduceCoin(turn, board);
 //                            NMMApplication.scene.setRoot(clearContent());
 //                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
