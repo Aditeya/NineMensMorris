@@ -71,6 +71,10 @@ public class NMMboard implements Serializable {
         return coinOBB;
     }
 
+    public MCoinType getWinner() {
+        return winner;
+    }
+
     public void setMenLeft(int menLeft) {
         this.menLeft = menLeft;
     }
