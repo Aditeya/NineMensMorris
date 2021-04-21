@@ -48,6 +48,12 @@ public class NMMLogic {
     /** static json Object that stores valid moves */
     private static JSONObject vldMvsRef = null;
     
+
+    /*White Men Left during setup phase*/
+    private int menLeftWhite;
+    /*Black Men Left during setup phase*/
+    private int menLeftBlack;
+    
     /** The number of men you can place in phase 1 */        
     private int menLeft;
     /** variable to check the turn */
@@ -121,6 +127,10 @@ public class NMMLogic {
             }    
             
         }
+        
+        //The intial men in setup phase
+        menLeftWhite = 9;
+        menLeftBlack = 9;
         
         //The number of Coins On Board(White/Black)
         coinOBW = 0;
@@ -1028,10 +1038,12 @@ public class NMMLogic {
                     {
                         case WHITE:
                             coinOBW++;
+                            menLeftWhite--;
                             break;
                             
                         case BLACK:
                             coinOBB++;
+                            menLeftBlack--;
                             break;
                             
                         default:
@@ -1067,10 +1079,12 @@ public class NMMLogic {
                     {
                         case WHITE:
                             coinOBW++;
+                            menLeftWhite--;
                             break;
                             
                         case BLACK:
                             coinOBB++;
+                            menLeftBlack--;
                             break;
                             
                         default:
