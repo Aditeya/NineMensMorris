@@ -108,29 +108,20 @@ public class NMMGUIBoardThread extends Thread {
 
                 NMMCoin[][] coins = board.getNmmBoard();
                 NMMLogic nmm = new NMMLogic();
-
                 Load_Display_BoardFromServer(coins);
-
                 // Notify if input is valid
                 if (board.isWrongMove()) {
-                    tGuide.setText("Invalid move, Try again");
+                System.out.print("woronhdbsfsbefbb");
+                
                 }
-
                 MCoinType turn = board.getTurn();// Take input and send, if it is players turn
                 if (turn == player) {
-//                    if (turn.equals(MCoinType.BLACK)) {
-//                        numBlack_CoinsLeft = //nmm.getMenLeft();
-//                    } else if (turn.equals(MCoinType.WHITE)) {
-//                        numWhite_CoinsLeft = nmm.getMenLeft();
-//                    }
-
+                    System.out.println("you are " + player.toString());
+                    //Show Board
                     NMMApplication.scene.setRoot(clearContent());
                     NMMApplication.scene.setRoot(createContent("Your Turn!", true));
-
                     btnStat.setOnAction(e -> {
-                    
                         String Move = tfMove.getText().trim();
-
                         switch (board.getiType()) {
                             case NONE:
                                 break;
@@ -143,28 +134,22 @@ public class NMMGUIBoardThread extends Thread {
                             case REMOVE:
                                 System.out.println("Remove");
                                 ReduceCoin(turn);
-                                //output.add(InputType.REMOVE);
-                                //printPlayerTurn(turn, 2);
                                 break;
                             case MOVE:
                                 System.out.println("Move");
-                                //output.add(InputType.MOVE);
-                                //printPlayerTurn(turn, 3);
                                 String[] slots = new String[2];
                                  {
-                                    //System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
-                                    // slots[1] = (String) input.add("A3");
-                                    //                      try {
-//                            slots[0] = (String) input.take();
-                                    //                    } catch (InterruptedException ex) {
-                                    //                      Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
-                                    //                }
                                 }
                                 break;
                             default:
                         }
-
+                        //If the input type is none, pnly for place
                         if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+
+                            NMMApplication.scene.setRoot(clearContent());
+                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
+                            
+                            
                             output.add(tfMove.getText().trim());
                             tfMove.clear();
 
@@ -174,8 +159,15 @@ public class NMMGUIBoardThread extends Thread {
 //                        this.output.add(new NMMmove((String) input.take()));
 //                                oos.writeObject(new NMMmove((String) input.take()));
                 } else {
-                    tGuide.setText("Waiting for Opponent...");
-                    tfMove.setVisible(false);
+                    System.out.println("next Turn , Not your Turn");
+                    
+                    
+                    
+                    NMMApplication.scene.setRoot(clearContent());
+                    NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
+                
+                
+                
                 }
 
             }
@@ -214,12 +206,13 @@ public class NMMGUIBoardThread extends Thread {
             }
         }
     }
-    public void ReduceCoin(MCoinType turn){
+
+    public void ReduceCoin(MCoinType turn) {
         if (turn.equals(MCoinType.BLACK)) {
-                                    numBlack_CoinsLeft=numBlack_CoinsLeft-1;
-                                           
-                                } else if (turn.equals(MCoinType.WHITE)) {
-                                    numWhite_CoinsLeft = numWhite_CoinsLeft-1;
-                                }
+            numBlack_CoinsLeft = numBlack_CoinsLeft - 1;
+
+        } else if (turn.equals(MCoinType.WHITE)) {
+            numWhite_CoinsLeft = numWhite_CoinsLeft - 1;
+        }
     }
 }
