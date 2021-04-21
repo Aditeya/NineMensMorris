@@ -98,6 +98,9 @@ public class NMMGUIBoardThread extends Thread {
     @Override
     public void run() {
         try {
+            
+            
+            
             player = (MCoinType) this.input.take();
             lbPlayerName.setText(player.toString());
             NMMApplication.scene.setNodeOrientation(NodeOrientation.INHERIT);
@@ -110,10 +113,7 @@ public class NMMGUIBoardThread extends Thread {
                 NMMLogic nmm = new NMMLogic();
                 Load_Display_BoardFromServer(coins);
                 // Notify if input is valid
-                if (board.isWrongMove()) {
-                System.out.print("woronhdbsfsbefbb");
                 
-                }
                 MCoinType turn = board.getTurn();// Take input and send, if it is players turn
                 if (turn == player) {
                     System.out.println("you are " + player.toString());
@@ -121,7 +121,8 @@ public class NMMGUIBoardThread extends Thread {
                     NMMApplication.scene.setRoot(clearContent());
                     NMMApplication.scene.setRoot(createContent("Your Turn!", true));
                     btnStat.setOnAction(e -> {
-                        String Move = tfMove.getText().trim();
+                        String Move = tfMove.getText().trim().toUpperCase();
+                    if(Move.matches("[A-H]+[1-3]" )||Move.equals("X")){
                         switch (board.getiType()) {
                             case NONE:
                                 break;
@@ -145,15 +146,19 @@ public class NMMGUIBoardThread extends Thread {
                         }
                         //If the input type is none, pnly for place
                         if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
-
                             NMMApplication.scene.setRoot(clearContent());
                             NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
-                            
-                            
                             output.add(tfMove.getText().trim());
                             tfMove.clear();
 
                         }
+                    
+                    
+                    }else{
+                          NMMApplication.scene.setRoot(clearContent());
+                          NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
+                           
+                    }
                     });
 
 //                        this.output.add(new NMMmove((String) input.take()));
