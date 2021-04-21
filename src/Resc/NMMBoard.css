@@ -179,7 +179,7 @@
 #slotPos{
     -fx-font-family: "Times New Roman", Times, serif;
     -fx-font: 20px Tahoma;
-    -fx-text-fill: #e3718c ;/*##9999ff;*/  
+    -fx-text-fill:  #9999ff;/*#e3718c;*/  
 }
 .text-field {
     -fx-background-color: cornflowerblue , white , white;

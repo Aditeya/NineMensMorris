@@ -122,8 +122,9 @@ public class NMMGUIBoardThread extends Thread {
                 }
                 if (turn == player) {
                     System.out.println("you are " + player.toString());                    //Show Board
+                  
                     NMMApplication.scene.setRoot(clearContent());
-                    NMMApplication.scene.setRoot(createContent("Your Turn!", true));
+                    NMMApplication.scene.setRoot(createContent("Your Turn! ,"+getScenario(board), true));
                     btnStat.setOnAction(e -> {
                         String Move = tfMove.getText().trim().toUpperCase();
                         
@@ -135,6 +136,7 @@ public class NMMGUIBoardThread extends Thread {
                             case PLACE:
                                 System.out.println("PLACE!!");
                                 if (Move.matches("[A-H]+[1-3]")) {
+                                    
                                     takeInput = true;
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
@@ -232,4 +234,25 @@ public class NMMGUIBoardThread extends Thread {
         numBlack_CoinsLeft = board.getMenLeft();
         numWhite_CoinsLeft = board.getMenLeft();;
     }
+public String getScenario(NMMboard board){
+ String Scenario = "";
+                    
+                    switch (board.getiType()) {
+                            case NONE:
+                                System.out.println("NONE");
+                                break;
+                            case PLACE:
+                                Scenario="Place a Coin";
+                                System.out.println("PLACE!!");
+                                break;
+                            case REMOVE:
+                                Scenario="Remove a Coin";
+                                break;
+                            case MOVE:
+                                Scenario="Move a Coin";
+                                break;
+                            default:
+                        }
+return Scenario;
+}
 }

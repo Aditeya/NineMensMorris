@@ -126,8 +126,8 @@ public class BoardComp {
             Coin c = (Coin) value;
             Label lb = new Label(c.getSlot());
             lb.setId("slotPos");
-            lb.setLayoutX(c.getPosX()-3);
-            lb.setLayoutY(c.getPosY()-3);
+            lb.setLayoutX(c.getPosX()+5);
+            lb.setLayoutY(c.getPosY()+5);
        
 //lb.setMaxHeight(3);
 //            lb.setScaleX();
