@@ -176,6 +176,10 @@
     -fx-stroke: yellow;
     -fx-stroke-width: 10;  
 }
+#slotPos{
+     fx-font-size: 10 pt;
+    -fx-text-fill: white;  
+}
 .text-field {
     -fx-background-color: cornflowerblue , white , white;
     -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;

@@ -62,7 +62,6 @@ public class NMMGUIBoardThread extends Thread {
     public HashMap<String, Coin> bcs = new HashMap<>();
     Label lbPlayerName = new Label("Player 1");
     TextField tfMove = new TextField();
-    TextField tfFrom = new TextField();
 
     private Parent clearContent() {
         VBox v_root = new VBox();
@@ -70,7 +69,7 @@ public class NMMGUIBoardThread extends Thread {
     }
     Button btnStat = new Button("");
 
-    private Parent createContent(String guidetext, boolean tfMoveVisible, boolean tfFromVisible) {
+    private Parent createContent(String guidetext, boolean tfMoveVisible) {
         System.out.println("Creating COn");
         tGuide.setText(guidetext);
         tfMove.setVisible(tfMoveVisible);
@@ -78,7 +77,7 @@ public class NMMGUIBoardThread extends Thread {
         Pane root = new Pane();
         tfMove.setPromptText("Enter Move");
         tfMove.getStyleClass().add("text-field");
-        HBox hbMenu = new HBox(tfMove,new Label("  "), tfFrom, btnStat);
+        HBox hbMenu = new HBox(tfMove,new Label("  "),btnStat);
         Label lbInstruct = new Label("");
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
@@ -124,15 +123,14 @@ public class NMMGUIBoardThread extends Thread {
                     System.out.println("you are " + player.toString());
                     //Show Board
                     NMMApplication.scene.setRoot(clearContent());
-                    NMMApplication.scene.setRoot(createContent("Your Turn!", true, showFromtf));
+                    NMMApplication.scene.setRoot(createContent("Your Turn!", true ));
                     btnStat.setOnAction(e -> {
                         String Move = tfMove.getText().trim().toUpperCase();
-                        if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
+                       
                             switch (board.getiType()) {
                                 case NONE:
                                     break;
                                 case PLACE:
-                         
                                     // NMMApplication.scene.getRoot().getOnKeyPressed();
                                     System.out.println("PLACE!!");
                                     // input.add(new NMMCoin(tfMove.getText().trim()));
@@ -147,21 +145,26 @@ public class NMMGUIBoardThread extends Thread {
                                     if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
                                         //set move string
                                     } else {
-                                        //error
+                                            NMMApplication.scene.setRoot(clearContent());
+                                            NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
+                        //error
                                     }
                                     break;
                                 case MOVE:
-                                    if (Move.matches("[A-H]+[1-3]")) {
+                                    if (Move.matches("[A-H]+[1-3]\\s[A-H]+[1-3]")){
                                     System.out.println("Move");
-                                    String[] slots = new String[2];
-                                    slots[0] = tfFrom.getText().trim().toUpperCase();
-                                    slots[1] = tfMove.getText().trim().toUpperCase();
+                                    String[] slots = Move.split(" ");  
+                                    
                                     ReduceCoin(turn, board);
                                     NMMApplication.scene.setRoot(clearContent());
-                                    NMMApplication.scene.setRoot(createContent("", true,true));
-                                    output.add(tfMove.getText().trim());
+                                    NMMApplication.scene.setRoot(createContent("", true));
+                                    output.add(slots[0]);
+                                    output.add(slots[1]);
                                     tfMove.clear();
                                     } else {
+                                            NMMApplication.scene.setRoot(clearContent());
+                                            NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
+                        
                                         //error handling
                                     }
                                     break;
@@ -171,14 +174,11 @@ public class NMMGUIBoardThread extends Thread {
                             if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
                                 ReduceCoin(turn, board);
                                 NMMApplication.scene.setRoot(clearContent());
-                                NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false, true));
+                                NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
                                 output.add(tfMove.getText().trim());
                                 tfMove.clear();
                             }
-                        } else {
-                            NMMApplication.scene.setRoot(clearContent());
-                            NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true, true));
-                        }
+                      
                     });
 
 //                        this.output.add(new NMMmove((String) input.take()));
@@ -186,7 +186,7 @@ public class NMMGUIBoardThread extends Thread {
                 } else {
                     System.out.println("next Turn , Not your Turn");
                     NMMApplication.scene.setRoot(clearContent());
-                    NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false, false));
+                    NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
                 }
 
             }

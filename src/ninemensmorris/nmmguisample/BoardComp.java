@@ -18,6 +18,7 @@ package ninemensmorris.nmmguisample;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -122,8 +123,13 @@ public class BoardComp {
         //System.out.println("BCS = " + bcs.keySet());        
         for (Object value : bcs.values()) {
             Coin c = (Coin) value;
+            Label lb = new Label(c.getSlot());
+            lb.setId("slotPos");
+            lb.setScaleX(c.getPosX()-1);
+            lb.setScaleY(c.getPosY()-1);
+
       //      System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
-            root.getChildren().add(c.ReturnCoin());
+            root.getChildren().addAll(c.ReturnCoin(),lb);
         }
     }
       /**
