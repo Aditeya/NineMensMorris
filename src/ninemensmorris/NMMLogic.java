@@ -222,6 +222,25 @@ public class NMMLogic {
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="getters-setters">
+    
+    /**
+     * Gets the remaining white men left to be placed on board
+     *
+     * @return The white men Left
+     */
+    public int getMenLeftWhite() {
+        return menLeftWhite;
+    }
+    
+    /**
+     * Gets the remaining black men left to be placed on board
+     *
+     * @return The black men Left 
+     */
+    public int getMenLeftBlack() {
+        return menLeftBlack;
+    }
+    
     /**
      * Gets the remaining men left to be placed on board
      *
