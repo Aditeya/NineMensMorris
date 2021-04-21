@@ -62,25 +62,23 @@ public class NMMGUIBoardThread extends Thread {
     Label tGuide = new Label("Let's Play");
     public HashMap<String, Coin> bcs = new HashMap<>();
     Label lbPlayerName = new Label("Player 1");
-        TextField tfMove = new TextField();
+    TextField tfMove = new TextField();
 
-    private Parent clearContent(){
-                VBox v_root = new VBox();
+    private Parent clearContent() {
+        VBox v_root = new VBox();
         return v_root;
     }
-     Button btnStat = new Button("");
+    Button btnStat = new Button("");
+
     private Parent createContent() {
         System.out.println("Creating COn");
         VBox v_root = new VBox();
         Pane root = new Pane();
         Button btnend_game = new Button("End Game");
         Button btnaddCoin = new Button(" aDD BTN");
-        
         tfMove.setPromptText("Enter Move");
-        
-        HBox hbMenu = new HBox(tfMove,btnend_game, btnaddCoin);
+        HBox hbMenu = new HBox(tfMove, btnend_game, btnaddCoin);
         Label lbInstruct = new Label("");
-       
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
         v_root.setId("vbox");
@@ -92,7 +90,7 @@ public class NMMGUIBoardThread extends Thread {
         v_root.getChildren().addAll(hbMenu, tGuide, root, lbInstruct, btnStat);
         return v_root;
     }
-                            BoardComp boardComp = new BoardComp();
+    BoardComp boardComp = new BoardComp();
 
     MCoinType player;
 
@@ -106,8 +104,25 @@ public class NMMGUIBoardThread extends Thread {
                 // Receive board and print it out
                 NMMboard board = (NMMboard) this.input.take();
                 NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
+                                NMMLogic nmm = new NMMLogic();
 
-                NMMLogic nmm = new NMMLogic();
+                char t;
+                    for (t = 'A'; t <= 'H'; t++) {
+                        String str = "";
+                        for (char i = '1'; i < '4'; i++) {
+                            str = String.valueOf(t) + String.valueOf(i);
+                            int idx[] = NMMLogic.slotLkUp(str); //
+                            System.out.printf("index= %d:%d\n", idx[0], idx[1]); //should be 0:0 for A1
+                            NMMCoin coin = nmm.nmmBoard[idx[0]][idx[1]]; //gets coin A1 
+                            System.out.println("coin at " + str + " = " + coin.getCoin());
+                            AddCompTobsc(new Coin(coin.getCoin(), str, "Place On Click")); //Added to ArrayList
+                        }
+                    }
+                
+                
+                
+                
+                
 
                 // Notify if input is valid
                 if (board.isWrongMove()) {
@@ -116,81 +131,72 @@ public class NMMGUIBoardThread extends Thread {
                 MCoinType turn = board.getTurn();
                 // Take input and send, if it is players turn
                 if (turn == player) {
-                char t;
-                for (t = 'A'; t <= 'H'; t++) {
-                    String str = "";
-                    for (char i = '1'; i < '4'; i++) {
-                        str = String.valueOf(t) + String.valueOf(i);
-                        int idx[] = NMMLogic.slotLkUp(str); //
-                        System.out.printf("index= %d:%d\n", idx[0], idx[1]); //should be 0:0 for A1
-                        NMMCoin coin = nmm.nmmBoard[idx[0]][idx[1]]; //gets coin A1 
-                        System.out.println("coin at "+str+" = " + coin.getCoin());
-                        AddCompTobsc( new Coin(coin.getCoin(), str,"Place On Click")); //Added to ArrayList
+                    
+                    
+                    if (turn.equals(MCoinType.BLACK)) {
+                        numBlack_CoinsLeft = 2;// nmm.getMenLeft();
+                    } else if (turn.equals(MCoinType.WHITE)) {
+                        numWhite_CoinsLeft = nmm.getMenLeft();
                     }
-                }
-                if(turn.equals(MCoinType.BLACK)){
-                numBlack_CoinsLeft = nmm.getMenLeft();
-                }else if(turn.equals(MCoinType.WHITE)){
-                numWhite_CoinsLeft = nmm.getMenLeft();
-                }
                     NMMApplication.scene.setRoot(createContent());
-              btnStat.setOnAction(e->{
-                  
-                  String Move = tfMove.getText();
-                  
-                    switch (board.getiType()) {
-                        case NONE:
-                            break;
-                        case PLACE:
-                            
-                            break;
-                        case REMOVE:
-                            System.out.println("Remove");
-                            
-                            //output.add(InputType.REMOVE);
-                            //printPlayerTurn(turn, 2);
-                            break;
-                        case MOVE:
-                            System.out.println("Move");
-                            //output.add(InputType.MOVE);
-                            //printPlayerTurn(turn, 3);
-                            String[] slots = new String[2];
-                    {
-                        try {
-                            slots[0] = (String) input.take();
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
+                    btnStat.setOnAction(e -> {
 
-                    {
-                        try {
-                            //System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
-                            slots[1] = (String) input.take();
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
+                        String Move = tfMove.getText();
+
+                        switch (board.getiType()) {
+                            case NONE:
+                                break;
+                            case PLACE:
+                                // NMMApplication.scene.getRoot().getOnKeyPressed();
+                                System.out.println("PLACE!!");
+                                // input.add(new NMMCoin(tfMove.getText().trim()));
+                                break;
+                            case REMOVE:
+                                System.out.println("Remove");
+
+                                //output.add(InputType.REMOVE);
+                                //printPlayerTurn(turn, 2);
+                                break;
+                            case MOVE:
+                                System.out.println("Move");
+                                //output.add(InputType.MOVE);
+                                //printPlayerTurn(turn, 3);
+                                String[] slots = new String[2];
+                                 {
+                                     //System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
+                                     
+                                    // slots[1] = (String) input.add("A3");
+                                    //                      try {
+//                            slots[0] = (String) input.take();
+                                    //                    } catch (InterruptedException ex) {
+                                    //                      Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
+                                    //                }
+                                }
+                                break;
+                            default:
                         }
-                    }
-                            break;
-                        default:
-                    }
-              
-              });
+
+                    });
                     if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
                         System.out.print("Enter Move: ");
-                        this.output.add(new NMMmove((String) input.take()));
+                        output.add(tfMove.getText().trim());
+                        
+                        
+//                        this.output.add(new NMMmove((String) input.take()));
 //                                oos.writeObject(new NMMmove((String) input.take()));
                     }
-                }else{
+                } else {
                     tGuide.setText("Waiting for Opponent...");
                 }
+            
             }
 
         } catch (Exception ex) {
             Logger.getLogger(NMMGUIBoardThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-  /**
+
+    /**
      * Adds BoardComp to specified slot position and sets PosX and PosY
      * BoardComp should set CoinType and slot
      *
