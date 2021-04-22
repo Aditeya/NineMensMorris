@@ -85,6 +85,7 @@ public class NMMGUINetworkingThread extends Thread {
         while (!this.isInterrupted()) {
             if (socket.isClosed()) {
                 this.interrupt();
+                break;
             }
 
             if (roomChosen) {
