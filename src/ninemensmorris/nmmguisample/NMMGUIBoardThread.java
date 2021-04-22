@@ -137,7 +137,7 @@ public class NMMGUIBoardThread extends Thread {
                     Alert a1 = new Alert(Alert.AlertType.CONFIRMATION, "You LOOSE.", ButtonType.OK);
                     System.out.println("nu dont say it");
                     a1.showAndWait();
-                    System.out.println("nuuuuu sm no looserr nuuuuu");
+                    System.out.println("nuuuuu am no looserr nuuuuu");
                     break;
                 }
                 if (turn == player) {
