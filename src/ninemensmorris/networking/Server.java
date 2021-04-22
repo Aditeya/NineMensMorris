@@ -73,12 +73,12 @@ public class Server extends Thread {
      * @param client Client socket to be assigned
      */
     public void assignClientToThread(Socket client) {
-            // TODO: MAX_CLIENT handling
-            if (this.clients[clientUID-1] == null) {
-                this.clients[clientUID-1] = new SubServer(clientUID, client);
-                this.clients[clientUID-1].start();
-                clientUID++;
-            }
+        // TODO: MAX_CLIENT handling
+        if (this.clients[clientUID - 1] == null) {
+            this.clients[clientUID - 1] = new SubServer(clientUID, client);
+            this.clients[clientUID - 1].start();
+            clientUID++;
+        }
     }
 
     // SubServer Thread Class Section
@@ -190,15 +190,25 @@ public class Server extends Thread {
          * Closes the client socket connection.
          */
         public void closeConnection() {
-            try {
-                this.client.close();
-            } catch (IOException ex) {
-            }
+            //try {
+            System.out.println("no need");
+            //} catch (IOException ex) {
+            //    ex.printStackTrace();
+            //}
         }
 
         public Socket getClient() {
             return client;
         }
+
+        public ObjectInputStream getPois() {
+            return pois;
+        }
+
+        public ObjectOutputStream getPoos() {
+            return poos;
+        }
+
     }
 
     //RoomWatch Thread Class Section
@@ -227,8 +237,8 @@ public class Server extends Thread {
 
                     /**
                      * If the room is full take the sockets and start a new
-                     * thread and clear the client and room list.
-                     * It also interrupts the SubServer thread for those clients.
+                     * thread and clear the client and room list. It also
+                     * interrupts the SubServer thread for those clients.
                      */
                     if (roomFull) {
                         int ID1 = currentRooms[i][0];
@@ -236,15 +246,22 @@ public class Server extends Thread {
 
                         rooms.clearRoom(i);
 
-                        Socket p1 = clients[ID1-1].getClient();
-                        Socket p2 = clients[ID2-1].getClient();
+                        SubServer p1 = clients[ID1 - 1];
+                        SubServer p2 = clients[ID2 - 1];
 
-                        //clients[ID1-1].interrupt();
-                        //clients[ID2-1].interrupt();
-                        clients[ID1-1] = null;
-                        clients[ID2-1] = null;
+                        clients[ID1 - 1] = null;
+                        clients[ID2 - 1] = null;
 
-                        new Thread(new NMMServiceThread(p1, p2)).start();
+                        Socket s1 = p1.getClient();
+                        ObjectOutputStream p1oos = p1.getPoos();
+                        ObjectInputStream p1ois = p1.getPois();
+
+                        Socket s2 = p2.getClient();
+                        ObjectOutputStream p2oos = p2.getPoos();
+                        ObjectInputStream p2ois = p2.getPois();
+
+                        System.out.println("ran service thread");
+                        new Thread(new NMMServiceThread(s1, s2, p1oos, p1ois, p2oos, p2ois)).start();
                     }
                 }
             }

@@ -7,6 +7,7 @@ package ninemensmorris.networking;
 
 import java.io.Serializable;
 import ninemensmorris.NMMCoin;
+import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
 
 /**
@@ -18,21 +19,31 @@ public class NMMboard implements Serializable {
 
     private final NMMCoin[][] nmmBoard;
     private final MCoinType turn;
+    private final MCoinType winner;
+    private final InputType iType;
     private final boolean wrongMove;
+    private int menLeftBlack;
+    private int menLeftWhite;
+    private int coinOBW;
+    private int coinOBB;
 
     /**
      * Set these parameters before sending the board.
      * 
      * @param nmmBoard  Double array of NMMCoin for board state
      * @param turn      Current turn of player of the game
+     * @param winner    Winner of the game
+     * @param iType     Current InputType
      * @param wrongMove To be set if a move is invalid
      */
-    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn, boolean wrongMove) {
+    public NMMboard(NMMCoin[][] nmmBoard, MCoinType turn, MCoinType winner, InputType iType, boolean wrongMove) {
         this.nmmBoard = nmmBoard;
         this.turn = turn;
+        this.winner = winner;
+        this.iType = iType;
         this.wrongMove = wrongMove;
     }
-
+    
     public NMMCoin[][] getNmmBoard() {
         return nmmBoard;
     }
@@ -41,7 +52,49 @@ public class NMMboard implements Serializable {
         return turn;
     }
 
+    public InputType getiType() {
+        return iType;
+    }
+
     public boolean isWrongMove() {
         return wrongMove;
     }
+
+    public int getMenLeftBlack() {
+        return menLeftBlack;
+    }
+
+    public int getMenLeftWhite() {
+        return menLeftWhite;
+    }
+
+    public int getCoinOBW() {
+        return coinOBW;
+    }
+
+    public int getCoinOBB() {
+        return coinOBB;
+    }
+
+    public MCoinType getWinner() {
+        return winner;
+    }
+
+    public void setMenLeftBlack(int menLeftBlack) {
+        this.menLeftBlack = menLeftBlack;
+    }
+
+    public void setMenLeftWhite(int menLeftWhite) {
+        this.menLeftWhite = menLeftWhite;
+    }
+    
+    public void setCoinOBW(int coinOBW) {
+        this.coinOBW = coinOBW;
+    }
+
+    public void setCoinOBB(int coinOBB) {
+        this.coinOBB = coinOBB;
+    }
+    
+    
 }

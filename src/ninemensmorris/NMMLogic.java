@@ -17,13 +17,9 @@
 package ninemensmorris;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -36,7 +32,7 @@ import ninemensmorris.enums.PrintType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+//tHis works
 /**
  * The class whose objects will implement the boards of Nine Mens Morris Handles
  * the internal logic of NMM
@@ -51,6 +47,12 @@ public class NMMLogic {
     private static JSONObject millRef = null;
     /** static json Object that stores valid moves */
     private static JSONObject vldMvsRef = null;
+    
+
+    /*White Men Left during setup phase*/
+    private int menLeftWhite;
+    /*Black Men Left during setup phase*/
+    private int menLeftBlack;
     
     /** The number of men you can place in phase 1 */        
     private int menLeft;
@@ -97,7 +99,14 @@ public class NMMLogic {
         if (millRef == null) {
             try {
                 millRef = (JSONObject) new JSONParser().parse(
+<<<<<<< HEAD
                         new InputStreamReader(NMMLogic.class.getResourceAsStream(
+=======
+
+                        new InputStreamReader(
+                                getClass()
+                                        .getResourceAsStream(
+>>>>>>> logic-network-og
                                 "/ninemensmorris/resources/mill_ref.json")));
                  
             } catch (Exception ex) {
@@ -122,6 +131,10 @@ public class NMMLogic {
             }    
             
         }
+        
+        //The intial men in setup phase
+        menLeftWhite = 9;
+        menLeftBlack = 9;
         
         //The number of Coins On Board(White/Black)
         coinOBW = 0;
@@ -213,8 +226,27 @@ public class NMMLogic {
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="getters-setters">
+    
     /**
-     * Gets the remaining men
+     * Gets the remaining white men left to be placed on board
+     *
+     * @return The white men Left
+     */
+    public int getMenLeftWhite() {
+        return menLeftWhite;
+    }
+    
+    /**
+     * Gets the remaining black men left to be placed on board
+     *
+     * @return The black men Left 
+     */
+    public int getMenLeftBlack() {
+        return menLeftBlack;
+    }
+    
+    /**
+     * Gets the remaining men left to be placed on board
      *
      * @return The men Left
      */
@@ -229,6 +261,22 @@ public class NMMLogic {
      */
     public InputType getInput() {
         return nmmInput;
+    }
+    
+    /**
+     * Gets the number of white coins left on board
+     * @return white coins left on board
+     */
+    public int getCoinOBW() {
+        return coinOBW;
+    }
+    
+    /**
+     * Gets the number of white coins left on board
+     * @return white coins left on board
+     */
+    public int getCoinOBB() {
+        return coinOBB;
     }
     
     /**
@@ -969,10 +1017,12 @@ public class NMMLogic {
                     {
                         case WHITE:
                             coinOBW++;
+                            menLeftWhite--;
                             break;
                             
                         case BLACK:
                             coinOBB++;
+                            menLeftBlack--;
                             break;
                             
                         default:
@@ -1008,10 +1058,12 @@ public class NMMLogic {
                     {
                         case WHITE:
                             coinOBW++;
+                            menLeftWhite--;
                             break;
                             
                         case BLACK:
                             coinOBB++;
+                            menLeftBlack--;
                             break;
                             
                         default:
@@ -1117,7 +1169,7 @@ public class NMMLogic {
                 //Logger.getLogger(NMMLogic.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            
+         
             //var for coinFrom slot
             String cFSlot = coinFrom.getCoinSlot();
             
@@ -1286,7 +1338,7 @@ public class NMMLogic {
         } else {
             try (BufferedReader in
                     = new BufferedReader(
-                            new InputStreamReader(
+                            new InputStreamReader( ///ninemensmorris/resources/slot_index_ref.json
                                     NMMLogic.class.getResourceAsStream("/ninemensmorris/resources/cmd_board.txt")))) {
                 //Reads File and Buils String
                 StringBuilder sb = new StringBuilder();

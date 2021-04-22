@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,11 +45,13 @@ public class NMMClientDemo {
             boolean run = true;
             while (run) {
                 System.out.print("Client> ");
-                String command = INPUT.nextLine();
+                String command = INPUT.next();
 
                 switch (command) {
                     case "list":
-                        list(ois, oos);
+                        int [][] listy = list(ois, oos);
+                        System.out.println(Arrays.deepToString(listy));
+                        System.out.println("list === ");
                         break;
                     case "choose":
                         run = !choose(ois, oos);
@@ -75,7 +78,7 @@ public class NMMClientDemo {
      * @param ois   Client ObjectInputStream
      * @param oos   Client ObjectOutputStream
      */
-    private static void list(ObjectInputStream ois, ObjectOutputStream oos) {
+    private static int [][] list(ObjectInputStream ois, ObjectOutputStream oos) {
         // Create command
         NCommand command = new NCommand();
         command.setCommand(NetworkCommand.LIST_ROOMS);
@@ -88,9 +91,13 @@ public class NMMClientDemo {
 
             // Print room list from reply
             printRooms(reply.getRooms());
+
+            
+            return  reply.getRooms();
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(NMMClientDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     /**
@@ -110,8 +117,8 @@ public class NMMClientDemo {
         command.setCommand(NetworkCommand.CHOOSE_ROOM);
 
         // Ask for the room number and set it in the request
-        System.out.print("Enter Room Number: ");
-        int room = Integer.parseInt(INPUT.nextLine());
+        System.out.print("Enter Room Number: \n");
+        int room = INPUT.nextInt();//Integer.parseInt(INPUT.nextLine());
         command.setRoom(room);
 
         try {
@@ -153,7 +160,7 @@ public class NMMClientDemo {
      * 
      * @param rooms Double Array to be printed out
      */
-    private static void printRooms(int[][] rooms) {
+    public static void printRooms(int[][] rooms) {
         for (int i = 0; i < rooms.length; i++) {
             System.out.print(i + ". ");
             for (int j = 0; j < rooms[i].length; j++) {

@@ -13,11 +13,14 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ninemensmorris.NMMLogic;
+import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
+import ninemensmorris.enums.PlayerTurn;
 import ninemensmorris.enums.PrintType;
 
 /**
- * NMMClientThread is used by the client to interact with a NMMServiceThread over the network.
+ * NMMClientThread is used by the client to interact with a NMMServiceThread
+ * over the network.
  *
  * @author aditeya
  */
@@ -28,8 +31,8 @@ public class NMMClientThread extends Thread {
 
     /**
      * Provide a socket and the thread will handle the rest.
-     * 
-     * @param socket    Provide the client socket
+     *
+     * @param socket Provide the client socket
      */
     public NMMClientThread(Socket socket) {
         this.socket = socket;
@@ -53,20 +56,74 @@ public class NMMClientThread extends Thread {
                 NMMboard board = (NMMboard) pois.readObject();
                 NMMLogic.cmdPrint(board.getNmmBoard(), PrintType.VALUE);
 
+                // Notify if input is valid
+                if (board.isWrongMove()) {
+                    System.out.println("Invalid move, Try again");
+                }
+
+                MCoinType turn = board.getTurn();
                 // Take input and send, if it is players turn
-                if (board.getTurn() == player) {
-                    // Notify if input is valid
-                    if (board.isWrongMove()) {
-                        System.out.println("Invalid move, Try again");
+                if (turn == player) {
+
+                    switch (board.getiType()) {
+                        case NONE:
+                            break;
+                        case PLACE:
+                            printPlayerTurn(turn, 1);
+                            break;
+                        case REMOVE:
+                            printPlayerTurn(turn, 2);
+                            break;
+                        case MOVE:
+                            printPlayerTurn(turn, 3);
+                            String[] slots = new String[2];
+                            slots[0] = input.nextLine();
+
+                            System.out.println(turn + " Player, Move coin " + slots[0] + " to? match regex [A-H]+[1-3]");
+                            slots[1] = input.nextLine();
+
+                            sendBoard(poos, new NMMmove(slots[0]));
+                            sendBoard(poos, new NMMmove(slots[1]));
+
+                            break;
+                        default:
                     }
                     
-                    System.out.print("Enter Move: ");
-                    poos.writeObject(new NMMmove(input.nextLine()));
+                    if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+                        System.out.print("Enter Move: ");
+                        poos.writeObject(new NMMmove(input.nextLine()));
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(NMMClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void printPlayerTurn(MCoinType turn, int msg) {
+        switch (msg) {
+            case 1:
+                System.out.println(turn + " Player, Place a coin.");
+                break;
+            case 2:
+                System.out.println(turn + " Player, Select an opposing coin to be removed.\nEnter 'X' to conceed coin removal");
+                break;
+            case 3:
+                System.out.println(turn + " Player, Select an coin to be moved");
+                break;
+            default:
+                System.out.println("Incorrect Usage. Check Docs.");
+                return;
+        }
+
+        System.out.println("match regex [A-H]+[1-3]");
+    }
+
+    private void sendBoard(ObjectOutputStream poos, Object obj) throws IOException {
+        //resets output streams to fix empty board being received by client
+        poos.reset();
+        //sends board to players
+        poos.writeObject(obj);
     }
 
 }
