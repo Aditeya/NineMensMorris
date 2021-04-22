@@ -126,6 +126,7 @@ public class NMMGUIBoardThread extends Thread {
                     break;
                 }
                 if (turn == player) {
+                    
 
                     System.out.println("you are " + player.toString());                    //Show Board
                     NMMApplication.scene.setRoot(clearContent());
