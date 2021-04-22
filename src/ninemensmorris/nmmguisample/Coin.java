@@ -32,7 +32,8 @@ import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
 import ninemensmorris.enums.MCoinType;
 
 /**
- *
+ *Coin Object Type for GUI. 
+ * 
  * @author LENOVO
  */
 class Coin {
@@ -72,7 +73,6 @@ boolean milled;
         this.milled = isMilled;
     }
     
-    
     public Coin(MCoinType type, String slot,String Scenario) {
         this.type = type;
         this.slot = slot;
@@ -110,6 +110,10 @@ boolean milled;
         return milled;
     }
     
+    /**
+     * Return COin Object (Group of 2 circles ) for Display
+     * @return 
+     */
     public Group ReturnCoin() {
         Group CoinGroup = new Group();
         this.bg = new Circle(POS_SIZE / 15 * 3.125);
