@@ -28,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -142,8 +143,12 @@ public class NMMGUIBoardThread extends Thread {
 
                     System.out.println(" player " + board.getiType().toString());
 
-                    btnStat.setOnAction(e -> {
-                        String Move = tfMove.getText().trim().toUpperCase();
+                    
+                    
+                     tfMove.setOnKeyPressed(e -> {
+        if (e.getCode() == KeyCode.ENTER) {
+           
+            String Move = tfMove.getText().trim().toUpperCase();
 
                         boolean takeInput = false;
                         boolean takeFromToInput = false;
@@ -215,7 +220,9 @@ public class NMMGUIBoardThread extends Thread {
                             output.add(Move);
                             tfMove.clear();
                         }
-                    });
+        }
+    });
+                  
                 } else {
 
                     System.out.println("next Turn, Not your Turn");
