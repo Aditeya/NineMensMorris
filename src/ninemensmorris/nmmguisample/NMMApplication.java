@@ -143,8 +143,7 @@ public class NMMApplication extends Application {
         scene2.getStylesheets().add("Resc/NMMBoard.css");
 //Scene 3 - Game Board
         Button btnend_game = new Button("End Game");
-        Button btnaddCoin = new Button(" ADD BTN");
-        HBox hbMenu = new HBox(btnend_game, btnaddCoin);
+        HBox hbMenu = new HBox(btnend_game);
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
         VBox v_root = new VBox();

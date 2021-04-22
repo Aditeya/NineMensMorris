@@ -101,8 +101,6 @@
 
 #room{
     -fx-border-color: #3e8069;
-    /*-fx-fill: #9999ff
-    -fx-background-color:linear-gradient);/*Vbox*/
     -fx-padding: 5;
     -fx-stroke-width: 10;  
 }
@@ -155,13 +153,13 @@
 }
 #coinHolder{
     -fx-stroke:gray;
-    -fx-stroke-width: 5;    
+    -fx-stroke-width: 5;  
 
 }
 #coinbg{
     -fx-fill: cornflowerblue;
-    -fx-stroke: whitesmoke;
-
+/*    -fx-stroke: whitesmoke;
+*/
 }
 #coinblack {
     -fx-fill: linear-gradient(to top left, black, grey);
@@ -172,21 +170,26 @@
     -fx-fill: linear-gradient(to top left, white, pink);/*set Fill for Shape*/
     -fx-stroke: whitesmoke;
 }  
-#milledLines{
-    -fx-stroke: yellow;
-    -fx-stroke-width: 10;  
+#milledCoin{
+        -fx-stroke: linear-gradient(to top left, yellow, lightcyan);
 }
 #slotPos{
     -fx-font-family: "Times New Roman", Times, serif;
     -fx-font: 20px Tahoma;
     -fx-text-fill:  #9999ff;/*#e3718c;*/  
 }
+/*Text Field*/
 .text-field {
     -fx-background-color: cornflowerblue , white , white;
     -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-border-color: #003366;
+    
+}
+/*Player Position*/
+#blackName{
+    -fx-text-fill:  black;
 }
 
-.text-field:focused {
-    -fx-background-color: #a9a9a9 , white , white;
-    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+#whiteName{
+    -fx-text-fill:  white;
 }

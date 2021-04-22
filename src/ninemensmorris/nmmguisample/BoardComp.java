@@ -128,12 +128,6 @@ public class BoardComp {
             lb.setId("slotPos");
             lb.setLayoutX(c.getPosX()+5);
             lb.setLayoutY(c.getPosY()+5);
-       
-//lb.setMaxHeight(3);
-//            lb.setScaleX();
-//            lb.setScaleY(c.getPosY()-1);
-
-      //      System.out.println("slot = " + c.slot + " type =" + c.getType() + " pos " + c.getPosX());
             root.getChildren().addAll(c.ReturnCoin(),lb);
         }
     }

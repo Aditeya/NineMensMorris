@@ -17,16 +17,16 @@
 package ninemensmorris.nmmguisample;
 
 import java.util.HashMap;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
 import ninemensmorris.enums.MCoinType;
@@ -40,9 +40,7 @@ class Coin {
     private MCoinType type;
     MCoinType toPlacetype;
     double posX, posY;
-    boolean movable;
     String slot, Scenario = "";
-    public String[] vldMvs;
     Circle bg;
     HashMap<String, Coin> bcs;
     LinkedBlockingQueue<Object> lb_in = new LinkedBlockingQueue<>();
@@ -60,15 +58,21 @@ class Coin {
     public MCoinType getType() {
         return type;
     }
-
-    public Coin(MCoinType type, double posX, double posY, boolean movable, String slot) {
+boolean milled;
+    public Coin(MCoinType type, double posX, double posY,  String slot) {
         this.type = type;
         this.posX = posX;
         this.posY = posY;
-        this.movable = movable;
         this.slot = slot;
     }
-
+  public Coin(MCoinType type, String slot,String Scenario,boolean isMilled) {
+        this.type = type;
+        this.slot = slot;
+        this.Scenario = Scenario;
+        this.milled = isMilled;
+    }
+    
+    
     public Coin(MCoinType type, String slot,String Scenario) {
         this.type = type;
         this.slot = slot;
@@ -80,14 +84,6 @@ class Coin {
         this.slot = slot;
         this.posX = posX;
         this.posY = posY;
-    }
-
-    public void setVldMvs(String[] vldMvs) {
-        this.vldMvs = vldMvs;
-    }
-
-    public String[] getVldMvs() {
-        return vldMvs;
     }
 
     public double getPosX() {
@@ -109,20 +105,10 @@ class Coin {
     public void setScenario(String Scenario) {
         this.Scenario = Scenario;
     }
-    
-    
-    
-    
-  //  public returnCor_PlaceCoin 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public boolean isMilled() {
+        return milled;
+    }
     
     public Group ReturnCoin() {
         Group CoinGroup = new Group();
@@ -133,74 +119,39 @@ class Coin {
         Circle c = new Circle(POS_SIZE / 15 * 3.125);
         c.setTranslateX(this.posX - 4);
         c.setTranslateY(this.posY - 4);
-        if (this.type != MCoinType.EMPTY) {
-            c.setOnDragDetected((MouseEvent event) -> {
-                System.out.println("Circle 1 drag detected");
-                Dragboard db = c.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putString(this.slot + "," + this.type);
-                db.setContent(content);
-            });
-            c.setOnMouseDragged((MouseEvent event) -> {
-                event.setDragDetect(true);
-            });
-        }
-        if (this.type == MCoinType.BLACK) {
-            c.setId("coinblack");
-            CoinGroup.getChildren().addAll(bg);
-        } else if (this.type == MCoinType.WHITE) {
-            c.setId("coinwhite");
-            CoinGroup.getChildren().addAll(bg);
-        } else {
+        
+          if(isMilled()){
+                c.setCursor(Cursor.CLOSED_HAND);
+                c.setStrokeWidth(5);
+                System.out.println("milled Coin");
+                c.setId("milledCoin");
+            }else{
+                 c.setCursor(Cursor.OPEN_HAND);
+                 c.setStrokeWidth(0);
+            }
+            
+        if (MCoinType.EMPTY == this.type) {
             c.setId("slot");
             c.setRadius(10);
             c.setTranslateX(this.posX);
             c.setTranslateY(this.posY);
-            if (this.Scenario.equals("PLACE")) {
-                c.setOnMouseClicked(e -> {
-                    System.out.println("Clicked ON SLOT");
-                    System.out.println("  >" + this.bcs.keySet());
-                    BoardComp bc = new BoardComp();
-                    double d[] = bc.getSlot(this.getSlot());
-                    Coin newCoin = new Coin(this.toPlacetype, this.slot, d[0] * POS_SIZE, d[1] * POS_SIZE);
-                    HashMap temp = this.bcs;
-                    temp.put(this.slot, newCoin);
-                    newCoin.setBcs(temp);
-                      System.out.println("In Coin >"+newCoin.getType());
-                    for (Object value : bcs.values()) {
-                           System.out.println("values "+bcs.keySet());
-                        Coin coin = (Coin) value;
-                                         System.out.println("In coin slot = "+coin.slot+" type ="+coin.getType());
-                    }
-                    this.bcs.put(slot, newCoin);
-                });
-            } else {
-                c.setOnDragOver(new EventHandler<DragEvent>() {
-                    public void handle(DragEvent event) {
-                        if (event.getGestureSource() != c && event.getDragboard().hasString()) {
-                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        }
-                        event.consume();
-                    }
-                });
-                c.setOnDragDropped((DragEvent event) -> {
-                    Dragboard db = event.getDragboard();
-                    db.setDragViewOffsetX(this.posX);
-                    db.setDragViewOffsetY(this.posY);
-                    System.out.println(" >  " + db.getDragViewOffsetX());
-                    System.out.println(" >  " + db.getDragViewOffsetY());
-                    if (db.hasString()) {
-                System.out.println("Dropped: "+db.getString());
-                        if (false) {//db.getString().isPartofValidMoves){
-                            event.setDropCompleted(true);
-                            System.out.println("Dropped: " + db.getString());
-                        }
-                    } else {
-                        event.setDropCompleted(false);
-                    }
-                    event.consume();
-                });
-            }
+            //Setting Milled coins to show unmovability
+          
+        } else switch (this.type) {
+            case BLACK:
+                c.setId("coinblack");
+                CoinGroup.getChildren().addAll(bg);
+                break;
+            case WHITE:
+                c.setId("coinwhite");
+                CoinGroup.getChildren().addAll(bg);
+                break;
+            default:
+                c.setId("slot");
+                c.setRadius(10);
+                c.setTranslateX(this.posX);
+                c.setTranslateY(this.posY);
+                break;
         }
         CoinGroup.getChildren().addAll(c);
         return CoinGroup;
