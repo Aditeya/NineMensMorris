@@ -171,7 +171,7 @@ public class NMMGUIBoardThread extends Thread {
                                 
                                 if (Move.matches("[A-H]+[1-3]\\s[A-H]+[1-3]")) {
                                     System.out.println("Move");
-                                    String[] slots = Move.split(" ");
+                                    String[] slots = Move.split("\\s");
                                     System.out.println(" PRINT " + slots[0] + "  " + slots[1]);
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("", true));
