@@ -236,7 +236,7 @@ public class NMMServiceThread extends Thread {
 
                     try {
                         System.out.println("Winner!");
-                        NMMboard winner = new NMMboard(nmm.nmmBoard, null, nmm.getWinner(), null, false);
+                        NMMboard winner = new NMMboard(nmm.nmmBoard, null, nmm.getWinner(), InputType.NONE, false);
                         sendBoard(winner);
                     } catch (IOException ex) {
                         Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
