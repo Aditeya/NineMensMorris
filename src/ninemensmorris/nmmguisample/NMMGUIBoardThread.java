@@ -76,7 +76,7 @@ public class NMMGUIBoardThread extends Thread {
         return v_root;
     }
 
-    Button btnStat = new Button("");
+ 
 
     /**
      *
@@ -96,7 +96,7 @@ public class NMMGUIBoardThread extends Thread {
         Pane root = new Pane();
         tfMove.setPromptText("Enter Move");
         tfMove.getStyleClass().add("text-field");
-        HBox hbMenu = new HBox(tfMove, new Label("  "), btnStat);
+        HBox hbMenu = new HBox(tfMove, new Label("  "));
         Label lbInstruct = new Label("");
         hbMenu.setId("exitMenu");
         hbMenu.setAlignment(Pos.TOP_RIGHT);
