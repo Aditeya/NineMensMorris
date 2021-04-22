@@ -250,11 +250,15 @@ public class NMMServiceThread extends Thread {
             while (nmm.getWinner() == MCoinType.EMPTY) {
                 nmm.nmmTurnHandle(sendCoin, true);
             }
-
+            
+            //Thread.sleep(100);
+            gameThread.join();
             player1.close();
             player2.close();
             System.out.println("Game Complete");
         } catch (IOException ex) {
+        } catch (InterruptedException ex) {
+            Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

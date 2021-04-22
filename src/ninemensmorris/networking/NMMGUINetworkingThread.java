@@ -16,6 +16,7 @@
  */
 package ninemensmorris.networking;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -88,6 +89,7 @@ public class NMMGUINetworkingThread extends Thread {
 
             if (roomChosen) {
                 try {
+                    Thread.sleep(2000);
                     NMMboard p = (NMMboard) ois.readObject();
                     player = p.getTurn();
                     output.add(player);
@@ -149,9 +151,15 @@ public class NMMGUINetworkingThread extends Thread {
                             }
                         }
                     }
-                } catch (IOException | ClassNotFoundException | InterruptedException ex) {
+                } catch (EOFException ex) {
+                    if (socket.isClosed()) {
+                        this.interrupt();
+                    }
+                }               
+                catch (IOException | ClassNotFoundException | InterruptedException ex) {
                     Logger.getLogger(NMMGUINetworkingThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    
+                } 
             }
         }
     }
