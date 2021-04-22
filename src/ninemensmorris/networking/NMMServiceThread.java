@@ -61,16 +61,6 @@ public class NMMServiceThread extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("Here at Service Thread");
-
-            // Create Object IO Streams for both player
-            /*Take that it works
-            ObjectOutputStream p1oos = new ObjectOutputStream(player1.getOutputStream());
-            ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
-            ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
-            ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());*/
-            System.out.println("But not here");
-
             // Thread Setup for the game
             Thread gameThread = new Thread(new Runnable() {
 
