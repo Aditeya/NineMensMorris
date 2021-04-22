@@ -126,10 +126,12 @@ public class NMMGUIBoardThread extends Thread {
                 if (board.getWinner() == MCoinType.EMPTY) {
                     //   System.out.println(" No Winners Yet ");
                 } else if (board.getWinner() == turn) {
+                    System.out.println("winner lol");
                     Alert a1 = new Alert(Alert.AlertType.CONFIRMATION, "You WIN!!", ButtonType.OK);
                     a1.showAndWait();
                     break;
                 } else {
+                    System.out.println("looser lol");
                     Alert a1 = new Alert(Alert.AlertType.CONFIRMATION, "You LOOSE.", ButtonType.OK);
                     a1.showAndWait();
                     break;

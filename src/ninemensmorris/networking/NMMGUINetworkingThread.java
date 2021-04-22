@@ -154,6 +154,7 @@ public class NMMGUINetworkingThread extends Thread {
                     }
                 } catch (EOFException ex) {
                     if (socket.isClosed()) {
+                        System.out.println("EOFException");
                         this.interrupt();
                     }
                 }               
