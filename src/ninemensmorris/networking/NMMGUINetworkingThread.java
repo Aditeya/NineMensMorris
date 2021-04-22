@@ -100,6 +100,12 @@ public class NMMGUINetworkingThread extends Thread {
                         // Receive board and print it out
                         NMMboard board = (NMMboard) ois.readObject();
                         output.add(board);
+                        
+                        if(board.getWinner() != MCoinType.EMPTY) {
+                            socket.close();
+                            this.interrupt();
+                            break;
+                        }
 
                         // Notify if input is valid
                         if (board.isWrongMove()) {
