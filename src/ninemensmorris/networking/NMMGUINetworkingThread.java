@@ -91,7 +91,6 @@ public class NMMGUINetworkingThread extends Thread {
 
             if (roomChosen) {
                 try {
-                    Thread.sleep(5000);
                     NMMboard p = (NMMboard) ois.readObject();
                     player = p.getTurn();
                     output.add(player);
@@ -109,6 +108,7 @@ public class NMMGUINetworkingThread extends Thread {
 
                         MCoinType turn = board.getTurn();
                         // Take input and send, if it is players turn
+                        boolean move = false;
                         if (turn == player) {
 
                             switch (board.getiType()) {
@@ -117,10 +117,12 @@ public class NMMGUINetworkingThread extends Thread {
                                 case PLACE:
                                     //output.add(InputType.PLACE);
                                     //printPlayerTurn(turn, 1);
+                                    move = true;
                                     break;
                                 case REMOVE:
                                     //output.add(InputType.REMOVE);
                                     //printPlayerTurn(turn, 2);
+                                    move = true;
                                     break;
                                 case MOVE:
                                     //output.add(InputType.MOVE);
@@ -138,7 +140,7 @@ public class NMMGUINetworkingThread extends Thread {
                                 default:
                             }
 
-                            if (board.getiType() != InputType.NONE || board.getiType() != InputType.MOVE) {
+                            if (move) {
                                 System.out.print("Enter Move: ");
                                 sendBoard(new NMMmove((String) input.take()));
                             }

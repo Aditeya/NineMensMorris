@@ -53,8 +53,6 @@ public class NMMServiceThread extends Thread {
         this.sendCoin = new LinkedBlockingQueue(2);
         this.nmm = new NMMLogic();
     }
-    
-    
 
     @Override
     public void run() {
@@ -67,7 +65,6 @@ public class NMMServiceThread extends Thread {
             ObjectInputStream p1ois = new ObjectInputStream(player1.getInputStream());
             ObjectOutputStream p2oos = new ObjectOutputStream(player2.getOutputStream());
             ObjectInputStream p2ois = new ObjectInputStream(player2.getInputStream());*/
-
             System.out.println("But not here");
 
             // Thread Setup for the game
@@ -150,6 +147,7 @@ public class NMMServiceThread extends Thread {
                             //wrongMove = prevTurn.equals(turn);
                             //Sends the board with turn and wrong move information
                             NMMboard board = new NMMboard(nmm.nmmBoard, turn.toMCntyp(), nmm.getWinner(), input, wrongMove);
+                            wrongMove = false;
                             board.setMenLeftBlack(nmm.getMenLeftBlack());
                             board.setMenLeftWhite(nmm.getMenLeftWhite());
                             board.setCoinOBB(nmm.getCoinOBB());
@@ -195,7 +193,7 @@ public class NMMServiceThread extends Thread {
                                 case MOVE:
                                     printPlayerTurn(turn, 3);
                                     slot = receiveMove(turn).getMove();
-                                    if (!(nmm.getVldMvs(slot).length == 0)) {
+                                    if (nmm.getVldMvs(slot).length == 0) {
                                         wrongMove = true;
                                         break;
                                     }
@@ -203,7 +201,7 @@ public class NMMServiceThread extends Thread {
                                     System.out.println(turn + " Player, Move coin " + slot + " to? match regex [A-H]+[1-3]");
 
                                     String slot2 = receiveMove(turn).getMove();
-                                    if (!(nmm.getVldMvs(slot).length == 0)) {
+                                    if (nmm.getVldMvs(slot).length == 0) {
                                         wrongMove = true;
                                         break;
                                     }
@@ -239,6 +237,18 @@ public class NMMServiceThread extends Thread {
 
             while (nmm.getWinner() == MCoinType.EMPTY) {
                 nmm.nmmTurnHandle(sendCoin, true);
+            }
+
+            try {
+                System.out.println("Winner!");
+                NMMboard turn = new NMMboard(null, null, nmm.getWinner(), null, false);
+                p1oos.reset();
+                p1oos.writeObject(turn);
+                 turn = new NMMboard(null, null, nmm.getWinner(), null, false);
+                p2oos.reset();
+                p2oos.writeObject(turn);
+            } catch (IOException ex) {
+                Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             player1.close();
