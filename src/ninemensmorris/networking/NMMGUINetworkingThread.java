@@ -28,10 +28,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ninemensmorris.NMMLogic;
-import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
-import ninemensmorris.enums.PrintType;
 import ninemensmorris.networking.demo.NMMClientDemo;
 import static ninemensmorris.networking.demo.NMMClientDemo.printRooms;
 

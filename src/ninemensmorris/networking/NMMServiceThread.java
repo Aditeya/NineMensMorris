@@ -42,6 +42,10 @@ public class NMMServiceThread extends Thread {
      *
      * @param player1 Socket of player1
      * @param player2 Socket of player2
+     * @param p1oos Player 1 ObjectOutputStream
+     * @param p1ois Player 1 ObjectInputStream
+     * @param p2oos Player 2 ObjectOutputStream
+     * @param p2ois Player 2 ObjectInputStream
      */
     public NMMServiceThread(Socket player1, Socket player2, ObjectOutputStream p1oos, ObjectInputStream p1ois, ObjectOutputStream p2oos, ObjectInputStream p2ois) {
         this.player1 = player1;
@@ -229,6 +233,14 @@ public class NMMServiceThread extends Thread {
                         }
 
                     }
+
+                    try {
+                        System.out.println("Winner!");
+                        NMMboard winner = new NMMboard(nmm.nmmBoard, null, nmm.getWinner(), null, false);
+                        sendBoard(winner);
+                    } catch (IOException ex) {
+                        Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
 
@@ -237,18 +249,6 @@ public class NMMServiceThread extends Thread {
 
             while (nmm.getWinner() == MCoinType.EMPTY) {
                 nmm.nmmTurnHandle(sendCoin, true);
-            }
-
-            try {
-                System.out.println("Winner!");
-                NMMboard turn = new NMMboard(null, null, nmm.getWinner(), null, false);
-                p1oos.reset();
-                p1oos.writeObject(turn);
-                 turn = new NMMboard(null, null, nmm.getWinner(), null, false);
-                p2oos.reset();
-                p2oos.writeObject(turn);
-            } catch (IOException ex) {
-                Logger.getLogger(NMMServiceThread.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             player1.close();
