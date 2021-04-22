@@ -99,14 +99,7 @@ public class NMMLogic {
         if (millRef == null) {
             try {
                 millRef = (JSONObject) new JSONParser().parse(
-<<<<<<< HEAD
                         new InputStreamReader(NMMLogic.class.getResourceAsStream(
-=======
-
-                        new InputStreamReader(
-                                getClass()
-                                        .getResourceAsStream(
->>>>>>> logic-network-og
                                 "/ninemensmorris/resources/mill_ref.json")));
                  
             } catch (Exception ex) {
