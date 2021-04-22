@@ -50,6 +50,8 @@ public class BoardComp {
      *
      * @param root Pane
      * @param bcs Hash Map of Board Components;
+     * @param  numBlack_CoinsLeft is the number of Black Coins left on Board
+     * @param  numWhite_CoinsLeft is the number of White Coins left on Board
      */
     public void GenerateBoard(Pane root, int numWhite_CoinsLeft, int numBlack_CoinsLeft) {
        HashMap hpos = createSlotHash();

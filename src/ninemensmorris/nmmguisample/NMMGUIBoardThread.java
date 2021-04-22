@@ -71,6 +71,14 @@ public class NMMGUIBoardThread extends Thread {
     }
     Button btnStat = new Button("");
 
+    /**
+     * 
+     * Load Components on the Board     * 
+     * @param guidetext
+     * @param tfMoveVisible
+     * @return 
+     */
+    
     private Parent createContent(String guidetext, boolean tfMoveVisible) {
         //  System.out.println("Creating COn");
         tGuide.setText(guidetext);
@@ -89,7 +97,7 @@ public class NMMGUIBoardThread extends Thread {
         BoardComp bc = new BoardComp();
         bc.GenerateBoard(root, numBlack_CoinsLeft, numWhite_CoinsLeft);
         v_root.getChildren().add(lbPlayerName);
-        bc.CreateWithCoins(bcs, root);
+        bc.CreateWithCoins(bcs, root);//Load All Coins on the board
         v_root.getChildren().addAll(hbMenu, tGuide, root, lbInstruct);
         return v_root;
     }
@@ -230,7 +238,6 @@ public class NMMGUIBoardThread extends Thread {
      * Adds BoardComp to specified slot position and sets PosX and PosY
      * BoardComp should set CoinType and slot
      *
-     * @param slot
      * @param bc
      */
     public void AddCompTobsc(Coin bc) {
@@ -255,7 +262,11 @@ public class NMMGUIBoardThread extends Thread {
             }
         }
     }
-
+/**
+ * Return Appropriate Instructions
+ * @param board
+ * @return 
+ */
     public String getScenario(NMMboard board) {
         String Scenario = "";
         switch (board.getiType()) {
@@ -266,7 +277,7 @@ public class NMMGUIBoardThread extends Thread {
                 Scenario = " Place a Coin";
                 break;
             case REMOVE:
-                Scenario = " Remove a Coin from Opponent";
+                Scenario = " Remove a Coin from Opponent \n Enter 'X' to conceed coin removal";
                 break;
             case MOVE:
                 System.out.println("Move");

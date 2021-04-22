@@ -21,7 +21,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.shape.Circle;
 
 /**
- *
+ *GUI components for Room in Lobby
  * @author LENOVO
  */
 public class RoomsGUI {
@@ -123,13 +123,6 @@ public class RoomsGUI {
         return whiteSlot;
     }
 
-    
-
-
-    /**
-     * @param args the command line arguments
-     */
-   
     
     
 }

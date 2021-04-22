@@ -50,12 +50,9 @@ import ninemensmorris.enums.MCoinType;
 import ninemensmorris.networking.NMMGUINetworkingThread;
 
 /**
- * NMM Client Application
+ *Multithreaded NMM Client Application - Includes all scenes and starts the game thread/ 
  *
- * <<<<<<< HEAD @a
- *
- *
- * uthor eltojaro ======= >>>>>>> gui
+ * @author eltojaro 
  */
 public class NMMApplication extends Application {
 
@@ -180,6 +177,9 @@ public class NMMApplication extends Application {
             concat = promtwithGamerName.getText().concat(" " + tf_Name.getText());
             tf_Name.clear();
             promtwithGamerName.setText(concat);
+            
+            /* Display the Rooms available form the server in two rows
+            */
             try {
                 arrRoomSlot.clear();
                 GetRoomsFromServer(arrRoomSlot);
@@ -218,7 +218,7 @@ public class NMMApplication extends Application {
     }
 
   
-
+/*Providing animation with toggles as the user selects room using ToggleGroup*/
     public void ToggleGroup_ArraySelectionAnimation(ToggleGroup roomTg, Button btn_ChosenRooms) {
         roomTg.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ob, Toggle o, Toggle n) {
@@ -234,16 +234,13 @@ public class NMMApplication extends Application {
 
                     }
                     SelectedRoomNum = Integer.parseInt(rb.getText().replaceAll("Room ", "").trim());
-                    //  System.out.println("Selected Room Num  " + SelectedRoomNum);
                     RoomsGUI rm2 = arrRoomSlot.get(SelectedRoomNum - 1);
                     if (rm2.isWhiteFilled()) { //White is filled
-                        //    System.out.println("Black selected ");
                         rm2.getBlackSlot().setRadius(25);
                         rm2.getBlackSlot().setStrokeWidth(5);
                         rm2.getBlackSlot().setStroke(Color.BLACK);
                     } else if (rm2.isBlackFilled() || !(rm2.isBlackFilled() && rm2.isWhiteFilled())) {
                         //White is HIghlighted
-                        //      System.out.println("white selected ");
                         rm2.getWhiteSlot().setRadius(25);
                         rm2.getWhiteSlot().setStrokeWidth(5);
                         rm2.getWhiteSlot().setStroke(Color.WHITE);
@@ -259,7 +256,7 @@ public class NMMApplication extends Application {
     /**
      * *
      * Adds Rooms from Server to Arr
-     *
+     *@param array  is the array with the rooms 
      * @throws UnknownHostException
      * @throws IOException
      */
@@ -291,23 +288,5 @@ public class NMMApplication extends Application {
         launch(args);
     }
 
-    private void printPlayerTurn(MCoinType turn, int msg) {
-        switch (msg) {
-            case 1:
-                System.out.println(turn + " Player, Place a coin.");
-                break;
-            case 2:
-                System.out.println(turn + " Player, Select an opposing coin to be removed.\nEnter 'X' to conceed coin removal");
-                break;
-            case 3:
-                System.out.println(turn + " Player, Select an coin to be moved");
-                break;
-            default:
-                System.out.println("Incorrect Usage. Check Docs.");
-                return;
-        }
-
-        System.out.println("match regex [A-H]+[1-3]");
-    }
-
+   
 }
