@@ -12,4 +12,4 @@ import this repo into netbeans to use it
 
 to run the server `NMMServerDemo`
 
-to run the server `NMMApplication`
+to run the client `NMMApplication`
