@@ -64,7 +64,6 @@ public class NMMGUIBoardThread extends Thread {
     public HashMap<String, Coin> bcs = new HashMap<>();
     Label lbPlayerName = new Label("Player 1");
     TextField tfMove = new TextField();
-    
 
     private Parent clearContent() {
         VBox v_root = new VBox();
@@ -103,9 +102,9 @@ public class NMMGUIBoardThread extends Thread {
             boolean showFromtf = false;
             player = (MCoinType) this.input.take();
             lbPlayerName.setText(player.toString());
-            
-          setNameCol();
-            
+
+            setNameCol();
+
             NMMApplication.scene.setNodeOrientation(NodeOrientation.INHERIT);
             while (true) {
                 // Receive board and print it out
@@ -116,7 +115,7 @@ public class NMMGUIBoardThread extends Thread {
                 MCoinType turn = board.getTurn();// Take input and send, if it is players turn
 
                 if (board.getWinner() == MCoinType.EMPTY) {
-                    System.out.println(" No Winners Yet ");
+                    //   System.out.println(" No Winners Yet ");
                 } else if (board.getWinner() == turn) {
                     Alert a1 = new Alert(Alert.AlertType.CONFIRMATION, "You WIN!!", ButtonType.OK);
                     a1.showAndWait();
@@ -138,19 +137,19 @@ public class NMMGUIBoardThread extends Thread {
                         String Move = tfMove.getText().trim().toUpperCase();
 
                         boolean takeInput = false;
+                        boolean takeFromToInput = false;
+
                         switch (board.getiType()) {
                             case NONE:
                                 System.out.println("NONE");
                                 break;
                             case PLACE:
-                                //System.out.println("PLACE!!");
-                                
-                                
-                                
-                                
-                                
+                                System.out.println("PLACE!!");
+
                                 if (Move.matches("[A-H]+[1-3]")) {
                                     takeInput = true;
+                                    ReduceCoin(turn);
+
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
@@ -158,9 +157,17 @@ public class NMMGUIBoardThread extends Thread {
                                 }
                                 break;
                             case REMOVE:
-                                // System.out.println("Remove");
+
+                                System.out.println("Remove");
                                 if (Move.matches("[A-H]+[1-3]") || Move.equals("X")) {
                                     takeInput = true;
+                                    if (!Move.equals("X")) {
+                                        if (player == MCoinType.WHITE) {
+                                            ReduceCoin(MCoinType.BLACK);
+                                        } else {
+                                            ReduceCoin(MCoinType.WHITE);
+                                        }
+                                    }
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
@@ -168,18 +175,10 @@ public class NMMGUIBoardThread extends Thread {
                                 }
                                 break;
                             case MOVE:
-                                
+
                                 if (Move.matches("[A-H]+[1-3]\\s[A-H]+[1-3]")) {
                                     System.out.println("Move");
-                                    String[] slots = Move.split("\\s");
-                                    System.out.println(" PRINT " + slots[0] + "  " + slots[1]);
-                                    NMMApplication.scene.setRoot(clearContent());
-                                    NMMApplication.scene.setRoot(createContent("", true));
-                                    output.add(slots[0]);
-                                    output.add(slots[1]);
-                                    tfMove.clear();
-                                    break;
-
+                                    takeFromToInput = true;
                                 } else {
                                     NMMApplication.scene.setRoot(clearContent());
                                     NMMApplication.scene.setRoot(createContent("Invalid Input. Try Again.", true));
@@ -189,20 +188,35 @@ public class NMMGUIBoardThread extends Thread {
 
                             default:
                         }
+                        if (takeFromToInput) {
+
+                            String[] slots = Move.split("\\s");
+                            output.add(slots[0]);
+                            output.add(slots[1]);
+                            System.out.println(" PRINT " + slots[0] + "  " + slots[1]);
+                            tfMove.clear();
+                            NMMApplication.scene.setRoot(clearContent());
+                            NMMApplication.scene.setRoot(createContent("", true));
+                        }
+
                         //If the input type is none, pnly for place
                         if (takeInput) {
-                            ReduceCoin(turn);
-//                            NMMApplication.scene.setRoot(clearContent());
-//                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
+                            NMMApplication.scene.setRoot(clearContent());
+                            NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
                             output.add(Move);
                             tfMove.clear();
                         }
-
                     });
                 } else {
+
                     System.out.println("next Turn, Not your Turn");
                     NMMApplication.scene.setRoot(clearContent());
                     NMMApplication.scene.setRoot(createContent("Waiting For Opponent", false));
+                    if (turn == MCoinType.BLACK) {
+                        numWhite_CoinsLeft=numWhite_CoinsLeft-1;
+                    } else if(turn ==MCoinType.WHITE) {
+                        numBlack_CoinsLeft=numBlack_CoinsLeft-1;
+                    }
                 }
 
             }
@@ -232,11 +246,11 @@ public class NMMGUIBoardThread extends Thread {
             String str = "";
             for (char i = '1'; i < '4'; i++) {
                 str = String.valueOf(t) + String.valueOf(i);
-                int idx[] = NMMLogic.slotLkUp(str); 
+                int idx[] = NMMLogic.slotLkUp(str);
                 //      System.out.printf("index= %d:%d\n", idx[0], idx[1]); //should be 0:0 for A1
                 NMMCoin coin = coins[idx[0]][idx[1]]; //gets coin A1 
                 //    System.out.println("coin at " + str + " = " + coin.getCoin());
-                AddCompTobsc(new Coin(coin.getCoin(), str, "PLACE",coin.isMilled())); //Added to ArrayList
+                AddCompTobsc(new Coin(coin.getCoin(), str, "PLACE", coin.isMilled())); //Added to ArrayList
             }
         }
     }
@@ -254,28 +268,33 @@ public class NMMGUIBoardThread extends Thread {
                 Scenario = " Remove a Coin from Opponent";
                 break;
             case MOVE:
-                 Alert a1 = new Alert(Alert.AlertType.CONFIRMATION, "You WIN!!", ButtonType.OK);
-                    a1.showAndWait();
+                System.out.println("Move");
                 Scenario = " Move a Coin";
                 break;
             default:
         }
         return Scenario;
     }
-public void setNameCol(){
-     if(lbPlayerName.getText()=="WHITE"){
-                lbPlayerName.setId("whiteName");
-            }else{
-                lbPlayerName.setId("blackName");
-            }
-}
 
-public void ReduceCoin(MCoinType turn){
-     if(player==turn){
-                                    if(player==MCoinType.BLACK){
-                                        numBlack_CoinsLeft=numBlack_CoinsLeft-1;
-                                    }else if(player==MCoinType.WHITE)
-                                        numWhite_CoinsLeft=numWhite_CoinsLeft-1;
-                                }
-}
+    public void setNameCol() {
+        if (lbPlayerName.getText() == "WHITE") {
+            lbPlayerName.setId("whiteName");
+        } else {
+            lbPlayerName.setId("blackName");
+        }
+    }
+
+    public void ReduceCoin(MCoinType turn) {
+    System.out.println("Reducing ");
+
+        if (player == turn) {
+            if (player == MCoinType.WHITE) {
+                System.out.println("Reducing blakc");
+                numBlack_CoinsLeft = numBlack_CoinsLeft - 1;
+            } else if (player == MCoinType.BLACK) {
+                System.out.println("Reducing white");
+                numWhite_CoinsLeft = numWhite_CoinsLeft - 1;
+            }
+        }
+    }
 }

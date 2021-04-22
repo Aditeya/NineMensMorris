@@ -123,7 +123,6 @@ boolean milled;
           if(isMilled()){
                 c.setCursor(Cursor.CLOSED_HAND);
                 c.setStrokeWidth(5);
-                System.out.println("milled Coin");
                 c.setId("milledCoin");
             }else{
                  c.setCursor(Cursor.OPEN_HAND);
