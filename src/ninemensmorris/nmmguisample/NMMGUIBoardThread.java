@@ -18,14 +18,9 @@ package ninemensmorris.nmmguisample;
 
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -38,9 +33,7 @@ import ninemensmorris.NMMLogic;
 import static ninemensmorris.nmmguisample.NMMApplication.HEIGHT;
 import static ninemensmorris.nmmguisample.NMMApplication.POS_SIZE;
 import static ninemensmorris.nmmguisample.NMMApplication.WIDTH;
-import ninemensmorris.enums.InputType;
 import ninemensmorris.enums.MCoinType;
-import ninemensmorris.enums.PrintType;
 import ninemensmorris.networking.NMMboard;
 
 /**
