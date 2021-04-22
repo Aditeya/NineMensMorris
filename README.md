@@ -4,8 +4,12 @@ Authors: Aditeya, Amal and Elton
 
 import this repo into netbeans to use it
 
-## TODO:
+# Dependencies
 
-- [x] Game Logic
-- [x] Network Protocol
-- [ ] GUI
+`json-simple-1.1.1`
+
+# Running
+
+to run the server `NMMServerDemo`
+
+to run the server `NMMApplication`
