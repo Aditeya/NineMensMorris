@@ -212,6 +212,8 @@ public class NMMApplication extends Application {
 
         btnend_game.setOnAction(e -> primaryStage.setScene(scene1));
         scene.getStylesheets().add("Resc/NMMBoard.css");
+        primaryStage.setMinHeight(300);
+        primaryStage.setMinWidth(300);
         primaryStage.setTitle("Nine Men's Morris");
         primaryStage.setScene(scene1);//chanfe to scene1
         primaryStage.show();
